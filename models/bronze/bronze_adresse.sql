@@ -1,0 +1,32 @@
+{{ 
+    config(
+        materialized='table',
+        tags=['artikel']
+    ) 
+}}
+
+with source_data as (
+
+    select
+        adr_2_8                              as adr_adressnummer,
+        adr_20_30                            as adr_name,
+        adr_80_30                            as adr_adresse,
+        adr_110_10                           as adr_plz,
+        adr_120_30                           as adr_stadt,
+        adr_242_20                           as adr_nummer,
+        adr_347_30                           as adr_ansprechpartner,
+        adr_498_8                            as adr_debitorenkonto,
+        adr_681_8                            as adr_rechnungsempfaenger,
+        adr_673_8                            as adr_heim,
+        adr_689_8                            as adr_patientenkasse,
+        adr_820_1                            as adr_oe_1,
+        adr_821_1                            as adr_oe_2,
+        adr_822_1                            as adr_oe_3,
+        adr_823_1                            as adr_oe_4,
+        adr_875_8                            as adr_zentrale_GVS_nummer
+    from {{ source('raw', 'm36adr') }}
+
+)
+
+select *
+from source_data

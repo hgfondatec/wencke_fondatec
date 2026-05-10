@@ -1,0 +1,10 @@
+version: 2
+
+seeds:
+  - name: raw_beleg_arten
+  - name: raw_akademie_artikel
+    config:
+      column_types:
+        akademie_artikelnummer: varchar
+        akademie_hauptlieferantnummer: varchar
+  - name: raw_vertreter

@@ -1,0 +1,14 @@
+bel_belegart,bel_belegkreis,bel_belegname
+A,Kundenbeleg,Auftrag (Kunde)
+b,Lieferantenbeleg,Bestellung (WE)
+E,Allgemeiner Beleg,Lagerabbuchung
+G,Kundenbeleg,Gutschrift
+I,Allgemeiner Beleg,Interner Beleg
+L,Kundenbeleg,Lieferschein
+l,Lieferantenbeleg,Lieferschein (WE)
+M,Allgemeiner Beleg,Materialumlauf (Reparatur)
+N,Kundenbeleg,Angebot
+R,Kundenbeleg,Rechnung
+r,Lieferantenbeleg,Rechnung (WE)
+S,,
+Z,Allgemeiner Beleg,Lagerzubuchung
