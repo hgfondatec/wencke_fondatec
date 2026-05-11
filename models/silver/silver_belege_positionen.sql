@@ -1,4 +1,10 @@
-{{ config(materialized='table') }}
+{{ 
+    config(
+        materialized='table',
+        tags=['belege_position']
+    ) 
+}}
+
 
 with belege as (
 
