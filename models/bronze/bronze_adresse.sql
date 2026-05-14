@@ -23,7 +23,8 @@ with source_data as (
         adr_821_1                            as adr_oe_2,
         adr_822_1                            as adr_oe_3,
         adr_823_1                            as adr_oe_4,
-        adr_875_8                            as adr_zentrale_GVS_nummer
+        adr_875_8                            as adr_zentrale_GVS_nummer,
+        adr_1219_2                           as adr_adresstyp
     from {{ source('raw', 'm36adr') }}
 
 )
