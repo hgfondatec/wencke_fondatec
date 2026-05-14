@@ -13,7 +13,8 @@ with belege as (
         bel_belegdatum,
         bel_adressnummer,
         bel_belegart,
-        bel_vertreter
+        bel_vertreter,
+        bel_beleggruppe
     from {{ ref('bronze_belege') }}
 
 ),
@@ -54,6 +55,16 @@ vertreter as (
         ver_vertretername
     from {{ ref('raw_vertreter') }}
 
+),
+
+beleggruppe as (
+
+    select
+        bg_beleggruppe,
+        bg_belegart,
+        bg_beleggruppe_id
+    from {{ ref('bronze_beleggruppe') }}
+
 )
 
 select
@@ -63,6 +74,12 @@ select
     belege.bel_belegart,
     beleg_arten.bel_belegname,
     belege.bel_vertreter,
+
+    beleggruppe.bg_beleggruppe,
+    CASE 
+        when beleggruppe.bg_beleggruppe IN ('G00','G01','G02','R00','R83') then 'ja'
+        else 'nein'
+    end as umsatzrelevant,
 
     vertreter.ver_vertretername,
 
@@ -85,6 +102,10 @@ left join beleg_arten
 
 left join vertreter
     on vertreter.ver_vertreternummer = belege.bel_vertreter
+
+left join beleggruppe
+    on beleggruppe.bg_beleggruppe_id = belege.bel_beleggruppe
+    and beleggruppe.bg_belegart = belege.bel_belegart
 
 order by
     belege.bel_belegdatum,

@@ -28,7 +28,8 @@ with source_data as (
         bel_2451_8 as bel_praesident3,
         bel_2461_8 as bel_praesident2,
         bel_2469_8 as bel_praesident1,
-        bel_2966_10 as bel_gvsbelegnummer
+        bel_2966_10 as bel_gvsbelegnummer,
+        beleggruppe as bel_beleggruppe
     from {{ source('raw', 'm36bel') }}
 
 )
