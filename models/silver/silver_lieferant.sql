@@ -30,7 +30,7 @@ silver_lieferant as (
         adressen.adr_name                                  as adr_standardlieferantname
     from lieferant_ids
     left join adressen
-        on lieferant_ids.art_standardlieferantnummer = adressen.adr_adressnummer
+        on lieferant_ids.art_standardlieferantnummer = CAST(adressen.adr_adressnummer AS text)
     order by lieferant_ids.art_standardlieferantnummer
 
 )

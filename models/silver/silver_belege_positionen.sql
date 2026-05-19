@@ -16,6 +16,7 @@ with belege as (
         bel_vertreter,
         bel_beleggruppe
     from {{ ref('bronze_belege') }}
+    where bel_beleggruppe is not null 
 
 ),
 
@@ -25,17 +26,17 @@ positionen as (
         pos_belegnummer,
         pos_artikelnummer,
         pos_artikeltext,
-        sum(pos_gesamtmenge) as pos_gesamtmenge,
-        sum(pos_gesamtumsatz_vor_bonus) as pos_gesamtumsatz_vor_bonus,
-        sum(pos_rohertrag_verrechnet) as pos_rohertrag_verrechnet,
-        sum(pos_rohertrag_vor_bonus) as pos_rohertrag_vor_bonus,
-        sum(pos_umsatz_bonus_vorlaeufig) as pos_umsatz_bonus_vorlaeufig,
-        sum(pos_umsatz_bonus_endgueltig) as pos_umsatz_bonus_endgueltig
+        pos_ek_einzeln as pos_ek_einzeln,
+        pos_gesamtrohertrag as pos_gesamtrohertrag,
+        pos_gesamtumsatz as pos_gesamtumsatz,
+        pos_gesamtmenge as pos_gesamtmenge,
+        pos_gesamtumsatz_vor_bonus as pos_gesamtumsatz_vor_bonus,
+        pos_rohertrag_verrechnet as pos_rohertrag_verrechnet,
+        pos_rohertrag_vor_bonus as pos_rohertrag_vor_bonus,
+        pos_umsatz_bonus_vorlaeufig as pos_umsatz_bonus_vorlaeufig,
+        pos_umsatz_bonus_endgueltig as pos_umsatz_bonus_endgueltig
     from {{ ref('bronze_positionen') }}
-    group by
-        pos_belegnummer,
-        pos_artikelnummer,
-        pos_artikeltext
+    where pos_artikelnummer <> ''
 
 ),
 
@@ -86,6 +87,9 @@ select
     positionen.pos_artikelnummer,
     positionen.pos_artikeltext,
     positionen.pos_gesamtmenge,
+    positionen.pos_gesamtumsatz,
+    positionen.pos_gesamtrohertrag,
+    positionen.pos_ek_einzeln,
     positionen.pos_gesamtumsatz_vor_bonus,
     positionen.pos_rohertrag_verrechnet,
     positionen.pos_rohertrag_vor_bonus,
