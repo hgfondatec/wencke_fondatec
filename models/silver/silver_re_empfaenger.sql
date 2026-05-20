@@ -22,7 +22,8 @@ silver_rechnungsempfaenger as (
 
     select distinct
         rechnungsempfaenger_ids.adr_rechnungsempfaenger     as rechnungsempfaenger_id,
-        adressen.adr_name                                   as rechnungsempfaenger_name
+        adressen.adr_name                                   as rechnungsempfaenger_name,
+        coalesce(cast(rechnungsempfaenger_ids.adr_rechnungsempfaenger as varchar(10)), 'XX') || '-' ||  coalesce(adressen.adr_name, 'keine Bezeichnung') as rechnungsempfaenger_bezeichnung
     from rechnungsempfaenger_ids
     left join adressen
         on rechnungsempfaenger_ids.adr_rechnungsempfaenger = adressen.adr_adressnummer

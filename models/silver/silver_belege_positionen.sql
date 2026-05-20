@@ -16,7 +16,7 @@ with belege as (
         bel_vertreter,
         bel_beleggruppe
     from {{ ref('bronze_belege') }}
-    where bel_beleggruppe is not null 
+    where bel_beleggruppe is not null and bel_belegart in ('A','L','R','G')
 
 ),
 
@@ -25,18 +25,18 @@ positionen as (
     select
         pos_belegnummer,
         pos_artikelnummer,
-        pos_artikeltext,
         pos_ek_einzeln as pos_ek_einzeln,
         pos_gesamtrohertrag as pos_gesamtrohertrag,
         pos_gesamtumsatz as pos_gesamtumsatz,
-        pos_gesamtmenge as pos_gesamtmenge,
-        pos_gesamtumsatz_vor_bonus as pos_gesamtumsatz_vor_bonus,
-        pos_rohertrag_verrechnet as pos_rohertrag_verrechnet,
-        pos_rohertrag_vor_bonus as pos_rohertrag_vor_bonus,
-        pos_umsatz_bonus_vorlaeufig as pos_umsatz_bonus_vorlaeufig,
-        pos_umsatz_bonus_endgueltig as pos_umsatz_bonus_endgueltig
+        pos_gesamtmenge as pos_gesamtmenge
     from {{ ref('bronze_positionen') }}
-    where pos_artikelnummer <> ''
+    where pos_artikelnummer <> '' and pos_artikelnummer is not null and pos_belegart in ('A','L','R','G')
+
+    UNION ALL 
+
+    SELECT 
+        * 
+    from {{ ref('silver_nebenkosten') }} 
 
 ),
 
@@ -85,30 +85,24 @@ select
     vertreter.ver_vertretername,
 
     positionen.pos_artikelnummer,
-    positionen.pos_artikeltext,
     positionen.pos_gesamtmenge,
     positionen.pos_gesamtumsatz,
     positionen.pos_gesamtrohertrag,
-    positionen.pos_ek_einzeln,
-    positionen.pos_gesamtumsatz_vor_bonus,
-    positionen.pos_rohertrag_verrechnet,
-    positionen.pos_rohertrag_vor_bonus,
-    positionen.pos_umsatz_bonus_vorlaeufig,
-    positionen.pos_umsatz_bonus_endgueltig
+    positionen.pos_ek_einzeln
 
 from belege
 
 left join positionen
-    on positionen.pos_belegnummer = belege.bel_belegnummer
+    on CAST(positionen.pos_belegnummer as varchar(12)) = belege.bel_belegnummer
 
 left join beleg_arten
     on beleg_arten.bel_belegart = belege.bel_belegart
 
 left join vertreter
-    on vertreter.ver_vertreternummer = belege.bel_vertreter
+    on CAST(vertreter.ver_vertreternummer as varchar(12)) = belege.bel_vertreter
 
 left join beleggruppe
-    on beleggruppe.bg_beleggruppe_id = belege.bel_beleggruppe
+    on CAST(beleggruppe.bg_beleggruppe_id as varchar(12)) = belege.bel_beleggruppe
     and beleggruppe.bg_belegart = belege.bel_belegart
 
 order by
