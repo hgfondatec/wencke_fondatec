@@ -5,6 +5,7 @@ with heim_ids as (
     select distinct
         adr_heim
     from {{ ref('bronze_adresse') }}
+    where adr_heim <> ''
 
 ),
 

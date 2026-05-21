@@ -15,6 +15,7 @@ with source_data as (
         adr_120_30                           as adr_stadt,
         adr_242_20                           as adr_nummer,
         adr_347_30                           as adr_ansprechpartner,
+        adr_466_8                            as adr_vertreternummer,
         adr_498_8                            as adr_debitorenkonto,
         adr_482_8                            as adr_praesident,
         adr_681_8                            as adr_rechnungsempfaenger,

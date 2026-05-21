@@ -10,11 +10,8 @@ with belege as (
 
     select distinct
         bel_belegnummer,
-        bel_belegdatum,
         bel_adressnummer,
-        bel_belegart,
-        bel_vertreter,
-        bel_beleggruppe
+        bel_belegart
     from {{ ref('bronze_belege') }}
     where bel_beleggruppe is not null and bel_belegart in ('A','L','R','G')
 
@@ -40,49 +37,29 @@ positionen as (
 
 ),
 
-beleg_arten as (
-
-    select
-        bel_belegart,
-        bel_belegname
-    from {{ ref('raw_beleg_arten') }}
-
-),
-
-vertreter as (
-
-    select
-        ver_vertreternummer,
-        ver_vertretername
-    from {{ ref('raw_vertreter') }}
-
-),
 
 beleggruppe as (
 
     select
         bg_beleggruppe,
         bg_belegart,
-        bg_beleggruppe_id
-    from {{ ref('bronze_beleggruppe') }}
+        bg_beleggruppe_id,
+        "BG_Beleggruppe"
+    from {{ ref('silver_beleggruppe') }}
 
 )
 
 select
     belege.bel_belegnummer,
-    belege.bel_belegdatum,
     belege.bel_adressnummer,
     belege.bel_belegart,
-    beleg_arten.bel_belegname,
-    belege.bel_vertreter,
 
     beleggruppe.bg_beleggruppe,
+    beleggruppe."BG_Beleggruppe",
     CASE 
         when beleggruppe.bg_beleggruppe IN ('G00','G01','G02','R00','R83') then 'ja'
         else 'nein'
     end as umsatzrelevant,
-
-    vertreter.ver_vertretername,
 
     positionen.pos_artikelnummer,
     positionen.pos_gesamtmenge,
@@ -95,14 +72,9 @@ from belege
 left join positionen
     on CAST(positionen.pos_belegnummer as varchar(12)) = belege.bel_belegnummer
 
-left join beleg_arten
-    on beleg_arten.bel_belegart = belege.bel_belegart
-
-left join vertreter
-    on CAST(vertreter.ver_vertreternummer as varchar(12)) = belege.bel_vertreter
 
 left join beleggruppe
-    on CAST(beleggruppe.bg_beleggruppe_id as varchar(12)) = belege.bel_beleggruppe
+    on LPAD(beleggruppe.bg_beleggruppe_id::varchar, 2, '0') = belege.bel_beleggruppe
     and beleggruppe.bg_belegart = belege.bel_belegart
 
 order by

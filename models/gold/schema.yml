@@ -1,0 +1,12 @@
+version: 2
+
+gold:
+  - name: gold_facts
+    description: "Faktenmodell für Rechnungen"
+    columns:
+      - name: rechnnung_bel_datum
+        description: "Datum des Belegs"
+        tests:
+          - not_null
+        meta:
+          data_type: date

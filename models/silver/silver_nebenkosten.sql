@@ -30,7 +30,7 @@ final as (
         null::float as pos_ek_einzeln,
         x.betrag as pos_gesamtrohertrag,
         x.betrag as pos_gesamtumsatz,
-        x.betrag as pos_gesamtmenge
+        1::float as pos_gesamtmenge
 
     from nebkosten n
 

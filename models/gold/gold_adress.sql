@@ -16,6 +16,7 @@ adressen as (
         adr_heim,
         adr_krankenkasse,
         adr_rechnungsempfaenger,
+        adr_vertreternummer,
         adr_adresse,
         adr_plz,
         adr_stadt,
@@ -85,6 +86,7 @@ final as (
         a_heim.adr_plz,
         a_heim.adr_stadt,
         a_heim.adr_nummer,
+        a_heim.adr_vertreternummer,
 
         adressgruppe.adrgruppe_name,
 
