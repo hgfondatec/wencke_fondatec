@@ -10,7 +10,7 @@ select
     belege.bel_belegnummer as rechnung_beleg_nr,
     belege.bel_lieferschein_nr as rechnung_lieferschein_nr,
     belege.bel_interne_belegnummer as rechnung_interne_beleg_nr,
-    belege.bel_belegdatum as rechnnung_bel_datum,
+    belege.bel_belegdatum as rechnung_bel_datum,
     belege.bel_beleggruppe as rechnung_beleggruppe,
     belege.bel_belegart as rechnung_belegart,
     belege.bel_adressnummer as rechnung_adress_nr,

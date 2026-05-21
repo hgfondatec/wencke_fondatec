@@ -9,11 +9,8 @@
 with belege as (
 
     select distinct
-        bel_belegnummer,
-        bel_adressnummer,
-        bel_belegart
-    from {{ ref('bronze_belege') }}
-    where bel_beleggruppe is not null and bel_belegart in ('A','L','R','G')
+        *
+    from {{ ref('silver_rechnung_belege') }}
 
 ),
 
@@ -27,7 +24,7 @@ positionen as (
         pos_gesamtumsatz as pos_gesamtumsatz,
         pos_gesamtmenge as pos_gesamtmenge
     from {{ ref('bronze_positionen') }}
-    where pos_artikelnummer <> '' and pos_artikelnummer is not null and pos_belegart in ('A','L','R','G')
+    where pos_artikelnummer <> '' and pos_artikelnummer is not null and pos_belegart in ('R','G')
 
     UNION ALL 
 
@@ -50,16 +47,14 @@ beleggruppe as (
 )
 
 select
-    belege.bel_belegnummer,
-    belege.bel_adressnummer,
-    belege.bel_belegart,
+    belege.rechnung_beleg_nr as bel_belegnummer,
+    belege.rechnung_bel_datum as bel_belegdatum,
+    belege.rechnung_adress_nr as bel_adressnummer,
+    belege.rechnung_belegart bel_belegart,
+    belege.rechnung_steuerart,
 
     beleggruppe.bg_beleggruppe,
     beleggruppe."BG_Beleggruppe",
-    CASE 
-        when beleggruppe.bg_beleggruppe IN ('G00','G01','G02','R00','R83') then 'ja'
-        else 'nein'
-    end as umsatzrelevant,
 
     positionen.pos_artikelnummer,
     positionen.pos_gesamtmenge,
@@ -70,13 +65,13 @@ select
 from belege
 
 left join positionen
-    on CAST(positionen.pos_belegnummer as varchar(12)) = belege.bel_belegnummer
+    on CAST(positionen.pos_belegnummer as varchar(12)) = belege.rechnung_beleg_nr
 
 
 left join beleggruppe
-    on LPAD(beleggruppe.bg_beleggruppe_id::varchar, 2, '0') = belege.bel_beleggruppe
-    and beleggruppe.bg_belegart = belege.bel_belegart
+    on LPAD(beleggruppe.bg_beleggruppe_id::varchar, 2, '0') = belege.rechnung_beleggruppe
+    and beleggruppe.bg_belegart = belege.rechnung_belegart
 
 order by
-    belege.bel_belegdatum,
-    belege.bel_belegnummer
+    belege.rechnung_bel_datum,
+    belege.rechnung_beleg_nr
