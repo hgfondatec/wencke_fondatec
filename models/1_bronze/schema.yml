@@ -1,0 +1,183 @@
+version: 2
+
+models:
+  - name: bronze_adresse
+    description: "Bronze-Tabelle mit Adressdaten aus M36ADR"
+    tags:
+      - bronze
+      - artikel
+    columns:
+      - name: adr_adressnummer
+        description: "Eindeutige Adressnummer"
+        tests:
+          - unique
+
+      - name: adr_name
+        description: "Name der Adresse"
+
+      - name: adr_adresse
+        description: "Adresse der Person/Firma"
+
+      - name: adr_plz
+        description: "Postleitzahl"
+
+      - name: adr_stadt
+        description: "Stadt"
+
+      - name: adr_nummer
+        description: "Telefonnummer der Adresse"
+
+      - name: adr_ansprechpartner
+        description: "Ansprechpartner"
+
+      - name: adr_vertreternummer
+        description: "Vertreternummer-ID"
+
+      - name: adr_debitorenkonto
+        description: "Debitorenkonto"
+
+      - name: adr_praesident
+        description: "Präsident"
+
+      - name: adr_rechnungsempfaenger
+        description: "Rechnungsempfänger-ID"
+
+      - name: adr_heim
+        description: "Heim-ID"
+
+      - name: adr_krankenkasse
+        description: "Krankenkasse-ID"
+
+      - name: adr_oe_1
+        description: "Organisations-Einheit 1"
+
+      - name: adr_oe_2
+        description: "Organisations-Einheit 2"
+
+      - name: adr_oe_3
+        description: "Organisations-Einheit 3"
+
+      - name: adr_oe_4
+        description: "Organisations-Einheit 4"
+
+      - name: adr_zentrale_GVS_nummer
+        description: "Zentrale GVS-Nummer"
+
+      - name: adr_adresstyp
+        description: "Typ der Adresse"
+  
+  - name: bronze_adressgruppe
+    description: "Bronze-Tabelle mit Adressgruppen aus M36ADRGRP"
+    tags:
+      - bronze
+    columns:
+      - name: adrgruppe_id
+        description: "Eindeutige ID der Adressgruppe"
+
+      - name: adrgruppe_name
+        description: "Name der Adressgruppe"
+
+  - name: bronze_artikel
+    description: "Bronze-Tabelle mit Artikeldaten aus M36ART"
+    tags:
+      - bronze
+      - artikel
+    columns:
+      - name: art_artikelnummer
+        description: "Eindeutige Artikelnummer"
+
+      - name: art_artikelname
+        description: "Name des Artikels"
+
+      - name: art_hauptkategorie_id
+        description: "ID der Hauptkategorie des Artikels"
+
+      - name: art_nebenkategorie_id
+        description: "ID der Nebenkategorie des Artikels"
+
+      - name: art_standardlieferantnummer
+        description: "Standardlieferantnummer"
+
+      - name: art_herstellernummer
+        description: "Herstellernummer"
+        
+      - name: art_abc_kategorie
+        description: "ABC-Kategorie des Artikels"
+
+  - name: bronze_belege
+    description: >
+      Tabelle mit Belegdaten aus der Raw-Quelle m36bel.
+
+    config:
+      tags:
+        - bronze
+
+    columns:
+      - name: bel_belegstatus_a_n
+        description: "Belegstatus"
+
+      - name: bel_belegart
+        description: "Art des Belegs."
+
+      - name: bel_belegnummer
+        description: "Eindeutige Belegnummer."
+
+      - name: bel_adressnummer
+        description: "Adressnummer des zugehörigen Kunden"
+
+      - name: bel_belegdatum
+        description: "Datum des Belegs."
+
+      - name: bel_liefer_termindatum
+        description: "Geplanter Liefer- oder Termindatum des Belegs."
+
+      - name: bel_projektnummer
+        description: "Zugeordnete Projektnummer."
+
+      - name: bel_vertreter
+        description: "Vertreternummer"
+
+      - name: bel_steuerart
+        description: "Steuerart des Belegs."
+
+      - name: bel_nk_frachtkostenpauschale
+        description: "Nebenkosten für Frachtkostenpauschale."
+
+      - name: bel_nk_verpackung
+        description: "Nebenkosten für Verpackung."
+
+      - name: bel_nk_mindermengenzuschlag
+        description: "Nebenkosten für Mindermengenzuschlag."
+
+      - name: bel_nk_fuell_abnutzgebuehr
+        description: "Nebenkosten für Füll- oder Abnutzgebühr."
+
+      - name: bel_nk_gefahrgut
+        description: "Nebenkosten für Gefahrgut."
+
+      - name: bel_warenwertnetto
+        description: "Netto-Warenwert des Belegs."
+
+      - name: bel_warenwertmwst
+        description: "Mehrwertsteuerbetrag auf den Warenwert."
+
+      - name: bel_belegnetto
+        description: "Netto-Gesamtbetrag des Belegs."
+
+      - name: bel_belegmwst
+        description: "Mehrwertsteuerbetrag des gesamten Belegs."
+
+      - name: bel_interne_belegnummer
+        description: "Interne Belegnummer."
+
+      - name: bel_lieferschein_nr
+        description: "Zugehörige Lieferscheinnummer."
+
+      - name: bel_blfanummer
+        description: "BLFA-Nummer des Belegs."
+
+      - name: bel_belegtyp
+        description: "Typ des Belegs."
+
+      - name: bel_beleggruppe
+        description: "Beleggruppe des Belegs."

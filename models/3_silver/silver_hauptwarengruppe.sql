@@ -9,7 +9,7 @@ with warengruppen as (
 
     select 
         *
-    from {{ ref('silver_warengruppen') }}
+    from {{ ref('prep_warengruppen') }}
 
 )
 

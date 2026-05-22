@@ -24,7 +24,7 @@ praesident as (
         praesident_id,
         praesident_bezeichnung,
         praesident_next_level
-    from {{ ref('silver_praesident') }}
+    from {{ ref('prep_praesident') }}
 
 ),
 

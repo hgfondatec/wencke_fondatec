@@ -59,3 +59,7 @@ Status: ERFOLGREICH, Dauer: 14.400167 Sekunden
 --- DBT Run 2026-05-21 19:57:17.364143 ---
 17:57:24  Running with dbt=1.11.9 | 17:57:26  Registered adapter: postgres=1.10.0 | 17:57:27  Found 4 seeds, 24 models, 8 sources, 465 macros | 17:57:27   | 17:57:27  Concurrency: 4 threads (target='dev') | 17:57:27   | 17:57:28  1 of 1 START sql table model reporting.gold_facts .............................. [RUN] | 17:57:32  1 of 1 OK created sql table model reporting.gold_facts ......................... [SELECT 1650142 in 4.53s] | 17:57:32   | 17:57:32  Finished running 1 table model in 0 hours 0 minutes and 4.84 seconds (4.84s). | 17:57:32   | 17:57:32  Completed successfully | 17:57:32   | 17:57:32  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1 | 
 Status: ERFOLGREICH, Dauer: 16.860085 Sekunden
+
+--- DBT Run 2026-05-22 06:00:32.863909 ---
+04:00:39  Running with dbt=1.11.9 | 04:00:41  Registered adapter: postgres=1.10.0 | 04:00:43  Found 4 seeds, 23 models, 8 sources, 465 macros | 04:00:43   | 04:00:43  Concurrency: 4 threads (target='dev') | 04:00:43   | 04:00:43  1 of 1 START sql table model reporting.gold_facts .............................. [RUN] | 04:00:47  1 of 1 OK created sql table model reporting.gold_facts ......................... [SELECT 1650121 in 4.02s] | 04:00:47   | 04:00:47  Finished running 1 table model in 0 hours 0 minutes and 4.45 seconds (4.45s). | 04:00:48   | 04:00:48  Completed successfully | 04:00:48   | 04:00:48  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1 | 
+Status: ERFOLGREICH, Dauer: 16.314508 Sekunden

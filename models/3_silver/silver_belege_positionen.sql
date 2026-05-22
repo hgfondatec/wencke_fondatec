@@ -10,7 +10,7 @@ with belege as (
 
     select distinct
         *
-    from {{ ref('silver_rechnung_belege') }}
+    from {{ ref('prep_rechnung_belege') }}
 
 ),
 
@@ -30,7 +30,7 @@ positionen as (
 
     SELECT 
         * 
-    from {{ ref('silver_nebenkosten') }} 
+    from {{ ref('prep_nebenkosten') }} 
 
 ),
 
@@ -42,7 +42,7 @@ beleggruppe as (
         bg_belegart,
         bg_beleggruppe_id,
         "BG_Beleggruppe"
-    from {{ ref('silver_beleggruppe') }}
+    from {{ ref('prep_beleggruppe') }}
 
 )
 
