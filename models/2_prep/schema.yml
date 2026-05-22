@@ -1,0 +1,153 @@
+version: 2
+
+models:
+  - name: prep_beleggruppe
+    description: >
+      Aufbereitete Beleggruppen-Tabelle auf Prep-Ebene.
+      Verknüpft die Bronze-Beleggruppen mit den Mapping-Informationen
+      aus der Raw-Mappingtabelle raw_beleg_gruppe zur Anreicherung der Belegarten.
+
+    config:
+      tags:
+        - prep
+
+    columns:
+      - name: bg_beleggruppe
+        description: "Bezeichnung oder Kennung der Beleggruppe."
+
+      - name: bg_belegart
+        description: "Belegart der Beleggruppe."
+
+      - name: bg_beleggruppe_id
+        description: "Interne ID der Beleggruppe."
+
+      - name: A_Belegart
+        description: "Gemappte Belegart aus der Mappingtabelle."
+
+  - name: prep_nebenkosten
+    description: >
+      Aufbereitete Tabelle zur Darstellung von Nebenkosten als eigene
+      Belegpositionen. Die Nebenkosten werden aus den Belegdaten aggregiert
+      und als künstliche Artikelpositionen mit spezifischen Artikelnummern
+      ausgegeben.
+
+    config:
+      tags:
+        - prep
+
+    columns:
+      - name: pos_belegnummer
+        description: "Belegnummer der erzeugten Nebenkostenposition."
+
+
+      - name: pos_artikelnummer
+        description: >
+          Technische Artikelnummer für die jeweilige Nebenkostenart.
+
+          Verwendete Zuordnungen:
+          - 09990002 = Frachtkostenpauschale
+          - 09990017 = Verpackung
+          - 09990013 = Mindermengenzuschlag
+          - 09990016 = Füll-/Abnutzgebühr
+          - 09990018 = Gefahrgut
+
+      - name: pos_ek_einzeln
+        description: "Einzel-Einkaufspreis der Nebenkostenposition. Standardmäßig NULL."
+
+      - name: pos_gesamtrohertrag
+        description: "Rohertrag der Nebenkostenposition."
+
+      - name: pos_gesamtumsatz
+        description: "Gesamtumsatz der Nebenkostenposition."
+
+      - name: pos_gesamtmenge
+        description: "Menge der erzeugten Nebenkostenposition. Standardmäßig 1."
+
+  - name: prep_praesident
+    description: >
+      Aufbereitete Präsidenten-/Hierarchie-Tabelle auf Prep-Ebene.
+      Ermittelt eindeutige Präsidenten-IDs aus den Adressdaten und reichert
+      diese mit Name, Bezeichnung sowie der nächsten Hierarchieebene an.
+
+    config:
+      tags:
+        - prep
+
+    columns:
+      - name: praesident_id
+        description: "Eindeutige Adressnummer des Präsidenten bzw. übergeordneten Hierarchieelements."
+
+      - name: praesident_name
+        description: "Name des Präsidenten bzw. der zugehörigen Adresse."
+
+      - name: praesident_bezeichnung
+        description: >
+          Zusammengesetzte Bezeichnung aus Präsidenten-ID und Namen.
+          Falls kein Name vorhanden ist, wird 'keine Bezeichnung' verwendet.
+
+      - name: praesident_next_level
+        description: "Nächste übergeordnete Hierarchieebene des Präsidenten."
+
+  - name: prep_rechnung_belege
+    description: >
+      Aufbereitete Rechnungstabelle auf Prep-Ebene.
+      Enthält Rechnungs- und Gutschriftbelege aus den Belegdaten
+      inklusive relevanter Referenz- und Steuerinformationen.
+
+    config:
+      tags:
+        - prep
+
+    columns:
+      - name: rechnung_beleg_nr
+        description: "Eindeutige Belegnummer der Rechnung oder Gutschrift."
+
+      - name: rechnung_lieferschein_nr
+        description: "Zugehörige Lieferscheinnummer der Rechnung."
+
+      - name: rechnung_interne_beleg_nr
+        description: "Interne Belegnummer der Rechnung."
+
+      - name: rechnung_bel_datum
+        description: "Datum der Rechnung bzw. des Belegs."
+
+      - name: rechnung_beleggruppe
+        description: "Beleggruppe der Rechnung."
+
+      - name: rechnung_belegart
+        description: >
+          Art des Belegs.
+          Verwendete Werte:
+          - R = Rechnung
+          - G = Gutschrift
+
+      - name: rechnung_adress_nr
+        description: "Adressnummer des Kunden oder Geschäftspartners."
+
+      - name: rechnung_steuerart
+        description: "Steuerart der Rechnung."
+
+  - name: prep_warengruppen
+    description: >
+      Aufbereitete Warengruppen-Tabelle auf Prep-Ebene.
+      Ergänzt die Warengruppen um eine Klassifizierung in Haupt-
+      und Nebenwarengruppen basierend auf der Länge der Warengruppennummer.
+
+    config:
+      tags:
+        - prep
+
+    columns:
+      - name: wg_nummer
+        description: "Eindeutige Nummer der Warengruppe."
+
+      - name: wg_name
+        description: "Bezeichnung der Warengruppe."
+
+      - name: wg_typ
+        description: >
+          Klassifizierung der Warengruppe.
+
+          Verwendete Werte:
+          - Hauptwarengruppe = zweistellige Warengruppennummer
+          - Nebenwarengruppe = mehrstellige Warengruppennummer

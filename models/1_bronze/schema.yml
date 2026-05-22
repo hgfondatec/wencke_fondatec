@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: bronze_adresse
-    description: "Bronze-Tabelle mit Adressdaten aus M36ADR"
+    description: "Bronze-Tabelle mit Adressdaten aus m36adr"
     tags:
       - bronze
       - artikel
@@ -67,7 +67,7 @@ models:
         description: "Typ der Adresse"
   
   - name: bronze_adressgruppe
-    description: "Bronze-Tabelle mit Adressgruppen aus M36ADRGRP"
+    description: "Bronze-Tabelle mit Adressgruppen aus m36adrgrp"
     tags:
       - bronze
     columns:
@@ -78,7 +78,7 @@ models:
         description: "Name der Adressgruppe"
 
   - name: bronze_artikel
-    description: "Bronze-Tabelle mit Artikeldaten aus M36ART"
+    description: "Bronze-Tabelle mit Artikeldaten aus m36art"
     tags:
       - bronze
       - artikel
@@ -181,3 +181,118 @@ models:
 
       - name: bel_beleggruppe
         description: "Beleggruppe des Belegs."
+
+  - name: bronze_beleggruppe
+    description: >
+      Mapping-Tabelle für Beleggruppen aus der Raw-Quelle m36bg.
+      Enthält die Zuordnung zwischen Beleggruppe, Belegart
+      und interner Beleggruppen-ID.
+
+    config:
+      tags:
+        - bronze
+
+    columns:
+      - name: bg_beleggruppe
+        description: "Bezeichnung oder Kennung der Beleggruppe."
+
+      - name: bg_belegart
+        description: "Belegart der zugehörigen Beleggruppe."
+
+      - name: bg_beleggruppe_id
+        description: "Interne ID der Beleggruppe."
+
+  - name: bronze_mandanten
+    description: >
+      Stammdatentabelle für Mandanten aus der Raw-Quelle m00id0202.
+      Enthält grundlegende Informationen wie Name, Zusatzinformationen
+      und Adressdaten des Mandanten.
+
+    config:
+      tags:
+        - bronze_mandanten
+
+    columns:
+      - name: mandant_id
+        description: "Eindeutige ID des Mandanten."
+
+      - name: mandant_name
+        description: "Name des Mandanten."
+
+      - name: mandant_zusatzinfo
+        description: "Zusätzliche Informationen oder Zusatzbezeichnung des Mandanten."
+
+      - name: mandant_strasse
+        description: "Straßenadresse des Mandanten."
+
+      - name: mandant_plz
+        description: "Postleitzahl des Mandanten."
+
+      - name: mandant_stadt
+        description: "Stadt des Mandanten."
+
+  - name: bronze_positionen
+    description: >
+      Positionstabelle für Belege aus der Raw-Quelle m36pos.
+      Enthält Artikel-, Mengen-, Umsatz- und Rohertragsinformationen
+      auf Positionsebene.
+
+    config:
+      tags:
+        - bronze
+
+    columns:
+      - name: pos_belegart
+        description: "Art des Belegs."
+
+      - name: pos_belegnummer
+        description: "Eindeutige Belegnummer."
+
+      - name: pos_artikelnummer
+        description: "Artikelnummer der Belegposition."
+
+      - name: pos_artikeltext
+        description: "Beschreibung oder Text des Artikels."
+
+      - name: pos_gesamtmenge
+        description: "Gesamtmenge der Position."
+
+      - name: pos_gesamtumsatz_vor_bonus
+        description: "Gesamtumsatz vor Berücksichtigung von Boni."
+
+      - name: pos_ek_einzeln
+        description: "Einzelner Einkaufspreis der Position."
+
+      - name: pos_gesamtumsatz
+        description: "Gesamtumsatz der Position."
+
+      - name: pos_gesamtrohertrag
+        description: "Gesamtrohertrag der Position."
+
+      - name: pos_rohertrag_verrechnet
+        description: "Verrechneter Rohertrag der Position."
+
+      - name: pos_rohertrag_vor_bonus
+        description: "Rohertrag vor Bonusberücksichtigung."
+
+      - name: pos_umsatz_bonus_vorlaeufig
+        description: "Vorläufig berechneter Umsatzbonus."
+
+      - name: pos_umsatz_bonus_endgueltig
+        description: "Endgültig berechneter Umsatzbonus."
+
+  - name: bronze_warengruppen
+    description: >
+      Stammdatentabelle für Warengruppen aus der Raw-Quelle m36nk.
+      Enthält die Warengruppennummer sowie die zugehörige Bezeichnung.
+
+    config:
+      tags:
+        - bronze
+
+    columns:
+      - name: wg_nummer
+        description: "Eindeutige Nummer der Warengruppe."
+
+      - name: wg_name
+        description: "Bezeichnung der Warengruppe."

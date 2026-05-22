@@ -5,8 +5,7 @@ from sqlalchemy import create_engine
 
 # ------------------ KONFIGURATION ------------------
 DBT_PROJECT_PATH = r"C:\dbt\wencke_fondatec"
-MODEL_NAME = "gold_facts"
-LOG_FILE = r"C:\dbt\wencke_fondatec\dbt_gold_facts.log"
+LOG_FILE = r"C:\dbt\wencke_fondatec\dbt_logs.log"
 
 # PostgreSQL-Verbindung
 PG_USER = "sbs"
@@ -18,7 +17,7 @@ DATABASE_URI = f"postgresql+psycopg2://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_POR
 REPORT_TABLE = "dbt_run_log"
 # ---------------------------------------------------
 
-def run_dbt():
+def run_dbt(model_name):
     timestamp = datetime.datetime.now()
     status = "FEHLER"
     duration = 0
@@ -27,7 +26,7 @@ def run_dbt():
     try:
         start_time = datetime.datetime.now()
         result = subprocess.run(
-            ["dbt", "run", "--select", MODEL_NAME],
+            ["dbt", "run", "--select", model_name],
             cwd=DBT_PROJECT_PATH,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -50,7 +49,7 @@ def run_dbt():
         log_file.write(f"Status: {status}, Dauer: {duration} Sekunden\n")
     
     # In PostgreSQL schreiben
-    write_to_postgres(timestamp, MODEL_NAME, status, duration, message)
+    write_to_postgres(timestamp, model_name, status, duration, message)
 
 def write_to_postgres(timestamp, model, status, duration, message):
     try:
@@ -71,4 +70,6 @@ def write_to_postgres(timestamp, model, status, duration, message):
             log_file.write(f"FEHLER beim Schreiben in PostgreSQL: {e}\n")
 
 if __name__ == "__main__":
-    run_dbt()
+    run_dbt("tag:gold_facts")
+    run_dbt("tag:gold_adress")
+    run_dbt("tag:gold_artikel")

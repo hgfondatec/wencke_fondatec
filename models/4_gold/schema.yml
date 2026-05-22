@@ -1,12 +1,167 @@
 version: 2
 
-gold:
+models:
   - name: gold_facts
-    description: "Faktenmodell für Rechnungen"
+    description: >
+      Gold-Faktentabelle für Rechnungs- und Gutschriftpositionen.
+      Enthält mengen-, umsatz- und rohertragsbezogene Kennzahlen
+      auf Belegpositionsbasis inklusive Umsatzrelevanz und berechneter
+      Umsatzlogik abhängig von Steuerart und Beleggruppe.
+
+    config:
+      tags:
+        - gold_facts
+
     columns:
+      - name: rechnung_beleg_nr
+        description: "Belegnummer der Rechnung oder Gutschrift."
+
       - name: rechnnung_bel_datum
-        description: "Datum des Belegs"
-        tests:
-          - not_null
+        description: >
+          Datum des Rechnungs- bzw. Gutschriftbelegs.
+          Der Datentyp muss DATE sein.
+
         meta:
-          data_type: date
+         data_type: date
+
+      - name: rechnung_adress_nr
+        description: "Adressnummer des Kunden oder Geschäftspartners."
+
+      - name: rechnung_artikel_nr
+        description: "Artikelnummer der Rechnungsposition."
+
+      - name: rechnung_beleggruppe
+        description: "Beleggruppe der Rechnung oder Gutschrift."
+
+      - name: rechnung_beleggruppe_name
+        description: "Bezeichnung der Beleggruppe."
+
+      - name: umsatzrelevant
+        description: >
+          Kennzeichnung, ob die Position umsatzrelevant ist.
+
+          Verwendete Werte:
+          - ja
+          - nein
+
+      - name: rechnung_gesamtmenge
+        description: "Gesamtmenge der Rechnungsposition."
+
+      - name: rechnung_gesamtumsatz
+        description: "Gesamtumsatz der Rechnungsposition."
+
+      - name: rechnung_gesamtrohertrag
+        description: "Gesamtrohertrag der Rechnungsposition."
+
+      - name: rechnung_ek_einzeln
+        description: "Einzelner Einkaufspreis der Rechnungsposition."
+
+      - name: rechnung_umsatz_calc
+        description: >
+          Berechneter Umsatzwert abhängig von Steuerart,
+          Beleggruppe, Rohertrag, Einkaufspreis und Mengenlogik.
+
+  - name: gold_adress
+    description: >
+      Gold-Dimension für Adressen. Führt Belegadressen, Adressstammdaten,
+      Heim-/Einrichtungsinformationen, Krankenkassen, Rechnungsempfänger,
+      Adressgruppen sowie Präsidenten-Hierarchien zu einer konsolidierten
+      Adresssicht zusammen.
+
+    config:
+      tags:
+        - gold_adress
+
+    columns:
+      - name: mapping_adressnummer
+        description: "Ursprüngliche Adressnummer aus den Belegdaten."
+
+      - name: final_adressnummer
+        description: >
+          Finale konsolidierte Adressnummer. Falls ein Heim hinterlegt ist,
+          wird die Heim-ID verwendet, ansonsten die ursprüngliche Belegadresse.
+
+      - name: final_adress_name
+        description: >
+          Finale konsolidierte Adressbezeichnung aus Adressnummer und Name
+          oder aus der Heim-Bezeichnung.
+
+      - name: adr_adresse
+        description: "Straße bzw. Adresse der finalen Adresse."
+
+      - name: adr_plz
+        description: "Postleitzahl der finalen Adresse."
+
+      - name: adr_stadt
+        description: "Stadt der finalen Adresse."
+
+      - name: adr_nummer
+        description: "Interne Adressnummer aus den Adressstammdaten."
+
+      - name: adr_vertreternummer
+        description: "Vertreternummer der finalen Adresse."
+
+      - name: adrgruppe_name
+        description: "Name der zugeordneten Adressgruppe."
+
+      - name: krankenkasse_id
+        description: "ID der zugeordneten Krankenkasse."
+
+      - name: krankenkasse_bezeichnung
+        description: "Bezeichnung der zugeordneten Krankenkasse."
+
+      - name: rechnungsempfaenger_id
+        description: "ID des zugeordneten Rechnungsempfängers."
+
+      - name: rechnungsempfaenger_bezeichnung
+        description: "Bezeichnung des zugeordneten Rechnungsempfängers."
+
+      - name: praesident_3
+        description: "Präsidenten-Hierarchie Ebene 3 der finalen Adresse."
+
+      - name: praesident_2
+        description: "Präsidenten-Hierarchie Ebene 2 der finalen Adresse."
+
+      - name: praesident_1
+        description: "Präsidenten-Hierarchie Ebene 1 der finalen Adresse."
+
+  - name: gold_artikel
+    description: >
+      Gold-Dimension für Artikel. Führt Artikelstammdaten mit Haupt- und
+      Nebenwarengruppen sowie Standardlieferanten zu einer konsolidierten
+      Artikelsicht zusammen.
+
+    config:
+      tags:
+        - gold_artikel
+
+    columns:
+      - name: art_artikelnummer
+        description: "Eindeutige Artikelnummer."
+
+      - name: art_artikelname
+        description: "Name oder Bezeichnung des Artikels."
+
+      - name: art_bezeichnung
+        description: "Zusammengesetzte Artikelbezeichnung aus Artikelnummer und Artikelname."
+
+      - name: art_hauptwarengruppe
+        description: "Name der zugeordneten Hauptwarengruppe."
+
+      - name: art_hauptwarenbezeichnung
+        description: "Zusammengesetzte Bezeichnung aus Nummer und Name der Hauptwarengruppe."
+
+      - name: art_nebenwarengruppe
+        description: "Name der zugeordneten Nebenwarengruppe."
+
+      - name: art_nebenwarengruppebezeichnung
+        description: "Zusammengesetzte Bezeichnung aus Nummer und Name der Nebenwarengruppe."
+
+      - name: art_herstellernummer
+        description: "Herstellernummer des Artikels."
+
+      - name: art_lieferant
+        description: "Name des zugeordneten Standardlieferanten."
+
+      - name: art_lieferantbezeichnung
+        description: "Zusammengesetzte Bezeichnung aus Lieferantennummer und Lieferantenname."

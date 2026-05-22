@@ -1,0 +1,192 @@
+version: 2
+
+models:
+  - name: silver_belege_positionen
+    description: >
+      Aufbereitete Belegpositionstabelle auf Silver-Ebene.
+      Verknüpft Rechnungs- und Gutschriftbelege mit Positionsdaten,
+      ergänzten Nebenkostenpositionen sowie Beleggruppeninformationen.
+      Enthält Datums-, Adress-, Steuer-, Artikel-, Mengen-, Umsatz-
+      und Rohertragsinformationen auf Belegpositionsebene.
+
+    config:
+      tags:
+        - silver
+
+    columns:
+      - name: bel_belegnummer
+        description: "Belegnummer der Rechnung oder Gutschrift."
+
+      - name: bel_belegdatum
+        description: "Datum des Belegs."
+
+      - name: bel_adressnummer
+        description: "Adressnummer des Kunden oder Geschäftspartners."
+
+      - name: bel_belegart
+        description: >
+          Art des Belegs.
+
+          Verwendete Werte:
+          - R = Rechnung
+          - G = Gutschrift
+
+      - name: rechnung_steuerart
+        description: "Steuerart der Rechnung oder Gutschrift."
+
+      - name: bg_beleggruppe
+        description: "Beleggruppe des Belegs."
+
+      - name: BG_Beleggruppe
+        description: "Bezeichnung der Beleggruppe aus dem Beleggruppen-Mapping."
+
+      - name: pos_artikelnummer
+        description: "Artikelnummer der Belegposition oder technischen Nebenkostenposition."
+
+      - name: pos_gesamtmenge
+        description: "Gesamtmenge der Belegposition."
+
+      - name: pos_gesamtumsatz
+        description: "Gesamtumsatz der Belegposition."
+
+      - name: pos_gesamtrohertrag
+        description: "Gesamtrohertrag der Belegposition."
+
+      - name: pos_ek_einzeln
+        description: "Einzelner Einkaufspreis der Belegposition."
+
+  - name: silver_hauptwarengruppe
+    description: >
+      Dimensionstabelle für Hauptwarengruppen auf Basis der aufbereiteten
+      Warengruppen. Enthält ausschließlich Warengruppen mit dem Typ
+      'Hauptwarengruppe'.
+
+    config:
+      tags:
+        - artikel
+        - silver
+
+    columns:
+      - name: wg_nummer
+        description: "Eindeutige Nummer der Hauptwarengruppe."
+
+      - name: wg_name
+        description: "Bezeichnung der Hauptwarengruppe."
+
+  - name: silver_heim
+    description: >
+      Aufbereitete Heim-/Einrichtungs-Tabelle auf Silver-Ebene.
+      Ermittelt eindeutige Heim-IDs aus den Adressdaten und ergänzt diese
+      um Bezeichnungen sowie die zugehörigen Präsidenten-Hierarchien
+      über mehrere Ebenen.
+
+    config:
+      tags:
+        - silver
+
+    columns:
+      - name: heim_id
+        description: "Eindeutige ID des Heims bzw. der Einrichtung."
+
+      - name: heim_name
+        description: "Name des Heims bzw. der Einrichtung."
+
+      - name: heim_bezeichnung
+        description: >
+          Zusammengesetzte Bezeichnung aus Heim-ID und Heimname.
+          Falls kein Name vorhanden ist, wird 'keine Bezeichnung' verwendet.
+
+      - name: heim_praesident_3
+        description: >
+          Präsidentenbezeichnung der direkten Hierarchieebene
+          des Heims (Ebene 3).
+
+      - name: heim_praesident_2
+        description: >
+          Präsidentenbezeichnung der übergeordneten Hierarchieebene
+          (Ebene 2).
+
+      - name: heim_praesident_1
+        description: >
+          Präsidentenbezeichnung der höchsten Hierarchieebene
+          (Ebene 1).
+
+  - name: silver_krankenkasse
+    description: >
+      Aufbereitete Krankenkassen-Tabelle auf Silver-/Prep-Ebene.
+      Ermittelt eindeutige Krankenkassen-IDs aus den Adressdaten
+      und ergänzt diese um Name sowie eine zusammengesetzte Bezeichnung.
+
+    config:
+      tags:
+        - silver
+
+    columns:
+      - name: krankenkasse_id
+        description: "Eindeutige ID der Krankenkasse."
+
+      - name: krankenkasse_name
+        description: "Name der Krankenkasse."
+
+      - name: krankenkasse_bezeichnung
+        description: >
+          Zusammengesetzte Bezeichnung aus Krankenkassen-ID und Name.
+          Falls kein Name vorhanden ist, wird 'keine Bezeichnung' verwendet.
+
+  - name: silver_lieferant
+    description: >
+      Aufbereitete Lieferanten-Tabelle auf Silver-Ebene.
+      Ermittelt eindeutige Standardlieferanten aus den Artikeldaten
+      und ergänzt diese um die zugehörigen Lieferantennamen
+      aus den Adressstammdaten.
+
+    config:
+      tags:
+        - silver
+
+    columns:
+      - name: art_standardlieferantnummer
+        description: "Eindeutige Nummer des Standardlieferanten."
+
+      - name: adr_standardlieferantname
+        description: "Name des zugehörigen Standardlieferanten."
+
+  - name: silver_nebenwarengruppe
+    description: >
+      Dimensionstabelle für Nebenwarengruppen auf Basis der aufbereiteten
+      Warengruppen. Enthält ausschließlich Warengruppen mit dem Typ
+      'Nebenwarengruppe'.
+
+    config:
+      tags:
+        - artikel
+        - silver
+
+    columns:
+      - name: wg_nummer
+        description: "Eindeutige Nummer der Nebenwarengruppe."
+
+      - name: wg_name
+        description: "Bezeichnung der Nebenwarengruppe."
+
+  - name: silver_re_empfaenger
+    description: >
+      Aufbereitete Rechnungsempfänger-Tabelle auf Silver-Ebene.
+      Ermittelt eindeutige Rechnungsempfänger aus den Adressdaten
+      und ergänzt diese um Name sowie eine zusammengesetzte Bezeichnung.
+
+    config:
+      tags:
+        - silver
+
+    columns:
+      - name: rechnungsempfaenger_id
+        description: "Eindeutige ID des Rechnungsempfängers."
+
+      - name: rechnungsempfaenger_name
+        description: "Name des Rechnungsempfängers."
+
+      - name: rechnungsempfaenger_bezeichnung
+        description: >
+          Zusammengesetzte Bezeichnung aus Rechnungsempfänger-ID und Name.
+          Falls kein Name vorhanden ist, wird 'keine Bezeichnung' verwendet.
