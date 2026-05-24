@@ -49,7 +49,9 @@ select
 
     coalesce(cast(lieferant.art_standardlieferantnummer as varchar(30)), 'XX') || '-' || 
     coalesce(lieferant.adr_standardlieferantname, 'keine Bezeichnung') 
-        as art_lieferantbezeichnung
+        as art_lieferantbezeichnung,
+
+    artikel.art_divers_flag
 
 
 from artikel

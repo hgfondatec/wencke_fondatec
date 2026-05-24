@@ -19,17 +19,24 @@ positionen as (
     select
         pos_belegnummer,
         pos_artikelnummer,
-        pos_ek_einzeln as pos_ek_einzeln,
-        pos_gesamtrohertrag as pos_gesamtrohertrag,
-        pos_gesamtumsatz as pos_gesamtumsatz,
-        pos_gesamtmenge as pos_gesamtmenge
+        pos_positionsnummer,
+        NULLIF(REPLACE(pos_ek_einzeln, ',', '.'), '')::float AS pos_ek_einzeln,
+        NULLIF(REPLACE(pos_gesamtrohertrag, ',', '.'), '')::float AS pos_gesamtrohertrag,
+        NULLIF(REPLACE(pos_gesamtumsatz, ',', '.'), '')::float AS pos_gesamtumsatz,
+        NULLIF(REPLACE(pos_gesamtmenge, ',', '.'), '')::float AS pos_gesamtmenge
     from {{ ref('bronze_positionen') }}
-    where pos_artikelnummer <> '' and pos_artikelnummer is not null and pos_belegart in ('R','G')
+    where pos_artikelnummer <> '' and pos_artikelnummer is not null and pos_belegart in ('R','G') and pos_beleg_status='N'
 
     UNION ALL 
 
     SELECT 
-        * 
+        pos_belegnummer,
+        pos_artikelnummer,
+        pos_positionsnummer::text,
+        pos_ek_einzeln,
+        pos_gesamtrohertrag,
+        pos_gesamtumsatz,
+        pos_gesamtmenge
     from {{ ref('prep_nebenkosten') }} 
 
 ),
@@ -57,6 +64,7 @@ select
     beleggruppe."BG_Beleggruppe",
 
     positionen.pos_artikelnummer,
+    positionen.pos_positionsnummer,
     positionen.pos_gesamtmenge,
     positionen.pos_gesamtumsatz,
     positionen.pos_gesamtrohertrag,

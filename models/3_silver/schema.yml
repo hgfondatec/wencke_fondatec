@@ -12,6 +12,7 @@ models:
     config:
       tags:
         - silver
+        - gold_facts
 
     columns:
       - name: bel_belegnummer

@@ -111,6 +111,7 @@ models:
     config:
       tags:
         - bronze
+        - gold_facts
 
     columns:
       - name: bel_belegstatus_a_n
@@ -191,6 +192,7 @@ models:
     config:
       tags:
         - bronze
+        - gold_facts
 
     columns:
       - name: bg_beleggruppe
@@ -240,6 +242,7 @@ models:
     config:
       tags:
         - bronze
+        - gold_facts
 
     columns:
       - name: pos_belegart

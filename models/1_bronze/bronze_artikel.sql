@@ -14,7 +14,8 @@ with source_data as (
         art_41_5 as art_nebenkategorie_id,
         art_138_8 as art_standardlieferantnummer,
         art_1072_25 as art_herstellernummer,
-        art_1940_1 as art_abc_kategorie
+        art_1940_1 as art_abc_kategorie,
+        art_2582_1 as art_divers_flag
     from {{ source('raw', 'm36art') }}
 
 )

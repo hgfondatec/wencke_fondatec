@@ -10,8 +10,13 @@ with
 silver_belege_positionen as (
     select *
     from {{ ref('silver_belege_positionen') }}
-)
 
+    UNION ALL
+
+    select *
+    from {{ ref('silver_pauschale') }}
+
+)
 
 select 
 
@@ -19,6 +24,7 @@ select
     bel_pos.bel_belegdatum as rechnnung_bel_datum,
     bel_pos.bel_adressnummer as rechnung_adress_nr,
     bel_pos.pos_artikelnummer as rechnung_artikel_nr,
+    bel_pos.pos_positionsnummer as rechnung_positionsnummer,
     bel_pos.bg_beleggruppe as rechnung_beleggruppe,
     bel_pos."BG_Beleggruppe" as rechnung_beleggruppe_name,
 
@@ -43,5 +49,3 @@ select
     end as rechnung_umsatz_calc
 
 from silver_belege_positionen bel_pos
-
-order by bel_pos.bel_belegnummer

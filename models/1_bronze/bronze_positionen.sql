@@ -7,10 +7,11 @@
 
 with source_data as (
 
-    select distinct
+    select
         pos_2_1            as pos_belegart,
-        --pos_1_1            as pos_beleg_status,
+        pos_1_1            as pos_beleg_status,
         pos_3_8            as pos_belegnummer,
+        pos_11_6           as pos_positionsnummer,
         pos_18_25          as pos_artikelnummer,
         pos_45_60          as pos_artikeltext,
         pos_164_8          as pos_gesamtmenge,

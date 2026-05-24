@@ -10,6 +10,7 @@ models:
     config:
       tags:
         - prep
+        - gold_facts
 
     columns:
       - name: bg_beleggruppe
@@ -34,10 +35,14 @@ models:
     config:
       tags:
         - prep
+        - gold_facts
 
     columns:
       - name: pos_belegnummer
         description: "Belegnummer der erzeugten Nebenkostenposition."
+
+        meta:
+         data_type: varchar
 
 
       - name: pos_artikelnummer
@@ -97,6 +102,7 @@ models:
     config:
       tags:
         - prep
+        - gold_facts
 
     columns:
       - name: rechnung_beleg_nr
