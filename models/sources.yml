@@ -2,14 +2,67 @@ version: 2
 
 sources:
   - name: raw
+    description: >
+      Raw-Datenquelle aus dem operativen Vorsystem.
+
     database: wenke
-    schema: public   
+    schema: public
+
     tables:
+
       - name: m36bel
+        description: "Raw-Belegdaten."
+
+        tags:
+          - raw
+          - gold_facts
+          - gold_adress
+
       - name: m36pos
+        description: "Raw-Positionsdaten."
+
+        tags:
+          - raw
+          - gold_facts
+
       - name: m36adrgrp
+        description: "Raw-Adressgruppen."
+
+        tags:
+          - raw
+          - gold_adress
+
       - name: m36art
+        description: "Raw-Artikelstammdaten."
+
+        tags:
+          - raw
+          - gold_artikel
+
       - name: m36adr
+        description: "Raw-Adressdaten."
+
+        tags:
+          - raw
+          - gold_adress
+
       - name: m00id0202
+        description: "Raw-Mandantenstammdaten."
+
+        tags:
+          - raw
+          
+
       - name: m36nk
+        description: "Raw-Warengruppen."
+
+        tags:
+          - raw
+          - gold_artikel
+
       - name: m36bg
+        description: "Raw-Beleggruppen."
+
+        tags:
+          - raw
+          - gold_facts

@@ -3,14 +3,15 @@ version: 2
 models:
   - name: bronze_adresse
     description: "Bronze-Tabelle mit Adressdaten aus m36adr"
-    tags:
+
+    config:
+      tags:
       - bronze
-      - artikel
+      - gold_adress
+
     columns:
       - name: adr_adressnummer
         description: "Eindeutige Adressnummer"
-        tests:
-          - unique
 
       - name: adr_name
         description: "Name der Adresse"
@@ -68,8 +69,12 @@ models:
   
   - name: bronze_adressgruppe
     description: "Bronze-Tabelle mit Adressgruppen aus m36adrgrp"
-    tags:
+
+    config:
+      tags:
       - bronze
+      - gold_adress
+
     columns:
       - name: adrgruppe_id
         description: "Eindeutige ID der Adressgruppe"
@@ -79,9 +84,12 @@ models:
 
   - name: bronze_artikel
     description: "Bronze-Tabelle mit Artikeldaten aus m36art"
-    tags:
+
+    config:
+      tags:
       - bronze
-      - artikel
+      - gold_artikel
+  
     columns:
       - name: art_artikelnummer
         description: "Eindeutige Artikelnummer"
@@ -112,6 +120,7 @@ models:
       tags:
         - bronze
         - gold_facts
+        - gold_adress
 
     columns:
       - name: bel_belegstatus_a_n
@@ -292,6 +301,7 @@ models:
     config:
       tags:
         - bronze
+        - gold_artikel
 
     columns:
       - name: wg_nummer

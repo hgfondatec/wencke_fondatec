@@ -77,6 +77,7 @@ models:
     config:
       tags:
         - prep
+        - gold_adress
 
     columns:
       - name: praesident_id
@@ -142,6 +143,7 @@ models:
     config:
       tags:
         - prep
+        - gold_artikel
 
     columns:
       - name: wg_nummer

@@ -1,9 +1,4 @@
-{{ 
-    config(
-        materialized='table',
-        tags=['artikel']
-    ) 
-}}
+{{ config(materialized='table') }}
 
 with source_data as (
 

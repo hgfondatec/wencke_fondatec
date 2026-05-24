@@ -16,4 +16,7 @@ seeds:
       tags: ['belege_position']
 
   - name: raw_beleg_gruppe
+    config:
+      tags:
+        - gold_facts
     

@@ -64,7 +64,7 @@ models:
 
     config:
       tags:
-        - artikel
+        - gold_artikel
         - silver
 
     columns:
@@ -84,6 +84,7 @@ models:
     config:
       tags:
         - silver
+        - gold_adress
 
     columns:
       - name: heim_id
@@ -121,6 +122,7 @@ models:
     config:
       tags:
         - silver
+        - gold_adress
 
     columns:
       - name: krankenkasse_id
@@ -144,6 +146,7 @@ models:
     config:
       tags:
         - silver
+        - gold_artikel
 
     columns:
       - name: art_standardlieferantnummer
@@ -160,7 +163,7 @@ models:
 
     config:
       tags:
-        - artikel
+        - gold_artikel
         - silver
 
     columns:
@@ -179,6 +182,7 @@ models:
     config:
       tags:
         - silver
+        - gold_adress
 
     columns:
       - name: rechnungsempfaenger_id
@@ -191,3 +195,77 @@ models:
         description: >
           Zusammengesetzte Bezeichnung aus Rechnungsempfänger-ID und Name.
           Falls kein Name vorhanden ist, wird 'keine Bezeichnung' verwendet.
+
+  - name: silver_pauschale
+    description: >
+      Aufbereitete Tabelle für Pauschalen-Positionen auf Prep-Ebene.
+      Ermittelt Belege mit interner Belegnummer und verknüpft diese mit
+      Positionen, deren Artikeltext auf Pauschalen hinweist. Die Positionswerte
+      werden von Textformaten mit Komma-Dezimaltrennzeichen in numerische
+      FLOAT-Werte umgewandelt und mit Beleggruppeninformationen angereichert.
+
+    config:
+      tags:
+        - silver
+        - gold_facts
+
+    columns:
+      - name: rechnung_beleg_nr
+        description: "Belegnummer der Rechnung oder Gutschrift."
+
+      - name: rechnung_bel_datum
+        description: "Datum des Rechnungs- bzw. Gutschriftbelegs."
+
+        meta:
+          data_type: date
+
+      - name: rechnung_adress_nr
+        description: "Adressnummer des Kunden oder Geschäftspartners."
+
+      - name: rechnung_belegart
+        description: >
+          Art des Belegs.
+
+          Verwendete Werte:
+          - R = Rechnung
+          - G = Gutschrift
+
+      - name: rechnung_steuerart
+        description: "Steuerart der Rechnung oder Gutschrift."
+
+      - name: bg_beleggruppe
+        description: "Beleggruppe des Belegs."
+
+      - name: BG_Beleggruppe
+        description: "Bezeichnung der Beleggruppe aus dem Beleggruppen-Mapping."
+
+      - name: pos_artikelnummer
+        description: "Artikelnummer der Pauschalenposition."
+
+      - name: pos_positionsnummer
+        description: "Positionsnummer der Pauschalenposition."
+
+      - name: pos_gesamtmenge
+        description: "Gesamtmenge der Pauschalenposition als numerischer FLOAT-Wert."
+
+        meta:
+          data_type: float
+
+      - name: pos_gesamtumsatz
+        description: "Gesamtumsatz der Pauschalenposition als numerischer FLOAT-Wert."
+
+        meta:
+          data_type: float
+
+      - name: pos_gesamtrohertrag
+        description: "Gesamtrohertrag der Pauschalenposition als numerischer FLOAT-Wert."
+
+        meta:
+          data_type: float
+
+      - name: pos_ek_einzeln
+        description: "Einzelner Einkaufspreis der Pauschalenposition als numerischer FLOAT-Wert."
+
+        meta:
+          data_type: float
+
