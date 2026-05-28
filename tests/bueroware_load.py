@@ -22,6 +22,7 @@ SEARCH_TEXT = b"ERROR"
 FILE_MAPPING = {
     "11": "M36ART - Artikeltabelle",
     "14": "M36ADR - Adresstabelle",
+    "16": "M36BEL - Belege",
     "18": "M36ID0203 - Organisationseinheiten",
     "19": "M36ID0222 - OE-Einheiten Stammdaten",
     "20": "M36ID0234 - Reklamationsgründe",
@@ -58,7 +59,11 @@ FILE_MAPPING = {
     "58": "M36ID0335 - Artikelkategorie TOPSERV PIM",
     "59": "M36ID0337 - TOPSERV Warengruppe",
     "61": "M365FTA_VA - FVE",
-    "62": "M36ID0603 - Besuchsgründe"
+    "62": "M36ID0603 - Besuchsgründe",
+    "63": "M36IDBSE0043 - Besuchberichte",
+    "65": "M36VTR - Vertreter",
+    "66": "M36SORTIMENT - Kundensortimente",
+    "67": "M36STUEPREIS - Stückpreis"
 }
 
 # ---------------------------------------------------

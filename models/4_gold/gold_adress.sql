@@ -3,7 +3,8 @@
 with belege as (
 
     select
-        bel_adressnummer
+        bel_adressnummer,
+        bel_projektnummer
     from {{ ref('bronze_belege') }}
 
 ),
@@ -67,17 +68,17 @@ adressgruppe as (
 final as (
 
     select distinct
-        b.bel_adressnummer as mapping_adressnummer,
+        COALESCE(NULLIF(b.bel_projektnummer, ''), b.bel_adressnummer) as mapping_adressnummer,
 
         case 
             when a.adr_heim is null or a.adr_heim = ''
-                then cast(b.bel_adressnummer as varchar(10))
+                then cast(COALESCE(NULLIF(b.bel_projektnummer, ''), b.bel_adressnummer) as varchar(10))
             else a.adr_heim
         end as final_adressnummer,
 
         case 
             when a.adr_heim is null or a.adr_heim = ''
-                then cast(b.bel_adressnummer as varchar(10))
+                then cast(COALESCE(NULLIF(b.bel_projektnummer, ''), b.bel_adressnummer) as varchar(10))
                      || '-' || coalesce(a.adr_name, 'keine Bezeichnung')
             else h.heim_bezeichnung
         end as final_adress_name,
@@ -103,7 +104,7 @@ final as (
     from belege b
 
     left join adressen a
-        on cast(b.bel_adressnummer as varchar(10)) = a.adr_adressnummer
+        on cast(COALESCE(NULLIF(b.bel_projektnummer, ''), b.bel_adressnummer) as varchar(10)) = a.adr_adressnummer
 
     left join heim h
         on h.heim_id = a.adr_heim
@@ -112,7 +113,7 @@ final as (
     on a_heim.adr_adressnummer = 
         case 
             when a.adr_heim is null or a.adr_heim = ''
-                then cast(b.bel_adressnummer as varchar(10))
+                then cast(COALESCE(NULLIF(b.bel_projektnummer, ''), b.bel_adressnummer) as varchar(10))
             else a.adr_heim
         end
 

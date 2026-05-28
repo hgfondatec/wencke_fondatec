@@ -21,12 +21,15 @@ SELECT
     t1.rechnung_adress_nr,
     t1.rechnung_belegart,
     t1.rechnung_steuerart,
+    t1.rechnung_bonusbelege_flag,
     beleggruppe.bg_beleggruppe,
     beleggruppe."BG_Beleggruppe",
     t2.pos_artikelnummer,
     t2.pos_positionsnummer,
+    NULLIF(REPLACE(t2.pos_rohertrag_vor_bonus, ',', '.'), '')::float AS pos_rohertrag_vor_bonus,
     NULLIF(REPLACE(t2.pos_gesamtmenge, ',', '.'), '')::float AS pos_gesamtmenge,
     NULLIF(REPLACE(t2.pos_gesamtumsatz, ',', '.'), '')::float AS pos_gesamtumsatz,
+    NULLIF(REPLACE(t2.pos_gesamtumsatz_vor_bonus, ',', '.'), '')::float AS pos_gesamtumsatz_vor_bonus,
     NULLIF(REPLACE(t2.pos_gesamtrohertrag, ',', '.'), '')::float AS pos_gesamtrohertrag,
     NULLIF(REPLACE(t2.pos_ek_einzeln, ',', '.'), '')::float AS pos_ek_einzeln
 

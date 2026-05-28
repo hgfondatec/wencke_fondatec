@@ -21,7 +21,9 @@ positionen as (
         pos_artikelnummer,
         pos_positionsnummer,
         NULLIF(REPLACE(pos_ek_einzeln, ',', '.'), '')::float AS pos_ek_einzeln,
+        NULLIF(REPLACE(pos_rohertrag_vor_bonus, ',', '.'), '')::float AS pos_rohertrag_vor_bonus,
         NULLIF(REPLACE(pos_gesamtrohertrag, ',', '.'), '')::float AS pos_gesamtrohertrag,
+        NULLIF(REPLACE(pos_gesamtumsatz_vor_bonus, ',', '.'), '')::float AS pos_gesamtumsatz_vor_bonus,
         NULLIF(REPLACE(pos_gesamtumsatz, ',', '.'), '')::float AS pos_gesamtumsatz,
         NULLIF(REPLACE(pos_gesamtmenge, ',', '.'), '')::float AS pos_gesamtmenge
     from {{ ref('bronze_positionen') }}
@@ -34,7 +36,9 @@ positionen as (
         pos_artikelnummer,
         pos_positionsnummer::text,
         pos_ek_einzeln,
+        pos_rohertrag_vor_bonus,
         pos_gesamtrohertrag,
+        pos_gesamtumsatz_vor_bonus,
         pos_gesamtumsatz,
         pos_gesamtmenge
     from {{ ref('prep_nebenkosten') }} 
@@ -59,13 +63,16 @@ select
     belege.rechnung_adress_nr as bel_adressnummer,
     belege.rechnung_belegart bel_belegart,
     belege.rechnung_steuerart,
+    belege.rechnung_bonusbelege_flag,
 
     beleggruppe.bg_beleggruppe,
     beleggruppe."BG_Beleggruppe",
 
     positionen.pos_artikelnummer,
     positionen.pos_positionsnummer,
+    positionen.pos_rohertrag_vor_bonus,
     positionen.pos_gesamtmenge,
+    positionen.pos_gesamtumsatz_vor_bonus,
     positionen.pos_gesamtumsatz,
     positionen.pos_gesamtrohertrag,
     positionen.pos_ek_einzeln

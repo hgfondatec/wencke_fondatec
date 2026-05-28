@@ -30,7 +30,9 @@ final as (
 
         null::float as pos_ek_einzeln,
         x.betrag as pos_gesamtrohertrag,
+        x.betrag as pos_rohertrag_vor_bonus,
         x.betrag as pos_gesamtumsatz,
+        x.betrag as pos_gesamtumsatz_vor_bonus,
         1::float as pos_gesamtmenge
 
     from nebkosten n

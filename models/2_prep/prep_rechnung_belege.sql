@@ -13,8 +13,9 @@ select
     belege.bel_belegdatum as rechnung_bel_datum,
     belege.bel_beleggruppe as rechnung_beleggruppe,
     belege.bel_belegart as rechnung_belegart,
-    belege.bel_adressnummer as rechnung_adress_nr,
-    belege.bel_steuerart as rechnung_steuerart
+    COALESCE(NULLIF(belege.bel_projektnummer, ''), belege.bel_adressnummer) as rechnung_adress_nr,
+    belege.bel_steuerart as rechnung_steuerart,
+    belege.bel_bonusbeleg as rechnung_bonusbelege_flag
 
     from belege
     where belege.bel_belegart IN('R','G') and belege.bel_belegstatus_a_n ='N'
