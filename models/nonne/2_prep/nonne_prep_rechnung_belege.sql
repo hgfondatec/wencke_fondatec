@@ -3,7 +3,7 @@
 with belege as (
     select 
         *
-    from {{ ref('bronze_belege') }}
+    from {{ ref('nonne_bronze_belege') }}
 )
 
 select 
@@ -13,9 +13,12 @@ select
     belege.bel_belegdatum as rechnung_bel_datum,
     belege.bel_beleggruppe as rechnung_beleggruppe,
     belege.bel_belegart as rechnung_belegart,
-    COALESCE(NULLIF(belege.bel_projektnummer, ''), belege.bel_adressnummer) as rechnung_adress_nr,
+    belege.bel_projektnummer rechnung_projektnummer,
     belege.bel_steuerart as rechnung_steuerart,
-    belege.bel_bonusbeleg as rechnung_bonusbelege_flag
+    belege.bel_bonusbeleg as rechnung_bonusbelege_flag,
+    belege.bel_adressnummer as rechnung_adressnummer,
+    belege.bel_heim as rechnung_heim
+
 
     from belege
     where belege.bel_belegart IN('R','G') and belege.bel_belegstatus_a_n ='N'

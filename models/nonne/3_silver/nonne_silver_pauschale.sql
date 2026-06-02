@@ -1,7 +1,7 @@
 WITH t1 AS (
 
     SELECT *
-    FROM {{ ref('prep_rechnung_belege') }}
+    FROM {{ ref('nonne_prep_rechnung_belege') }}
     WHERE rechnung_interne_beleg_nr <> ''
 
 ),
@@ -9,7 +9,7 @@ WITH t1 AS (
 t2 AS (
 
     SELECT *
-    FROM {{ ref('bronze_positionen') }}
+    FROM {{ ref('nonne_bronze_positionen') }}
     WHERE pos_artikeltext ILIKE '%pauschale%'
       AND pos_artikelnummer <> '' AND pos_beleg_status ='N'
 
@@ -18,7 +18,9 @@ t2 AS (
 SELECT 
     t1.rechnung_beleg_nr,
     t1.rechnung_bel_datum,
-    t1.rechnung_adress_nr,
+    t1.rechnung_adressnummer,
+    t1.rechnung_projektnummer,
+    t1.rechnung_heim,
     t1.rechnung_belegart,
     t1.rechnung_steuerart,
     t1.rechnung_bonusbelege_flag,
@@ -38,7 +40,7 @@ FROM  t1
 LEFT JOIN  t2 
     ON t1.rechnung_interne_beleg_nr = t2.pos_belegnummer
 
-LEFT JOIN {{ ref('prep_beleggruppe') }} beleggruppe 
+LEFT JOIN {{ ref('nonne_prep_beleggruppe') }} beleggruppe 
     ON LPAD(beleggruppe.bg_beleggruppe_id::varchar, 2, '0') = t1.rechnung_beleggruppe
    AND beleggruppe.bg_belegart = t1.rechnung_belegart
 

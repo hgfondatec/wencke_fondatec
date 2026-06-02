@@ -18,6 +18,6 @@ select
         rechnung_positionsnummer
     ) as fact_key,
     *
-from {{ ref('gold_facts') }}
+from {{ ref('nonne_gold_facts') }}
 
 {% endsnapshot %}

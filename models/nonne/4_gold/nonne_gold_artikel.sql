@@ -7,22 +7,22 @@
 
 with artikel as (
     select *
-    from {{ ref('bronze_artikel') }}
+    from {{ ref('nonne_bronze_artikel') }}
 ),
 
 hauptwarengruppe as (
     select *
-    from {{ ref('silver_hauptwarengruppe') }}
+    from {{ ref('nonne_silver_hauptwarengruppe') }}
 ),
 
 nebenwarengruppe as (
     select *
-    from {{ ref('silver_nebenwarengruppe') }}
+    from {{ ref('nonne_silver_nebenwarengruppe') }}
 ),
 
 lieferant as (
     select *
-    from {{ ref('silver_lieferant') }}
+    from {{ ref('nonne_silver_lieferant') }}
 )
 
 select 
@@ -51,7 +51,16 @@ select
     coalesce(lieferant.adr_standardlieferantname, 'keine Bezeichnung') 
         as art_lieferantbezeichnung,
 
-    artikel.art_divers_flag
+    CASE when artikel.art_divers_flag = 'J' then 'Nur diverse Produkten'
+    ELSE 'Ohne diversen Produkten'
+    END as art_divers_flag,
+
+    artikel.art_ek_netto,
+    artikel.art_lagereinheit,
+    art_bestand_loxstedt,
+    art_bestand_bremen,
+    art_bestand_braunschweig,
+    art_bestand_oldenburg
 
 
 from artikel

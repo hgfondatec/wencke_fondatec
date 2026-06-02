@@ -9,7 +9,7 @@ with lieferant_ids as (
 
     select distinct
         art_standardlieferantnummer
-    from {{ ref('bronze_artikel') }}
+    from {{ ref('nonne_bronze_artikel') }}
     where art_standardlieferantnummer is not null
 
 ),
@@ -19,7 +19,7 @@ adressen as (
     select distinct
         adr_adressnummer,
         adr_name
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
 
 ),
 

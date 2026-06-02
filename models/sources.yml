@@ -66,3 +66,6 @@ sources:
         tags:
           - raw
           - gold_facts
+
+      - name: m42art
+        description: "Raw-Artikelstammdaten VMS."

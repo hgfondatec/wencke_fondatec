@@ -4,7 +4,7 @@ with rechnungsempfaenger_ids as (
 
     select distinct
         adr_rechnungsempfaenger
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
     where adr_rechnungsempfaenger is not null
 
 ),
@@ -14,7 +14,7 @@ adressen as (
     select distinct
         adr_adressnummer,
         adr_name
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
 
 ),
 

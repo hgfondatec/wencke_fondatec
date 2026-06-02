@@ -15,7 +15,7 @@ with nebkosten as (
         sum(cast(replace(nullif(bel_nk_fuell_abnutzgebuehr, ''), ',', '.') as float)) as fuell_abnutzgebuehr,
         sum(cast(replace(nullif(bel_nk_gefahrgut, ''), ',', '.') as float)) as gefahrgut
 
-    from {{ ref('bronze_belege') }}
+    from {{ ref('nonne_bronze_belege') }}
     where bel_belegstatus_a_n = 'N'
     group by bel_belegnummer
 

@@ -2,7 +2,7 @@
 
 with beleggruppe as (
     select *
-    from {{ ref('bronze_beleggruppe') }}
+    from {{ ref('nonne_bronze_beleggruppe') }}
 ),
 
 beleggruppe_mapping as (

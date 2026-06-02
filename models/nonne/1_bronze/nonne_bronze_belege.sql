@@ -29,6 +29,7 @@ with source_data as (
         bel_574_8 as bel_interne_belegnummer,
         bel_592_8 as bel_lieferschein_nr,
         bel_747_8 as bel_blfanummer,
+        bel_776_8 as bel_heim,
         bel_2040_1 as bel_belegtyp,
         bel_2808_1 as bel_bonusbeleg,
         beleggruppe as bel_beleggruppe

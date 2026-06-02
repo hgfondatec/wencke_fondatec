@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: silver_belege_positionen
+  - name: nonne_silver_belege_positionen
     description: >
       Aufbereitete Belegpositionstabelle auf Silver-Ebene.
       Verknüpft Rechnungs- und Gutschriftbelege mit Positionsdaten,
@@ -56,7 +56,7 @@ models:
       - name: pos_ek_einzeln
         description: "Einzelner Einkaufspreis der Belegposition."
 
-  - name: silver_hauptwarengruppe
+  - name: nonne_silver_hauptwarengruppe
     description: >
       Dimensionstabelle für Hauptwarengruppen auf Basis der aufbereiteten
       Warengruppen. Enthält ausschließlich Warengruppen mit dem Typ
@@ -74,7 +74,7 @@ models:
       - name: wg_name
         description: "Bezeichnung der Hauptwarengruppe."
 
-  - name: silver_heim
+  - name: nonne_silver_heim
     description: >
       Aufbereitete Heim-/Einrichtungs-Tabelle auf Silver-Ebene.
       Ermittelt eindeutige Heim-IDs aus den Adressdaten und ergänzt diese
@@ -113,7 +113,7 @@ models:
           Präsidentenbezeichnung der höchsten Hierarchieebene
           (Ebene 1).
 
-  - name: silver_krankenkasse
+  - name: nonne_silver_krankenkasse
     description: >
       Aufbereitete Krankenkassen-Tabelle auf Silver-/Prep-Ebene.
       Ermittelt eindeutige Krankenkassen-IDs aus den Adressdaten
@@ -136,7 +136,7 @@ models:
           Zusammengesetzte Bezeichnung aus Krankenkassen-ID und Name.
           Falls kein Name vorhanden ist, wird 'keine Bezeichnung' verwendet.
 
-  - name: silver_lieferant
+  - name: nonne_silver_lieferant
     description: >
       Aufbereitete Lieferanten-Tabelle auf Silver-Ebene.
       Ermittelt eindeutige Standardlieferanten aus den Artikeldaten
@@ -155,7 +155,7 @@ models:
       - name: adr_standardlieferantname
         description: "Name des zugehörigen Standardlieferanten."
 
-  - name: silver_nebenwarengruppe
+  - name: nonne_silver_nebenwarengruppe
     description: >
       Dimensionstabelle für Nebenwarengruppen auf Basis der aufbereiteten
       Warengruppen. Enthält ausschließlich Warengruppen mit dem Typ
@@ -173,7 +173,7 @@ models:
       - name: wg_name
         description: "Bezeichnung der Nebenwarengruppe."
 
-  - name: silver_re_empfaenger
+  - name: nonne_silver_re_empfaenger
     description: >
       Aufbereitete Rechnungsempfänger-Tabelle auf Silver-Ebene.
       Ermittelt eindeutige Rechnungsempfänger aus den Adressdaten
@@ -196,7 +196,7 @@ models:
           Zusammengesetzte Bezeichnung aus Rechnungsempfänger-ID und Name.
           Falls kein Name vorhanden ist, wird 'keine Bezeichnung' verwendet.
 
-  - name: silver_pauschale
+  - name: nonne_silver_pauschale
     description: >
       Aufbereitete Tabelle für Pauschalen-Positionen auf Prep-Ebene.
       Ermittelt Belege mit interner Belegnummer und verknüpft diese mit

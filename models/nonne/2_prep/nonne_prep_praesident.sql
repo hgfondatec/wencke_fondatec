@@ -4,7 +4,7 @@ with praesident_id as (
 
     select distinct
         adr_praesident
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
     where adr_praesident is not null and adr_praesident <> ''
 
 ),
@@ -15,7 +15,7 @@ adressen as (
         adr_adressnummer,
         adr_name,
         adr_praesident
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
 
 ),
 

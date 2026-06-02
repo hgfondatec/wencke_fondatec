@@ -4,7 +4,7 @@ with heim_ids as (
 
     select distinct
         adr_heim
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
     where adr_heim <> ''
 
 ),
@@ -15,7 +15,7 @@ adressen as (
         adr_adressnummer,
         adr_name,
         adr_praesident
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
 
 ),
 
@@ -24,7 +24,7 @@ praesident as (
         praesident_id,
         praesident_bezeichnung,
         praesident_next_level
-    from {{ ref('prep_praesident') }}
+    from {{ ref('nonne_prep_praesident') }}
 
 ),
 

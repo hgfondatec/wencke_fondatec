@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: prep_beleggruppe
+  - name: nonne_prep_beleggruppe
     description: >
       Aufbereitete Beleggruppen-Tabelle auf Prep-Ebene.
       Verknüpft die Bronze-Beleggruppen mit den Mapping-Informationen
@@ -25,7 +25,7 @@ models:
       - name: A_Belegart
         description: "Gemappte Belegart aus der Mappingtabelle."
 
-  - name: prep_nebenkosten
+  - name: nonne_prep_nebenkosten
     description: >
       Aufbereitete Tabelle zur Darstellung von Nebenkosten als eigene
       Belegpositionen. Die Nebenkosten werden aus den Belegdaten aggregiert
@@ -68,7 +68,7 @@ models:
       - name: pos_gesamtmenge
         description: "Menge der erzeugten Nebenkostenposition. Standardmäßig 1."
 
-  - name: prep_praesident
+  - name: nonne_prep_praesident
     description: >
       Aufbereitete Präsidenten-/Hierarchie-Tabelle auf Prep-Ebene.
       Ermittelt eindeutige Präsidenten-IDs aus den Adressdaten und reichert
@@ -94,7 +94,7 @@ models:
       - name: praesident_next_level
         description: "Nächste übergeordnete Hierarchieebene des Präsidenten."
 
-  - name: prep_rechnung_belege
+  - name: nonne_prep_rechnung_belege
     description: >
       Aufbereitete Rechnungstabelle auf Prep-Ebene.
       Enthält Rechnungs- und Gutschriftbelege aus den Belegdaten
@@ -134,7 +134,7 @@ models:
       - name: rechnung_steuerart
         description: "Steuerart der Rechnung."
 
-  - name: prep_warengruppen
+  - name: nonne_prep_warengruppen
     description: >
       Aufbereitete Warengruppen-Tabelle auf Prep-Ebene.
       Ergänzt die Warengruppen um eine Klassifizierung in Haupt-

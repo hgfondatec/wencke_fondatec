@@ -4,7 +4,7 @@ with krankenkasse as (
 
     select distinct
         adr_krankenkasse
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
     where adr_krankenkasse is not null
 
 ),
@@ -14,7 +14,7 @@ adressen as (
     select distinct
         adr_adressnummer,
         adr_name
-    from {{ ref('bronze_adresse') }}
+    from {{ ref('nonne_bronze_adresse') }}
 
 ),
 

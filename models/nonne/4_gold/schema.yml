@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: gold_facts
+  - name: nonne_gold_facts
     description: >
       Gold-Faktentabelle für Rechnungs- und Gutschriftpositionen.
       Enthält mengen-, umsatz- und rohertragsbezogene Kennzahlen
@@ -61,7 +61,7 @@ models:
           Berechneter Umsatzwert abhängig von Steuerart,
           Beleggruppe, Rohertrag, Einkaufspreis und Mengenlogik.
 
-  - name: gold_adress
+  - name: nonne_gold_adress
     description: >
       Gold-Dimension für Adressen. Führt Belegadressen, Adressstammdaten,
       Heim-/Einrichtungsinformationen, Krankenkassen, Rechnungsempfänger,
@@ -125,7 +125,7 @@ models:
       - name: praesident_1
         description: "Präsidenten-Hierarchie Ebene 1 der finalen Adresse."
 
-  - name: gold_artikel
+  - name: nonne_gold_artikel
     description: >
       Gold-Dimension für Artikel. Führt Artikelstammdaten mit Haupt- und
       Nebenwarengruppen sowie Standardlieferanten zu einer konsolidierten

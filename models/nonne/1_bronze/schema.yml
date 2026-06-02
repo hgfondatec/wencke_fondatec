@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: bronze_adresse
+  - name: nonne_bronze_adresse
     description: "Bronze-Tabelle mit Adressdaten aus m36adr"
 
     config:
@@ -67,7 +67,7 @@ models:
       - name: adr_adresstyp
         description: "Typ der Adresse"
   
-  - name: bronze_adressgruppe
+  - name: nonne_bronze_adressgruppe
     description: "Bronze-Tabelle mit Adressgruppen aus m36adrgrp"
 
     config:
@@ -82,7 +82,7 @@ models:
       - name: adrgruppe_name
         description: "Name der Adressgruppe"
 
-  - name: bronze_artikel
+  - name: nonne_bronze_artikel
     description: "Bronze-Tabelle mit Artikeldaten aus m36art"
 
     config:
@@ -112,7 +112,7 @@ models:
       - name: art_abc_kategorie
         description: "ABC-Kategorie des Artikels"
 
-  - name: bronze_belege
+  - name: nonne_bronze_belege
     description: >
       Tabelle mit Belegdaten aus der Raw-Quelle m36bel.
 
@@ -192,7 +192,7 @@ models:
       - name: bel_beleggruppe
         description: "Beleggruppe des Belegs."
 
-  - name: bronze_beleggruppe
+  - name: nonne_bronze_beleggruppe
     description: >
       Mapping-Tabelle für Beleggruppen aus der Raw-Quelle m36bg.
       Enthält die Zuordnung zwischen Beleggruppe, Belegart
@@ -213,7 +213,7 @@ models:
       - name: bg_beleggruppe_id
         description: "Interne ID der Beleggruppe."
 
-  - name: bronze_mandanten
+  - name: nonne_bronze_mandanten
     description: >
       Stammdatentabelle für Mandanten aus der Raw-Quelle m00id0202.
       Enthält grundlegende Informationen wie Name, Zusatzinformationen
@@ -242,7 +242,7 @@ models:
       - name: mandant_stadt
         description: "Stadt des Mandanten."
 
-  - name: bronze_positionen
+  - name: nonne_bronze_positionen
     description: >
       Positionstabelle für Belege aus der Raw-Quelle m36pos.
       Enthält Artikel-, Mengen-, Umsatz- und Rohertragsinformationen
@@ -293,7 +293,7 @@ models:
       - name: pos_umsatz_bonus_endgueltig
         description: "Endgültig berechneter Umsatzbonus."
 
-  - name: bronze_warengruppen
+  - name: nonne_bronze_warengruppen
     description: >
       Stammdatentabelle für Warengruppen aus der Raw-Quelle m36nk.
       Enthält die Warengruppennummer sowie die zugehörige Bezeichnung.
