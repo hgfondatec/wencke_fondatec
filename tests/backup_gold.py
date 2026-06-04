@@ -2,7 +2,6 @@ import datetime
 import pandas as pd
 from sqlalchemy import create_engine, text
 
-# ------------------ KONFIGURATION ------------------
 
 PG_USER = "sbs"
 PG_PASSWORD = "qaqpav-xyxhi9-jeGmyv"
@@ -18,12 +17,11 @@ SOURCE_SCHEMA = "reporting"
 BACKUP_SCHEMA = "backup"
 
 TABLES = [
-    "gold_facts",
-    "gold_artikel",
-    "gold_adress"
+    "nonne_gold_facts",
+    "nonne_gold_artikel",
+    "nonne_gold_adress"
 ]
 
-# ---------------------------------------------------
 
 def write_to_postgres(timestamp, model, status, duration, message):
     try:

@@ -69,3 +69,6 @@ sources:
 
       - name: m42art
         description: "Raw-Artikelstammdaten VMS."
+
+      - name: m39art
+        description: "Raw-Artikelstammdaten Glasofix."

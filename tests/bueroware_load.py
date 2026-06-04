@@ -3,7 +3,6 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine
 
-# ------------------ KONFIGURATION ------------------
 
 PG_USER = "sbs"
 PG_PASSWORD = "qaqpav-xyxhi9-jeGmyv"
@@ -65,8 +64,6 @@ FILE_MAPPING = {
     "66": "M36SORTIMENT - Kundensortimente",
     "67": "M36STUEPREIS - Stückpreis"
 }
-
-# ---------------------------------------------------
 
 
 def write_to_postgres(timestamp, model, status, duration, message):

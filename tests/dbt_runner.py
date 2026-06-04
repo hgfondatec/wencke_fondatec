@@ -3,8 +3,6 @@ import datetime
 import pandas as pd
 from sqlalchemy import create_engine
 
-# ------------------ KONFIGURATION ------------------
-
 DBT_PROJECT_PATH = r"C:\dbt\wencke_fondatec"
 LOG_FILE = r"C:\dbt\wencke_fondatec\dbt_logs.log"
 
@@ -21,8 +19,6 @@ DATABASE_URI = (
 )
 
 REPORT_TABLE = "dbt_run_log"
-
-# ---------------------------------------------------
 
 
 def write_to_postgres(timestamp, model, status, duration, message):

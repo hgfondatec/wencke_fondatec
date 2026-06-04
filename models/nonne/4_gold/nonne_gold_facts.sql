@@ -8,9 +8,9 @@
 WITH silver_belege_positionen AS (
     SELECT *
     FROM {{ ref('nonne_silver_belege_positionen') }}
-    UNION ALL
-    SELECT *
-    FROM {{ ref('nonne_silver_pauschale') }}
+    --UNION ALL
+    --SELECT *
+    --FROM {{ ref('nonne_silver_pauschale') }}
 )
 
 SELECT

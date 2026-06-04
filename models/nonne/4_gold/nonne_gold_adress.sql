@@ -2,7 +2,11 @@
 
 WITH belege AS (
     SELECT DISTINCT
-        TRIM(COALESCE(NULLIF(bel_heim, ''), bel_adressnummer)) AS belege_adress_nr
+        CASE
+            WHEN NULLIF(TRIM(bel_projektnummer), '') IS NOT NULL
+                THEN NULLIF(TRIM(bel_heim), '')
+            ELSE bel_adressnummer
+        END AS belege_adress_nr
     FROM {{ ref('nonne_bronze_belege') }}
 ),
 adressen AS (

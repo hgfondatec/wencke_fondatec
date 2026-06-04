@@ -18,9 +18,9 @@ SOURCE_SCHEMA = "reporting"
 BACKUP_SCHEMA = "backup"
 
 TABLES = [
-    "gold_facts",
-    "gold_artikel",
-    "gold_adress"
+    "nonne_gold_facts",
+    "nonne_gold_artikel",
+    "nonne_gold_adress"
 ]
 
 # Wenn leer: kein Restore, nur Cleanup
