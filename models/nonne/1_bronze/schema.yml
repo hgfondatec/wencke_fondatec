@@ -213,35 +213,6 @@ models:
       - name: bg_beleggruppe_id
         description: "Interne ID der Beleggruppe."
 
-  - name: nonne_bronze_mandanten
-    description: >
-      Stammdatentabelle für Mandanten aus der Raw-Quelle m00id0202.
-      Enthält grundlegende Informationen wie Name, Zusatzinformationen
-      und Adressdaten des Mandanten.
-
-    config:
-      tags:
-        - bronze_mandanten
-
-    columns:
-      - name: mandant_id
-        description: "Eindeutige ID des Mandanten."
-
-      - name: mandant_name
-        description: "Name des Mandanten."
-
-      - name: mandant_zusatzinfo
-        description: "Zusätzliche Informationen oder Zusatzbezeichnung des Mandanten."
-
-      - name: mandant_strasse
-        description: "Straßenadresse des Mandanten."
-
-      - name: mandant_plz
-        description: "Postleitzahl des Mandanten."
-
-      - name: mandant_stadt
-        description: "Stadt des Mandanten."
-
   - name: nonne_bronze_positionen
     description: >
       Positionstabelle für Belege aus der Raw-Quelle m36pos.

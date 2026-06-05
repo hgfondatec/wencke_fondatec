@@ -72,3 +72,9 @@ sources:
 
       - name: m39art
         description: "Raw-Artikelstammdaten Glasofix."
+      
+      - name: m32art
+        description: "Raw-Artikelstammdaten VMS."
+
+      - name: m36lag
+        description: "Lagerinformationen Nonne." 
