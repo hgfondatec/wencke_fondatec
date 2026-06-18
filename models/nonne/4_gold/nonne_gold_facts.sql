@@ -8,9 +8,9 @@
 WITH silver_belege_positionen AS (
     SELECT *
     FROM {{ ref('nonne_silver_belege_positionen') }}
-    --UNION ALL
-    --SELECT *
-    --FROM {{ ref('nonne_silver_pauschale') }}
+    -- UNION ALL
+    -- SELECT *
+    -- FROM {{ ref('nonne_silver_pauschale') }}
 )
 
 SELECT
@@ -96,7 +96,14 @@ SELECT
         WHEN bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02')
             THEN bel_pos.pos_rohertrag_vor_bonus * -1
         ELSE NULL
-    END AS rechnung_rohertrag_vor_bonus_calc
+    END AS rechnung_rohertrag_vor_bonus_calc,
+
+    CASE
+        WHEN wgp.adressart_id IS NOT NULL
+            THEN 'Ja'
+        ELSE 'Nein'
+    END AS rechnung_pflichtkauf_kategorie
+
 
 FROM silver_belege_positionen bel_pos
 
@@ -109,3 +116,18 @@ LEFT JOIN {{ ref('nonne_silver_re_empfaenger') }} re
 
 LEFT JOIN {{ ref('nonne_silver_krankenkasse') }} kk
     ON adr.adr_krankenkasse = kk.krankenkasse_id
+
+LEFT JOIN {{ ref('nonne_gold_adress') }} a
+    ON a.mapping_adressnummer =
+       CASE
+           WHEN COALESCE(TRIM(bel_pos.bel_projektnummer), '') <> ''
+           THEN TRIM(bel_pos.bel_heim)
+           ELSE bel_pos.bel_adressnummer
+       END
+
+LEFT JOIN {{ ref('nonne_gold_artikel') }} ar
+    ON ar.art_artikelnummer = bel_pos.pos_artikelnummer
+
+LEFT JOIN {{ source('reporting', 'wencke_gold_pflichtkategorien') }} wgp 
+    ON wgp.adressart_id = a.adrgruppe_id::TEXT
+   AND wgp.hauptwarengruppe_id = ar.art_hauptwarengruppe_nummer

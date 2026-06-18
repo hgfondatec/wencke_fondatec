@@ -56,6 +56,7 @@ final AS (
         a.adr_stadt,
         a.adr_nummer,
         a.adr_vertreternummer,
+        ag.adrgruppe_id,
         ag.adrgruppe_name,
         r.rechnungsempfaenger_id,
         r.rechnungsempfaenger_bezeichnung,

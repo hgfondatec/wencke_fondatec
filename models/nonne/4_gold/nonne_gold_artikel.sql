@@ -30,11 +30,15 @@ select
     artikel.art_artikelname,
     artikel.art_artikelnummer || '-' || artikel.art_artikelname as art_bezeichnung,
 
+    hauptwarengruppe.wg_nummer as art_hauptwarengruppe_nummer,
+
     coalesce(hauptwarengruppe.wg_name, 'keine Bezeichnung') as art_hauptwarengruppe,
 
     coalesce(hauptwarengruppe.wg_nummer, 'XX') || '-' || 
     coalesce(hauptwarengruppe.wg_name, 'keine Bezeichnung') 
         as art_hauptwarenbezeichnung,
+
+    nebenwarengruppe.wg_nummer as art_nebenwarengruppe_nummer,
 
     coalesce(nebenwarengruppe.wg_name, 'keine Bezeichnung') 
         as art_nebenwarengruppe,
