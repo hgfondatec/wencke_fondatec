@@ -11,7 +11,7 @@ with source_data as (
         lag_1_8     as lager_id,
         lag_26_10   as lager_name1,
         lag_51_60   as lager_name2
-    from {{ source('raw', 'm36lag') }}
+    from {{ source('raw', 'm39lag') }}
 
 )
 

@@ -18,6 +18,17 @@ sources:
       - name: m39art
       - name: m32art
       - name: m36lag
+      - name: m36art_lgr
+      - name: m36fil
+      - name: m32art_lgr
+      - name: m32fil
+      - name: m32lag
+      - name: m42art_lgr
+      - name: m42fil
+      - name: m42lag
+      - name: m39art_lgr
+      - name: m39fil  
+      - name: m39lag          
 
   - name: reporting
     database: wenke
