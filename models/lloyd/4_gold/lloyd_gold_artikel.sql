@@ -26,7 +26,7 @@ lieferant as (
 ),
 
 tos as (
-    select distinct
+select distinct         
         ar_text as art_artikelnummer
     from {{ ref('wencke_bronze_tos_artikel_attribut') }}
     where ar_art = 1389
@@ -69,6 +69,9 @@ select
 
     artikel.art_ek_netto,
     artikel.art_lagereinheit,
+    artikel.art_bezeichnung_2,
+    artikel.art_bezeichnung_3,
+    artikel.art_bezeichnung_4,
 
     case
         when tos.art_artikelnummer is not null then 'J'
