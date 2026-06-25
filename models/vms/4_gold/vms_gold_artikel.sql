@@ -7,22 +7,29 @@
 
 with artikel as (
     select *
-    from {{ ref('nonne_bronze_artikel') }}
+    from {{ ref('vms_bronze_artikel') }}
 ),
 
 hauptwarengruppe as (
     select *
-    from {{ ref('nonne_silver_hauptwarengruppe') }}
+    from {{ ref('vms_silver_hauptwarengruppe') }}
 ),
 
 nebenwarengruppe as (
     select *
-    from {{ ref('nonne_silver_nebenwarengruppe') }}
+    from {{ ref('vms_silver_nebenwarengruppe') }}
 ),
 
 lieferant as (
     select *
-    from {{ ref('nonne_silver_lieferant') }}
+    from {{ ref('vms_silver_lieferant') }}
+),
+
+tos as (
+    select distinct
+        ar_text as art_artikelnummer
+    from {{ ref('wencke_bronze_tos_artikel_attribut') }}
+    where ar_art = 1389
 )
 
 select 
@@ -55,13 +62,18 @@ select
     coalesce(lieferant.adr_standardlieferantname, 'keine Bezeichnung') 
         as art_lieferantbezeichnung,
 
-    CASE when artikel.art_divers_flag = 'J' then 'Nur diverse Produkten'
-    ELSE 'Ohne diversen Produkten'
-    END as art_divers_flag,
+    case 
+        when artikel.art_divers_flag = 'J' then 'Nur diverse Produkten'
+        else 'Ohne diversen Produkten'
+    end as art_divers_flag,
 
     artikel.art_ek_netto,
-    artikel.art_lagereinheit
+    artikel.art_lagereinheit,
 
+    case
+        when tos.art_artikelnummer is not null then 'J'
+        else 'N'
+    end as art_tos_verfuegbar
 
 from artikel
 
@@ -73,5 +85,8 @@ left join nebenwarengruppe
 
 left join lieferant 
     on artikel.art_standardlieferantnummer = lieferant.art_standardlieferantnummer
+
+left join tos
+    on tos.art_artikelnummer = artikel.art_artikelnummer
 
 order by artikel.art_artikelnummer

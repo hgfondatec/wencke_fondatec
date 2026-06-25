@@ -8,9 +8,12 @@
 with artikelbestand_lloyd_ref as (
 
     select
-        artikelnummer::varchar(255) as artikelnummer,
+        artikelnummer::varchar(255)                 as artikelnummer,
         {{ safe_float('art_ek_netto') }}            as art_ek_netto,
-        -- art_lagereinheit::varchar(255)           as art_lagereinheit,
+        art_lagereinheit::varchar(10)               as art_lagereinheit,
+        lieferantenbezeichnung::varchar(6)          as lieferantenbezeichnung,
+        gesperrter_artikel::varchar(1)              as gesperrter_artikel,
+        auswahl_gesperrt::varchar(1)                as auswahl_gesperrt,
 
         {{ safe_float('bestand_l1') }}              as bestand_l1,
         {{ safe_float('beauftragt_l1') }}           as beauftragt_l1,
@@ -41,7 +44,10 @@ artikelbestand_lloyd as (
     select
         artikelnummer,
         art_ek_netto,
-        -- art_lagereinheit,
+        art_lagereinheit,
+        lieferantenbezeichnung,
+        gesperrter_artikel,
+        auswahl_gesperrt,
         'L1'::varchar(10)         as lager_id,
         bestand_l1                as lagerbestand,
         beauftragt_l1             as beauftragt,
@@ -62,7 +68,10 @@ artikelbestand_lloyd as (
     select
         artikelnummer,
         art_ek_netto,
-        -- art_lagereinheit,
+        art_lagereinheit,
+        lieferantenbezeichnung,
+        gesperrter_artikel,
+        auswahl_gesperrt,
         'L3'::varchar(10)         as lager_id,
         bestand_l3                as lagerbestand,
         beauftragt_l3             as beauftragt,

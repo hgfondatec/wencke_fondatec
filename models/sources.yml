@@ -13,6 +13,9 @@ sources:
       - name: m36adr
       - name: m00id0202
       - name: m36nk
+      - name: m32nk
+      - name: m42nk
+      - name: m39nk
       - name: m36bg
       - name: m42art
       - name: m39art
@@ -28,7 +31,8 @@ sources:
       - name: m42lag
       - name: m39art_lgr
       - name: m39fil  
-      - name: m39lag          
+      - name: m39lag      
+      - name: tos_artikel_attribut    
 
   - name: reporting
     database: wenke

@@ -7,22 +7,22 @@
 
 with artikel as (
     select *
-    from {{ ref('nonne_bronze_artikel') }}
+    from {{ ref('glasofix_bronze_artikel') }}
 ),
 
 hauptwarengruppe as (
     select *
-    from {{ ref('nonne_silver_hauptwarengruppe') }}
+    from {{ ref('glasofix_silver_hauptwarengruppe') }}
 ),
 
 nebenwarengruppe as (
     select *
-    from {{ ref('nonne_silver_nebenwarengruppe') }}
+    from {{ ref('glasofix_silver_nebenwarengruppe') }}
 ),
 
 lieferant as (
     select *
-    from {{ ref('nonne_silver_lieferant') }}
+    from {{ ref('glasofix_silver_lieferant') }}
 )
 
 select 

@@ -10,8 +10,11 @@ with source_data as (
     select distinct
     ART_1_25    as artikelnummer,
     ART_178_9   as art_ek_netto,
-
-    -- ART_1706_5  as art_lagereinheit,
+    ART_1706_5  as art_lagereinheit,
+    ART_138_8   as lieferantenbezeichnung,
+    ART_1065_1  as gesperrter_artikel,
+    ART_828_1   as auswahl_gesperrt,
+    ART_6721_1  as gefahrstoff,
 
     ART_4230_10 as bestand_l1,
     ART_4240_10 as beauftragt_l1,

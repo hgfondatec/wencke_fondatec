@@ -1,79 +1,28 @@
 {{
     config(
         materialized='table',
-        tags=['lager']
+        tags=['bestand']
     )
 }}
 
-with filialen as (
+with artikel_bestand as (
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('nonne_silver_filiale') }}
+    select * from {{ ref('nonne_silver_artikel_bestand') }}
 
     union all
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('glasofix_silver_filiale') }}
+    select * from {{ ref('glasofix_silver_artikel_bestand') }}
 
     union all
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('lloyd_silver_filiale') }}
+    select * from {{ ref('lloyd_silver_artikel_bestand') }}
 
     union all
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('vms_silver_filiale') }}
+    select * from {{ ref('vms_silver_artikel_bestand') }}
 
 )
 
-select *
-from filialen
+select
+   *
+from artikel_bestand
