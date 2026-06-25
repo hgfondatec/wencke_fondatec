@@ -60,8 +60,10 @@ select
     END as art_divers_flag,
 
     artikel.art_ek_netto,
-    artikel.art_lagereinheit
-
+    artikel.art_lagereinheit,
+    artikel.art_bezeichnung_2,
+    artikel.art_bezeichnung_3,
+    artikel.art_bezeichnung_4
 
 from artikel
 
