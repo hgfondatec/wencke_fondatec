@@ -7,7 +7,7 @@ sources:
 
     tables:
       - name: m36bel
-      - name: m36pos_old
+      - name: m36pos_test
       - name: m36adrgrp
       - name: m36art
       - name: m36adr

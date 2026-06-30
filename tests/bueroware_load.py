@@ -62,7 +62,8 @@ FILE_MAPPING = {
     "63": "M36IDBSE0043 - Besuchberichte",
     "65": "M36VTR - Vertreter",
     "66": "M36SORTIMENT - Kundensortimente",
-    "67": "M36STUEPREIS - Stückpreis"
+    "67": "M36STUEPREIS - Stückpreis",
+    "69": "M36ART_LGR - Artikel-Lager"
 }
 
 
