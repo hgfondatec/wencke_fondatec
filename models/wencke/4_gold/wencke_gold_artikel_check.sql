@@ -124,7 +124,37 @@ select
     t39.art_lagereinheit as art_lagereinheit_39,
     t32.art_lagereinheit as art_lagereinheit_32,
     t42.art_lagereinheit as art_lagereinheit_42,
-    t36.art_lagereinheit as art_lagereinheit_36
+    t36.art_lagereinheit as art_lagereinheit_36,
+
+    t39.art_artikel_ohne_temperaturgrenze as art_artikel_ohne_temperaturgrenze_39,
+    t32.art_artikel_ohne_temperaturgrenze as art_artikel_ohne_temperaturgrenze_32,
+    t42.art_artikel_ohne_temperaturgrenze as art_artikel_ohne_temperaturgrenze_42,
+    t36.art_artikel_ohne_temperaturgrenze as art_artikel_ohne_temperaturgrenze_36,
+
+    t39.art_temperaturgrenze_vorhanden as art_temperaturgrenze_vorhanden_39,
+    t32.art_temperaturgrenze_vorhanden as art_temperaturgrenze_vorhanden_32,
+    t42.art_temperaturgrenze_vorhanden as art_temperaturgrenze_vorhanden_42,
+    t36.art_temperaturgrenze_vorhanden as art_temperaturgrenze_vorhanden_36,
+
+    t39.art_lagertemperatur_von as art_lagertemperatur_von_39,
+    t32.art_lagertemperatur_von as art_lagertemperatur_von_32,
+    t42.art_lagertemperatur_von as art_lagertemperatur_von_42,
+    t36.art_lagertemperatur_von as art_lagertemperatur_von_36,
+
+    t39.art_lagertemperatur_bis as art_lagertemperatur_bis_39,
+    t32.art_lagertemperatur_bis as art_lagertemperatur_bis_32,
+    t42.art_lagertemperatur_bis as art_lagertemperatur_bis_42,
+    t36.art_lagertemperatur_bis as art_lagertemperatur_bis_36,
+
+    t39.art_transporttemperatur_von as art_transporttemperatur_von_39,
+    t32.art_transporttemperatur_von as art_transporttemperatur_von_32,
+    t42.art_transporttemperatur_von as art_transporttemperatur_von_42,
+    t36.art_transporttemperatur_von as art_transporttemperatur_von_36,
+
+    t39.art_transporttemperatur_bis as art_transporttemperatur_bis_39,
+    t32.art_transporttemperatur_bis as art_transporttemperatur_bis_32,
+    t42.art_transporttemperatur_bis as art_transporttemperatur_bis_42,
+    t36.art_transporttemperatur_bis as art_transporttemperatur_bis_36
 
 from artikel_ids base
 
