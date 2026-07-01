@@ -72,12 +72,12 @@ select
     artikel.art_bezeichnung_2,
     artikel.art_bezeichnung_3,
     artikel.art_bezeichnung_4,
-    artikel.artikel_ohne_temperaturgrenze,
+    artikel.art_artikel_ohne_temperaturgrenze,
     artikel.art_temperaturgrenze_vorhanden,
     artikel.art_Lagertemperatur_von,
     artikel.art_lagertemperatur_bis,
     artikel.art_transporttemperatur_von,
-    artikel.art_transporttemperatur_bis
+    artikel.art_transporttemperatur_bis,
 
     case
         when tos.art_artikelnummer is not null then 'J'
