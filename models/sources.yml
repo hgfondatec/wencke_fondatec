@@ -29,6 +29,7 @@ sources:
       - name: m42art_lgr
       - name: m42fil
       - name: m42lag
+      - name: m42adr
       - name: m39art_lgr
       - name: m39fil  
       - name: m39lag      

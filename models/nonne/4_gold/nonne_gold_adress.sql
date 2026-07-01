@@ -13,6 +13,7 @@ adressen AS (
     SELECT
         adr_adressnummer,
         adr_name,
+        adr_name_2,
         adr_heim,
         adr_krankenkasse,
         adr_rechnungsempfaenger,
@@ -49,6 +50,9 @@ adressgruppe AS (
 final AS (
     SELECT DISTINCT
         b.belege_adress_nr AS mapping_adressnummer,
+        b.belege_adress_nr AS final_adress_nummer,
+        COALESCE(a.adr_name, 'keine Bezeichnung') AS final_name,
+        COALESCE(a.adr_name_2, 'keine Bezeichnung') AS final_name_2,
         CAST(b.belege_adress_nr AS VARCHAR(10))
             || '-' || COALESCE(a.adr_name, 'keine Bezeichnung') AS final_adress_name,
         a.adr_adresse,
