@@ -63,7 +63,8 @@ FILE_MAPPING = {
     "65": "M36VTR - Vertreter",
     "66": "M36SORTIMENT - Kundensortimente",
     "67": "M36STUEPREIS - Stückpreis",
-    "69": "M36ART_LGR - Artikel-Lager"
+    "68": "M36ART_LGR - Artikel-Lager ",
+    "69": "M36POS_SHORT - POS_TEST"
 }
 
 
