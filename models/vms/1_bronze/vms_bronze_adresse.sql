@@ -3,7 +3,7 @@
 with source_data as (
 
     select
-        adr_2_8                              as adr_adressnummer,
+        adressnummer                         as adr_adressnummer,
         adr_20_30                            as adr_name,
         adr_80_30                            as adr_adresse,
         adr_110_10                           as adr_plz,

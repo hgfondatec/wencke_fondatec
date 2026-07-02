@@ -22,7 +22,7 @@ with source_data as (
         adr_823_1                            as adr_oe_4,
         adr_875_8                            as adr_zentrale_GVS_nummer,
         adr_1219_2                           as adr_adresstyp
-    from {{ source('raw', 'm36adr') }} --36 hier nur Placeholder. Bei Verfügbarkeit auf 32 ändern
+    from {{ source('raw', 'm32adr') }} 
 
 )
 
