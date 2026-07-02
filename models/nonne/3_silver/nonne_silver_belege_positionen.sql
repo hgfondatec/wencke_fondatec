@@ -62,6 +62,7 @@ select
     belege.rechnung_bel_datum as bel_belegdatum,
     belege.rechnung_adressnummer as bel_adressnummer,
     belege.rechnung_projektnummer as bel_projektnummer,
+    belege.rechnung_blfa_nr as bel_blfa_nr,
     belege.rechnung_heim as bel_heim,
     belege.rechnung_belegart bel_belegart,
     belege.rechnung_steuerart,

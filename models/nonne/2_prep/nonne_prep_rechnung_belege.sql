@@ -9,6 +9,7 @@ with belege as (
 select 
     belege.bel_belegnummer as rechnung_beleg_nr,
     belege.bel_lieferschein_nr as rechnung_lieferschein_nr,
+    belege.bel_blfanummer as rechnung_blfa_nr,
     belege.bel_interne_belegnummer as rechnung_interne_beleg_nr,
     belege.bel_belegdatum as rechnung_bel_datum,
     belege.bel_beleggruppe as rechnung_beleggruppe,

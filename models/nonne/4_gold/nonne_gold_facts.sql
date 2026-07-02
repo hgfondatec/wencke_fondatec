@@ -10,6 +10,7 @@ WITH silver_belege_positionen AS (
     FROM {{ ref('nonne_silver_belege_positionen') }}
 )
 
+
 SELECT
 
     bel_pos.bel_belegnummer AS rechnung_beleg_nr,
@@ -31,6 +32,13 @@ SELECT
     bel_pos.pos_positionsnummer AS rechnung_positionsnummer,
     bel_pos.bg_beleggruppe AS rechnung_beleggruppe,
     bel_pos."BG_Beleggruppe" AS rechnung_beleggruppe_name,
+
+    lieferadressen.lfa_name1,
+    lieferadressen.lfa_name2,
+    lieferadressen.lfa_strasse,
+    lieferadressen.lfa_plz,
+    lieferadressen.lfa_ort,
+    lieferadressen.lfa_telefon,
 
     CASE
         WHEN bel_pos.rechnung_bonusbelege_flag = 'J' THEN 'Nur Bonusbelege'
@@ -128,3 +136,12 @@ LEFT JOIN {{ ref('nonne_gold_artikel') }} ar
 LEFT JOIN {{ source('reporting', 'wencke_gold_pflichtkategorien') }} wgp 
     ON wgp.adressart_id = a.adrgruppe_id::TEXT
    AND wgp.hauptwarengruppe_id = ar.art_hauptwarengruppe_nummer
+
+LEFT JOIN {{ ref('nonne_bronze_lieferadressen') }} lieferadressen
+    ON CAST(lieferadressen.lfa_nr AS varchar(20)) = bel_pos.bel_blfa_nr
+   AND CAST(lieferadressen.lfa_debitor AS varchar(20)) =
+        CASE
+            WHEN COALESCE(TRIM(bel_pos.bel_projektnummer), '') <> ''
+                THEN TRIM(bel_pos.bel_heim)
+            ELSE bel_pos.bel_adressnummer
+        END
