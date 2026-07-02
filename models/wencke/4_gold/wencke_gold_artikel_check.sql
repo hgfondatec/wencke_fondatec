@@ -1,3 +1,27 @@
+{{
+    config(
+        materialized='table',
+        tags=['artikel_check']
+    ) 
+}}
+
+with artikel_ids as (
+
+    select art_artikelnummer from {{ ref('glasofix_gold_artikel') }}
+    union
+    select art_artikelnummer from {{ ref('lloyd_gold_artikel') }}
+    union
+    select art_artikelnummer from {{ ref('vms_gold_artikel') }}
+    union
+    select art_artikelnummer from {{ ref('nonne_gold_artikel_v2') }}
+
+),
+
+t39 as (select * from {{ ref('glasofix_gold_artikel') }}),
+t32 as (select * from {{ ref('lloyd_gold_artikel') }}),
+t42 as (select * from {{ ref('vms_gold_artikel') }}),
+t36 as (select * from {{ ref('nonne_gold_artikel_v2') }})
+
 select
     base.art_artikelnummer,
 
@@ -8,7 +32,7 @@ select
 
     (
         case when t39.art_artikelnummer is not null then 1 else 0 end +
-        case when t32.art_artikelnummer is not null then 1 else 0 end +
+        case whsen t32.art_artikelnummer is not null then 1 else 0 end +
         case when t42.art_artikelnummer is not null then 1 else 0 end +
         case when t36.art_artikelnummer is not null then 1 else 0 end
     ) as verfuegbar_score,
@@ -120,7 +144,7 @@ t32.art_hauptwarengruppe                                as art_hauptwarengruppe_
     t42.art_lieferantbezeichnung as art_lieferantbezeichnung_42,
     t36.art_lieferantbezeichnung as art_lieferantbezeichnung_36,
     {{ match_score('art_lieferantbezeichnung') }} as art_lieferantbezeichnung_matchscore,
-    {{ match_value('art_lieferantbezeichnung') }} as art_lieferantbezeichnung_match
+    {{ match_value('art_lieferantbezeichnung') }} as art_lieferantbezeichnung_match,
 
     t39.art_divers_flag as art_divers_flag_39,
     t32.art_divers_flag as art_divers_flag_32,
