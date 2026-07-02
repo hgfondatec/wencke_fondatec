@@ -18,6 +18,7 @@ with source_data as (
         pos_164_8          as pos_gesamtmenge,
         pos_280_12         as pos_gesamtumsatz_vor_bonus,
         POS_308_12         as pos_ek_einzeln,
+        pos_504_3          as pos_rekla_grund,
         pos_524_3          as pos_rekla_information,
         pos_527_17         as pos_rekla_verursacher,
         pos_574_12         as pos_gesamtumsatz,
