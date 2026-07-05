@@ -21,6 +21,8 @@ with source_data as (
         art_1706_5  as art_lagereinheit,
         art_1940_1  as art_abc_kategorie,
         art_2582_1  as art_divers_flag,
+        art_4096_20 as art_artikelname_kurz,
+        art_1040_25 as art_artikel_alt,
         art_7137_1  as art_artikel_ohne_temperaturgrenze,
         art_7140_1  as art_temperaturgrenze_vorhanden,
         art_7708_5  as art_Lagertemperatur_von,

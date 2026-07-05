@@ -5,15 +5,94 @@
     ) 
 }}
 
-with source_data as (
+with raw_data as (
+
+    select *
+    from {{ source('raw', 'm36bel') }}
+
+),
+
+cleaned as (
+
+    select
+        *,
+        trim(coalesce(bel_19_10, '')) as bel_19_clean,
+        trim(coalesce(bel_29_10, '')) as bel_29_clean
+    from raw_data
+
+),
+
+parsed as (
+
+    select
+        *,
+
+        case 
+            when bel_19_clean ~ '^\d{2}\.\d{2}\.\d{4}$'
+            then substring(bel_19_clean, 1, 2)::int
+        end as bel_19_day,
+
+        case 
+            when bel_19_clean ~ '^\d{2}\.\d{2}\.\d{4}$'
+            then substring(bel_19_clean, 4, 2)::int
+        end as bel_19_month,
+
+        case 
+            when bel_19_clean ~ '^\d{2}\.\d{2}\.\d{4}$'
+            then substring(bel_19_clean, 7, 4)::int
+        end as bel_19_year,
+
+        case 
+            when bel_29_clean ~ '^\d{2}\.\d{2}\.\d{4}$'
+            then substring(bel_29_clean, 1, 2)::int
+        end as bel_29_day,
+
+        case 
+            when bel_29_clean ~ '^\d{2}\.\d{2}\.\d{4}$'
+            then substring(bel_29_clean, 4, 2)::int
+        end as bel_29_month,
+
+        case 
+            when bel_29_clean ~ '^\d{2}\.\d{2}\.\d{4}$'
+            then substring(bel_29_clean, 7, 4)::int
+        end as bel_29_year
+
+    from cleaned
+
+),
+
+source_data as (
 
     select
         bel_1_1                          as bel_belegstatus_a_n,
         bel_2_1                          as bel_belegart,
         bel_3_8                          as bel_belegnummer,
         bel_11_8                         as bel_adressnummer,
-        to_date(bel_19_10, 'DD.MM.YYYY') as bel_belegdatum,
-        to_date(bel_29_10, 'DD.MM.YYYY') as bel_liefer_termindatum,
+
+        case
+            when bel_19_clean <> '00.00.0000'
+             and bel_19_year between 1 and 9999
+             and bel_19_month between 1 and 12
+             and bel_19_day between 1 and extract(day from (
+                    date_trunc('month', make_date(bel_19_year, bel_19_month, 1)) 
+                    + interval '1 month - 1 day'
+                 ))
+            then make_date(bel_19_year, bel_19_month, bel_19_day)
+            else null
+        end                              as bel_belegdatum,
+
+        case
+            when bel_29_clean <> '00.00.0000'
+             and bel_29_year between 1 and 9999
+             and bel_29_month between 1 and 12
+             and bel_29_day between 1 and extract(day from (
+                    date_trunc('month', make_date(bel_29_year, bel_29_month, 1)) 
+                    + interval '1 month - 1 day'
+                 ))
+            then make_date(bel_29_year, bel_29_month, bel_29_day)
+            else null
+        end                              as bel_liefer_termindatum,
+
         bel_39_8                         as bel_projektnummer,
         bel_232_8                        as bel_vertreter,
         bel_245_1                        as bel_steuerart,
@@ -35,7 +114,7 @@ with source_data as (
         bel_2712_11                      as bel_urbeleg_nr,
         beleggruppe                      as bel_beleggruppe
 
-    from {{ source('raw', 'm36bel') }}
+    from parsed
 
 )
 

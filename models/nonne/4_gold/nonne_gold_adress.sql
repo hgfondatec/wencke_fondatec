@@ -5,7 +5,7 @@ WITH belege AS (
         CASE
             WHEN NULLIF(TRIM(bel_projektnummer), '') IS NOT NULL
                 THEN NULLIF(TRIM(bel_heim), '')
-            ELSE bel_adressnummer
+            ELSE TRIM(bel_adressnummer)
         END AS belege_adress_nr
     FROM {{ ref('nonne_bronze_belege') }}
 ),
@@ -14,6 +14,7 @@ adressen AS (
         adr_adressnummer,
         adr_name,
         adr_name_2,
+        adr_name_3,
         adr_heim,
         adr_krankenkasse,
         adr_rechnungsempfaenger,
@@ -27,7 +28,7 @@ adressen AS (
 ),
 heim AS (
     SELECT
-        heim_id,
+        TRIM(heim_id) heim_id,
         heim_name,
         heim_bezeichnung,
         heim_praesident_3,
@@ -53,6 +54,7 @@ final AS (
         b.belege_adress_nr AS final_adress_nummer,
         COALESCE(a.adr_name, 'keine Bezeichnung') AS final_name,
         COALESCE(a.adr_name_2, 'keine Bezeichnung') AS final_name_2,
+        COALESCE(a.adr_name_3, 'keine Bezeichnung') AS final_name_3,
         CAST(b.belege_adress_nr AS VARCHAR(10))
             || '-' || COALESCE(a.adr_name, 'keine Bezeichnung') AS final_adress_name,
         a.adr_adresse,
@@ -69,7 +71,7 @@ final AS (
         h.heim_praesident_1 AS praesident_1
     FROM belege b
     LEFT JOIN adressen a
-        ON CAST(b.belege_adress_nr AS VARCHAR(10)) = a.adr_adressnummer
+        ON CAST(TRIM(b.belege_adress_nr) AS VARCHAR(10)) = TRIM(a.adr_adressnummer)
     LEFT JOIN heim h
         ON h.heim_id = b.belege_adress_nr
     LEFT JOIN rechnungsempfaenger r

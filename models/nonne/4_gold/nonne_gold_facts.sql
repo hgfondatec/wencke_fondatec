@@ -19,7 +19,7 @@ SELECT
     CASE
         WHEN COALESCE(TRIM(bel_pos.bel_projektnummer), '') <> ''
         THEN TRIM(bel_pos.bel_heim)
-     ELSE bel_pos.bel_adressnummer
+     ELSE TRIM(bel_pos.bel_adressnummer)
     END AS rechnung_adress_nr,
 
     adr.adr_krankenkasse as rechnung_krankenkasse,

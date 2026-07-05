@@ -28,6 +28,9 @@ lieferant as (
 select 
     artikel.art_artikelnummer,
     artikel.art_artikelname,
+    artikel.art_bezeichnung_2,
+    artikel.art_artikelname_kurz,
+    artikel.art_artikel_alt,
     artikel.art_artikelnummer || '-' || artikel.art_artikelname as art_bezeichnung,
 
     hauptwarengruppe.wg_nummer as art_hauptwarengruppe_nummer,
