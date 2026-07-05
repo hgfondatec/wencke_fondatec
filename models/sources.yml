@@ -38,7 +38,8 @@ sources:
       - name: m39fil  
       - name: m39lag   
       - name: m39adr   
-      - name: tos_artikel_attribut    
+      - name: tos_artikel_attribut
+      - name: m39bel   
 
   - name: reporting
     database: wenke

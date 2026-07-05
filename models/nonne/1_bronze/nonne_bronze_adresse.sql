@@ -24,6 +24,17 @@ with source_data as (
         adr_875_8                            as adr_zentrale_GVS_nummer,
         adr_1024_30                          as adr_name_3,
         adr_1219_2                           as adr_adresstyp
+        adr_1054_1                           as adr_servicehandbuch_vorhanden,
+        adr_1055_1                           as adr_servicehandbuch_jahr,
+        adr_1056_1                           as adr_servicehandbuch_monat,
+        adr_1057_1                           as adr_dosiertechnik,
+        adr_1058_1                           as adr_serviceintervall_anzahl_jaehrlich,
+        adr_1059_1                           as adr_schulung,
+        adr_1060_1                           as adr_letzte_schulung_jahr,
+        adr_1061_1                           as adr_letzte_schulung_monat,
+        adr_1062_1                           as adr_haende_hygieneplan_vorhanden,
+        adr_1063_1                           as adr_gefahrstoffverzeichnis
+
     from {{ source('raw', 'm36adr') }}
 
 )
