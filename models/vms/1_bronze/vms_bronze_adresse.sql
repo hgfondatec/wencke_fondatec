@@ -5,6 +5,7 @@ with source_data as (
     select
         adressnummer                         as adr_adressnummer,
         adr_20_30                            as adr_name,
+        adr_50_30                            as adr_name_2,
         adr_80_30                            as adr_adresse,
         adr_110_10                           as adr_plz,
         adr_120_30                           as adr_stadt,
@@ -21,6 +22,7 @@ with source_data as (
         adr_822_1                            as adr_oe_3,
         adr_823_1                            as adr_oe_4,
         adr_875_8                            as adr_zentrale_GVS_nummer,
+        adr_1024_30                          as adr_name_3,
         adr_1219_2                           as adr_adresstyp,
         adr_1054_1                           as adr_servicehandbuch_vorhanden,
         adr_1055_1                           as adr_servicehandbuch_jahr,
@@ -32,7 +34,8 @@ with source_data as (
         adr_1061_1                           as adr_letzte_schulung_monat,
         adr_1062_1                           as adr_haende_hygieneplan_vorhanden,
         adr_1063_1                           as adr_gefahrstoffverzeichnis
-    from {{ source('raw', 'm42adr') }} 
+
+    from {{ source('raw', 'm42adr') }}
 
 )
 
