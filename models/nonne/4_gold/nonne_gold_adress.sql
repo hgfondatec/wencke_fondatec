@@ -101,3 +101,4 @@ final AS (
 )
 SELECT *
 FROM final
+WHERE mapping_adressnummer is not null
