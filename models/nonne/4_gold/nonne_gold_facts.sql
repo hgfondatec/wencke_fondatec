@@ -143,5 +143,5 @@ LEFT JOIN {{ ref('nonne_bronze_lieferadressen') }} lieferadressen
         CASE
             WHEN COALESCE(TRIM(bel_pos.bel_projektnummer), '') <> ''
                 THEN TRIM(bel_pos.bel_heim)
-            ELSE bel_pos.bel_adressnummer
+            ELSE TRIM(bel_pos.bel_adressnummer)
         END
