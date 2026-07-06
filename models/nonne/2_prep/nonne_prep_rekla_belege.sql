@@ -7,7 +7,7 @@ with belege as (
 )
 
 select 
-    belege.bel_belegnummer as rekla_beleg_nr,
+    TRIM(belege.bel_belegnummer) as rekla_beleg_nr,
     belege.bel_urbeleg_nr as rekla_urbeleg_nr,
     belege.bel_belegdatum as rekla_bel_datum,
     belege.bel_beleggruppe as rekla_beleggruppe,
@@ -17,5 +17,5 @@ select
     belege.bel_heim as rekla_heim
 
     from belege
-    where belege.bel_belegart in ('I') and belege.bel_beleggruppe = '65' 
+    where belege.bel_belegart in ('I') and belege.bel_beleggruppe = '65' and belege.bel_belegstatus_a_n ='N'
     order by belege.bel_belegnummer

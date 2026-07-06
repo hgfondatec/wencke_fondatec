@@ -2,7 +2,7 @@
 
 with positionen as (
     select
-        pos_belegnummer,
+        TRIM(pos_belegnummer) as pos_belegnummer,
         pos_artikelnummer,
         pos_positionsnummer,
         pos_artikeltext,

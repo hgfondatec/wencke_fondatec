@@ -35,7 +35,7 @@ select
     CASE
         WHEN COALESCE(TRIM(belege.rekla_projektnummer), '') <> ''
         THEN TRIM(belege.rekla_heim)
-     ELSE belege.rekla_adressnummer
+     ELSE TRIM(belege.rekla_adressnummer)
     END AS rekla_adress_nr,
     concat(belege.rekla_belegart,belege.rekla_beleggruppe) as rekla_belegart,
     positionen.pos_artikelnummer as rekla_artikel_nr,
@@ -46,7 +46,7 @@ select
 
 from belege 
 left join positionen
-    on TRIM(positionen.pos_belegnummer) = belege.rekla_beleg_nr
+    on TRIM(positionen.pos_belegnummer) = TRIM(belege.rekla_beleg_nr)
 left join rekla_grund
     on CAST(rekla_grund.rekla_grund_id as varchar(5)) = positionen.pos_rekla_grund
 left join rekla_massnahme
