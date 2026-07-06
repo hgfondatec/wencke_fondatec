@@ -6,40 +6,50 @@ sources:
     schema: public
 
     tables:
+      # M36
       - name: m36bel
       - name: m36pos_test
       - name: m36adrgrp
       - name: m36art
       - name: m36adr
-      - name: m00id0202
       - name: m36id0208
       - name: m36id0234
       - name: m36id0236
       - name: m36nk
-      - name: m32nk
-      - name: m42nk
-      - name: m39nk
       - name: m36bg
-      - name: m42art
-      - name: m39art
-      - name: m32art
       - name: m36lag
       - name: m36art_lgr
       - name: m36fil
-      - name: m32art_lgr
-      - name: m32fil
-      - name: m32lag
-      - name: m32adr
+
+      # M42
+      - name: m42nk
+      - name: m42bel
+      - name: m42art
       - name: m42art_lgr
       - name: m42fil
       - name: m42lag
       - name: m42adr
+
+      # M39
+      - name: m39nk
+      - name: m39art
       - name: m39art_lgr
-      - name: m39fil  
-      - name: m39lag   
-      - name: m39adr   
+      - name: m39fil
+      - name: m39lag
+      - name: m39adr
+      - name: m39bel
+
+      # M32
+      - name: m32nk
+      - name: m32art
+      - name: m32art_lgr
+      - name: m32fil
+      - name: m32lag
+      - name: m32adr
+
+      # Sonstige
+      - name: m00id0202
       - name: tos_artikel_attribut
-      - name: m39bel   
 
   - name: reporting
     database: wenke
