@@ -82,7 +82,7 @@ final AS (
         a.adr_letzte_schulung_monat,
         a.adr_haende_hygieneplan_vorhanden,
         a.adr_gefahrstoffverzeichnis,
-        ag.adrgruppe_id,
+        CAST(ag.adrgruppe_id as varchar(2)) as adrgruppe_id,
         ag.adrgruppe_name,
         r.rechnungsempfaenger_id,
         r.rechnungsempfaenger_bezeichnung,
