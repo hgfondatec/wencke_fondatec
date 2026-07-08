@@ -31,6 +31,7 @@ sources:
       - name: m42fil
       - name: m42lag
       - name: m42nk
+      - name: m42pos
     
 
       # M39
@@ -53,6 +54,7 @@ sources:
       - name: m32fil
       - name: m32lag
       - name: m32nk
+      - name: m32pos
 
       # Sonstige
       - name: m00id0202
