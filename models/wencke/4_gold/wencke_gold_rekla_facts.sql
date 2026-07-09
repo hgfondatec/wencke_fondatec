@@ -12,6 +12,8 @@ with final as (
     select nonne.*, 36 as manadant_id from {{ ref('nonne_gold_rekla_facts') }} nonne
     union
     select lloyd.*, 32 as manadant_id from {{ ref('lloyd_gold_rekla_facts') }} lloyd
+    union
+    select glasofix.*, 39 as manadant_id from {{ ref('glasofix_gold_rekla_facts') }} glasofix
 
 )
 

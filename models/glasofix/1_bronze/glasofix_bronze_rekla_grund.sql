@@ -7,7 +7,7 @@ with source_data as (
         idbid0234_3_30                             as rekla_grund_bezeichnung,
         idbid0234_33_60                            as rekla_grund_beschreibung
         
-    from {{ source('raw', 'm32idbid0234') }}
+    from {{ source('raw', 'm39idbid0234') }}
 
 )
 
