@@ -20,7 +20,7 @@ sources:
       - name: m36id0236
       - name: m36lag
       - name: m36nk
-      - name: m36pos_test_v2
+      - name: m36pos_test_v5
       
       # M42
       - name: m42adr

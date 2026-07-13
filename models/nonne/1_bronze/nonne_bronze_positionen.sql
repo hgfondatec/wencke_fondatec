@@ -30,7 +30,7 @@ with source_data as (
         pos_1766_7         as pos_umsatz_bonus_endgueltig
         
 
-    from {{ source('raw', 'm36pos_test_v2') }}
+    from {{ source('raw', 'm36pos_test_v5') }}
 
 )
 
