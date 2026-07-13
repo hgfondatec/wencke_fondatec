@@ -176,3 +176,18 @@ if __name__ == "__main__":
         "run",
         "tag:gold_artikel"
     )
+
+    run_dbt_command(
+        "run",
+        "+wencke_gold_artikel_check"
+    )
+
+    run_dbt_command(
+        "run",
+        "+wencke_gold_nebenwarengruppe_check"
+    )
+
+    run_dbt_command(
+        "run",
+        "+wencke_gold_hauptwarengruppe_check"
+    )
