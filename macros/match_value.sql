@@ -11,10 +11,7 @@
                         replace(
                             to_char(
                                 nullif(
-                                    replace(
-                                        replace(value, '.', ''),
-                                        ',', '.'
-                                    ),
+                                    replace(value, ',', '.'),
                                     ''
                                 )::numeric,
                                 'FM999999999990D00'
