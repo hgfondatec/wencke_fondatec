@@ -67,7 +67,13 @@ select
         else 'Ohne diversen Produkten'
     end as art_divers_flag,
 
-    artikel.art_ek_netto,
+     NULLIF(
+    REPLACE(
+        REPLACE(artikel.art_ek_netto, '.', ''),
+        ',', '.'                               
+        ),
+         ''
+        )::float AS art_ek_netto,
     artikel.art_lagereinheit,
     artikel.art_bezeichnung_2,
     artikel.art_bezeichnung_3,
