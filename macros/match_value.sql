@@ -1,12 +1,26 @@
 {% macro match_value(field) %}
 
 (
-    select string_agg(value, '/' order by value)
+    select
+        case
+            when max(score) <= 1 then null
+            else string_agg(
+                case
+                    when '{{ field }}' = 'ek_netto'
+                        then replace(
+                            to_char(value::numeric, 'FM999999999990D00'),
+                            '.',
+                            ','
+                        )
+                    else value
+                end,
+                '/' order by value
+            )
+        end
     from (
         select
             value,
-            count(*) as score,
-            length(value) as len
+            count(*) as score
         from (
             select nullif(trim(t39.{{ field }}::text), '') as value
             union all
