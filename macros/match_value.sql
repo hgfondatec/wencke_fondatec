@@ -6,13 +6,24 @@
             when max(score) <= 1 then null
             else string_agg(
                 case
-                    when '{{ field }}' = 'ek_netto'
-                        then replace(
-                            to_char(value::numeric, 'FM999999999990D00'),
+                    when '{{ field }}' = 'art_ek_netto'
+                    then
+                        replace(
+                            to_char(
+                                nullif(
+                                    replace(
+                                        replace(value, '.', ''),
+                                        ',', '.'
+                                    ),
+                                    ''
+                                )::numeric,
+                                'FM999999999990D00'
+                            ),
                             '.',
                             ','
                         )
-                    else value
+                    else
+                        value
                 end,
                 '/' order by value
             )
