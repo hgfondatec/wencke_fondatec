@@ -158,7 +158,13 @@ select
     t42.art_ek_netto                                        as art_ek_netto_42,
     t36.art_ek_netto                                        as art_ek_netto_36,
     {{ match_score('art_ek_netto') }}                       as art_ek_netto_matchscore,
-    {{ match_value('art_ek_netto') }}                       as art_ek_netto_match,
+    NULLIF(
+    REPLACE(
+        REPLACE({{ match_value('art_ek_netto') }}, '.', ''),
+        ',', '.'                               
+        ),
+         ''
+        )::float AS art_ek_netto_match,
 
     t39.art_lagereinheit                                    as art_lagereinheit_39,
     t32.art_lagereinheit                                    as art_lagereinheit_32,
