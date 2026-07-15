@@ -10,7 +10,7 @@ WITH belege AS (
     FROM {{ ref('glasofix_bronze_belege') }}
 ),
 adressen AS (
-    SELECT
+    SELECT distinct
         adr_adressnummer,
         adr_name,
         adr_name_2,
@@ -18,7 +18,7 @@ adressen AS (
         adr_heim,
         adr_krankenkasse,
         adr_rechnungsempfaenger,
-        adr_vertreternummer,
+        TRIM(adr_vertreternummer) as adr_vertreternummer,
         adr_adresse,
         adr_plz,
         adr_stadt,

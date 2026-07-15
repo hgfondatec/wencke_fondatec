@@ -17,7 +17,7 @@ with source_data as (
         idbid0208_186_40 as lfa_ort, 
         idbid0208_226_20 as lfa_telefon
        
-    from {{ source('raw', 'm36idbid0208') }}
+    from {{ source('raw', 'm39idbid0208') }}
 
 )
 

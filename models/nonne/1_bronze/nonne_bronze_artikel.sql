@@ -29,7 +29,7 @@ with source_data as (
         art_7713_5  as art_lagertemperatur_bis,
         art_7718_5  as art_transporttemperatur_von,
         art_7723_5  as art_transporttemperatur_bis
-    from {{ source('raw', 'm36art') }}
+    from {{ source('raw', 'm36art_test') }}
 
 )
 
