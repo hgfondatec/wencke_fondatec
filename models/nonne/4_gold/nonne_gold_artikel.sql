@@ -63,7 +63,10 @@ select
     END as art_divers_flag,
 
     artikel.art_ek_netto,
-    artikel.art_lagereinheit
+    artikel.art_lagereinheit,
+    artikel.art_sort_kz,
+    artikel.art_pauschalartikel,
+    artikel.art_pflege_divisor
 
 
 from artikel
