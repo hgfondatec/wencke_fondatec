@@ -30,6 +30,9 @@ select
     case when t42.art_artikelnummer is not null then 1 else 0 end as verfuegbar_42,
     case when t36.art_artikelnummer is not null then 1 else 0 end as verfuegbar_36,
 
+    {{ match_value_unique('art_artikelname') }}           as art_artikelname_reporting,
+    {{ match_value_unique('art_bezeichnung') }}           as art_bezeichnung_reporting,
+
     (
         case when t39.art_artikelnummer is not null then 1 else 0 end +
         case when t32.art_artikelnummer is not null then 1 else 0 end +

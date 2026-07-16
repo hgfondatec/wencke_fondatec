@@ -8,13 +8,13 @@
             count(*) as score
         from (
 
-            select nullif(trim(t39.{{ field }}::text), '') as value
+            select t39.{{ field }}::text as value
             union all
-            select nullif(trim(t32.{{ field }}::text), '')
+            select t32.{{ field }}::text
             union all
-            select nullif(trim(t42.{{ field }}::text), '')
+            select t42.{{ field }}::text
             union all
-            select nullif(trim(t36.{{ field }}::text), '')
+            select t36.{{ field }}::text
 
         ) s
         where value is not null
