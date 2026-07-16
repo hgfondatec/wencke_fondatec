@@ -57,7 +57,7 @@ sources:
       # M32
       - name: m32adr
       - name: m32adrgrp
-      - name: m32art
+      - name: m32art_test
       - name: m32art_lgr
       - name: m32bel
       - name: m32bg

@@ -67,13 +67,14 @@ select
         else 'Ohne diversen Produkten'
     end as art_divers_flag,
 
-     NULLIF(
-    REPLACE(
-        REPLACE(artikel.art_ek_netto, '.', ''),
-        ',', '.'                               
-        ),
-         ''
-        )::float AS art_ek_netto,
+    CASE
+        WHEN REPLACE(REPLACE(artikel.art_ek_netto, '.', ''), ',', '.')
+            ~ '^[+-]?([0-9]+(\.[0-9]*)?|\.[0-9]+)$'
+        THEN (
+            REPLACE(REPLACE(artikel.art_ek_netto, '.', ''), ',', '.')
+        )::float
+        ELSE NULL
+    END AS art_ek_netto,
     artikel.art_lagereinheit,
     artikel.art_bezeichnung_2,
     artikel.art_bezeichnung_3,
