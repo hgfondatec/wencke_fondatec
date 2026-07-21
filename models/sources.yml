@@ -13,6 +13,7 @@ sources:
       - name: m36art_test
       - name: m36art_lgr
       - name: m36bel 
+      - name: m36bel_test
       - name: m36bg
       - name: m36fil
       - name: m36idbid0208

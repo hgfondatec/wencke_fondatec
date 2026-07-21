@@ -8,7 +8,7 @@
 with raw_data as (
 
     select *
-    from {{ source('raw', 'm36bel') }}
+    from {{ source('raw', 'm36bel_test') }}
 
 ),
 
@@ -112,7 +112,7 @@ source_data as (
         bel_2040_1                       as bel_belegtyp,
         bel_2808_1                       as bel_bonusbeleg,
         bel_2712_11                      as bel_urbeleg_nr,
-        beleggruppe                      as bel_beleggruppe
+        bel_1893_2                       as bel_beleggruppe
 
     from parsed
 
