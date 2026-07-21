@@ -13,7 +13,7 @@ with source_data as (
         art_870_40  as art_bezeichnung_2,
         art_910_40  as art_bezeichnung_3,
         art_950_40  as art_bezeichnung_4,
-        art_41_2    as art_hauptkategorie_id,
+        art_46_5    as art_hauptkategorie_id,
         art_41_5    as art_nebenkategorie_id,
         art_138_8   as art_standardlieferantnummer,
         art_178_9   as art_ek_netto,
@@ -27,7 +27,7 @@ with source_data as (
         art_7713_5  as art_lagertemperatur_bis,
         art_7718_5  as art_transporttemperatur_von,
         art_7723_5  as art_transporttemperatur_bis
-    from {{ source('raw', 'm42art') }}
+    from {{ source('raw', 'm42art_test') }}
 
 )
 
