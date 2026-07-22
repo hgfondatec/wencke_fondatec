@@ -42,7 +42,7 @@ sources:
       # M39
       - name: m39adr
       - name: m39adrgrp
-      - name: m39art
+      - name: m39art_test
       - name: m39art_lgr
       - name: m39bel_test
       - name: m39bg
