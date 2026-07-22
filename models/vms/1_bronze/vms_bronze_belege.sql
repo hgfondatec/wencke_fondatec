@@ -8,7 +8,7 @@
 with raw_data as (
 
     select *
-    from {{ source('raw', 'm42bel') }}
+    from {{ source('raw', 'm42bel_test') }}
 
 ),
 

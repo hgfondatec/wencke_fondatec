@@ -26,9 +26,9 @@ sources:
       # M42
       - name: m42adr
       - name: m42adrgrp
-      - name: m42art
+      - name: m42art_test
       - name: m42art_lgr
-      - name: m42bel
+      - name: m42bel_test
       - name: m42bg
       - name: m42fil
       - name: m42idbid0208
@@ -36,7 +36,7 @@ sources:
       - name: m42idbid0236
       - name: m42lag
       - name: m42nk
-      - name: m42pos
+      - name: m42pos_test
     
 
       # M39
@@ -44,7 +44,7 @@ sources:
       - name: m39adrgrp
       - name: m39art
       - name: m39art_lgr
-      - name: m39bel
+      - name: m39bel_test
       - name: m39bg
       - name: m39fil
       - name: m39idbid0208
@@ -52,7 +52,7 @@ sources:
       - name: m39idbid0236
       - name: m39lag
       - name: m39nk
-      - name: m39pos
+      - name: m39pos_test
       
 
       # M32
@@ -60,7 +60,7 @@ sources:
       - name: m32adrgrp
       - name: m32art_test
       - name: m32art_lgr
-      - name: m32bel
+      - name: m32bel_test
       - name: m32bg
       - name: m32fil
       - name: m32idbid0208
@@ -68,7 +68,7 @@ sources:
       - name: m32idbid0236
       - name: m32lag
       - name: m32nk
-      - name: m32pos
+      - name: m32pos_test
 
       # Sonstige
       - name: m00id0202

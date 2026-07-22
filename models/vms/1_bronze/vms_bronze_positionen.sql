@@ -30,7 +30,7 @@ with source_data as (
         CAST(pos_1766_7 as varchar(20))          as pos_umsatz_bonus_endgueltig
         
 
-    from {{ source('raw', 'm42pos') }}
+    from {{ source('raw', 'm42pos_test') }}
 
 )
 

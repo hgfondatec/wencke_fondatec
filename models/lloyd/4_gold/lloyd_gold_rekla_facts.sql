@@ -41,14 +41,19 @@ select
     positionen.pos_artikelnummer as rekla_artikel_nr,
     positionen.pos_artikeltext as rekla_artikeltext,
     positionen.pos_rekla_verursacher as rekla_verursacher,
-    rekla_grund.rekla_grund_bezeichnung as rekla_grund,
+    rg.rekla_grund_bezeichnung as rekla_grund,
     rekla_massnahme.rekla_massnahme_bezeichnung as rekla_massnahme
 
 from belege 
 left join positionen
     on TRIM(positionen.pos_belegnummer) = TRIM(belege.rekla_beleg_nr)
-left join rekla_grund
-    on CAST(rekla_grund.rekla_grund_id as varchar(5)) = positionen.pos_rekla_grund
+LEFT JOIN rekla_grund rg
+    ON CASE
+       WHEN TRIM(positionen.pos_rekla_grund) ~ '^[0-9]+$'
+       THEN positionen.pos_rekla_grund::INT
+   END
+    =
+    rg.rekla_grund_id::INT
 left join rekla_massnahme
     on rekla_massnahme.rekla_massnahme_merge_key  = positionen.pos_rekla_massnahme
 order by belege.rekla_beleg_nr
