@@ -7,7 +7,7 @@
 
 with source_data as (
 
-    select
+    select distinct
         pos_2_1            as pos_belegart,
         pos_1_1            as pos_beleg_status,
         pos_3_8            as pos_belegnummer,

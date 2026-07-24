@@ -22,6 +22,7 @@ sources:
       - name: m36lag
       - name: m36nk
       - name: m36pos
+      - name: m36vtr
       
       # M42
       - name: m42adr
@@ -37,6 +38,7 @@ sources:
       - name: m42lag
       - name: m42nk
       - name: m42pos_test
+      - name: m42vtr      
     
 
       # M39
@@ -53,6 +55,7 @@ sources:
       - name: m39lag
       - name: m39nk
       - name: m39pos_test
+      - name: m39vtr 
       
 
       # M32
@@ -69,6 +72,7 @@ sources:
       - name: m32lag
       - name: m32nk
       - name: m32pos_test
+      - name: m32vtr 
 
       # Sonstige
       - name: m00id0202

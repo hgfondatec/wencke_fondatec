@@ -85,7 +85,6 @@ from belege
 left join positionen
     on CAST(TRIM(positionen.pos_belegnummer) as varchar(12)) = belege.rechnung_beleg_nr
 
-
 left join beleggruppe
     on LPAD(beleggruppe.bg_beleggruppe_id::varchar, 2, '0') = belege.rechnung_beleggruppe
     and beleggruppe.bg_belegart = belege.rechnung_belegart

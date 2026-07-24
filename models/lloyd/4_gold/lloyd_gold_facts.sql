@@ -13,7 +13,7 @@ WITH silver_belege_positionen AS (
 
 SELECT
 
-    bel_pos.bel_belegnummer AS rechnung_beleg_nr,
+    LPAD(TRIM(bel_pos.bel_belegnummer)::text, 8, '0') AS rechnung_beleg_nr,
     bel_pos.bel_belegdatum AS rechnnung_bel_datum,
 
     CASE
@@ -64,10 +64,10 @@ SELECT
             THEN bel_pos.pos_gesamtumsatz * -1
         WHEN bel_pos.rechnung_steuerart <> '3'
             AND bel_pos.bg_beleggruppe IN ('R00', 'R83')
-            THEN bel_pos.pos_gesamtrohertrag + (bel_pos.pos_ek_einzeln * bel_pos.pos_gesamtmenge)
+            THEN (COALESCE(bel_pos.pos_gesamtrohertrag , 0) + COALESCE(bel_pos.pos_ek_einzeln, 0) * COALESCE(bel_pos.pos_gesamtmenge, 0))
         WHEN bel_pos.rechnung_steuerart <> '3'
             AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02')
-            THEN (bel_pos.pos_gesamtrohertrag + (bel_pos.pos_ek_einzeln * bel_pos.pos_gesamtmenge)) * -1
+            THEN (COALESCE(bel_pos.pos_gesamtrohertrag , 0) + COALESCE(bel_pos.pos_ek_einzeln, 0) * COALESCE(bel_pos.pos_gesamtmenge, 0))* -1
         ELSE bel_pos.pos_gesamtrohertrag
     END AS rechnung_umsatz_calc,
 

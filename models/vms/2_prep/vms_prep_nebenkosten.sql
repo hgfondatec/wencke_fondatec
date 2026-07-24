@@ -16,7 +16,7 @@ with nebkosten as (
         sum(cast(replace(nullif(bel_nk_gefahrgut, ''), ',', '.') as float)) as gefahrgut
 
     from {{ ref('vms_bronze_belege') }}
-    where bel_belegstatus_a_n = 'N'
+    where bel_belegstatus_a_n = 'N' and bel_belegart IN('R','G')
     group by bel_belegnummer
 
 ),
@@ -33,7 +33,7 @@ final as (
         0 as pos_rohertrag_vor_bonus,
         x.betrag as pos_gesamtumsatz,
         x.betrag as pos_gesamtumsatz_vor_bonus,
-        1::float as pos_gesamtmenge
+        0::float as pos_gesamtmenge
 
     from nebkosten n
 

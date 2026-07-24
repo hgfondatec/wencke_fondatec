@@ -13,7 +13,7 @@ WITH silver_belege_positionen AS (
 
 SELECT
 
-    bel_pos.bel_belegnummer AS rechnung_beleg_nr,
+    LPAD(TRIM(bel_pos.bel_belegnummer)::text, 8, '0') AS rechnung_beleg_nr,
     bel_pos.bel_belegdatum AS rechnnung_bel_datum,
 
     CASE

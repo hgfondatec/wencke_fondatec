@@ -8,7 +8,6 @@ with nebkosten as (
 
     select
         bel_belegnummer,
-
         sum(cast(replace(nullif(bel_nk_frachtkostenpauschale, ''), ',', '.') as float)) as frachtkostenpauschale,
         sum(cast(replace(nullif(bel_nk_verpackung, ''), ',', '.') as float)) as verpackung,
         sum(cast(replace(nullif(bel_nk_mindermengenzuschlag, ''), ',', '.') as float)) as mindermengenzuschlag,
@@ -16,7 +15,7 @@ with nebkosten as (
         sum(cast(replace(nullif(bel_nk_gefahrgut, ''), ',', '.') as float)) as gefahrgut
 
     from {{ ref('nonne_bronze_belege') }}
-    where bel_belegstatus_a_n = 'N'
+    where bel_belegstatus_a_n = 'N' and bel_belegart IN('R','G')
     group by bel_belegnummer
 
 ),
@@ -33,7 +32,7 @@ final as (
         0 as pos_rohertrag_vor_bonus,
         x.betrag as pos_gesamtumsatz,
         x.betrag as pos_gesamtumsatz_vor_bonus,
-        1::float as pos_gesamtmenge
+        0::float as pos_gesamtmenge
 
     from nebkosten n
 

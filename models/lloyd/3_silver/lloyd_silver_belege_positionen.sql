@@ -83,7 +83,7 @@ select
 from belege
 
 left join positionen
-    on CAST(positionen.pos_belegnummer as varchar(12)) = belege.rechnung_beleg_nr
+    on CAST(TRIM(positionen.pos_belegnummer) as varchar(12)) = belege.rechnung_beleg_nr
 
 
 left join beleggruppe
