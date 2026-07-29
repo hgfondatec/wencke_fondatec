@@ -79,6 +79,12 @@ sources:
       - name: idbse0043
       - name: tos_artikel_attribut
 
+      #wencke
+      - name: wencke_lv_belege
+      - name: wencke_lv_belege_positionen
+      - name: wencke_lv_belege_nebenkosten
+      - name: wencke_lv_bw_user_stats
+
   - name: reporting
     database: wenke
     schema: reporting
