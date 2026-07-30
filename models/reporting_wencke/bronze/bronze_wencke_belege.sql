@@ -16,5 +16,6 @@ SELECT
     bel_vertreter_nr,
     bel_date,
     bel_project_nr,
-    bel_oe_5
+    bel_oe_5,
+    bel_beleg_bonus
 FROM {{ source('raw', 'wencke_lv_belege') }}

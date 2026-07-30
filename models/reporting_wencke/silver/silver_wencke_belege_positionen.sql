@@ -4,6 +4,8 @@
 ) }}
 
 SELECT
+
+    --aus belege_positionen
     wencke_lv_belege_id,
     pos_nr::varchar AS pos_nr,
     pos_artikel_nr::varchar AS pos_artikel_nr,
@@ -24,17 +26,38 @@ SELECT
     pos_aktionspreis::numeric AS pos_aktionspreis,
     pos_gesamtbetrag::numeric AS pos_gesamtbetrag,
     pos_gesamtbetrag_ohne_nk::numeric AS pos_gesamtbetrag_ohne_nk,
+    pos_gesamtumsatz::numeric AS pos_gesamtumsatz,
     pos_ek_betrag::numeric AS pos_ek_betrag,
     pos_ek_betrag_euro::numeric AS pos_ek_betrag_euro,
     pos_rohertrag_prozent::numeric AS pos_rohertrag_prozent,
     pos_rohertrag::numeric AS pos_rohertrag,
+
+    --aus belege_positionen_bonus
+    roh_vor_bonus::numeric AS pos_rohertrag_vor_bonus,
+
+    --aus belege_positionen
     pos_menge::numeric AS pos_menge,
     pos_skontofaehig_betrag::numeric AS pos_skontofaehig_betrag,
 
     'Artikelposition'::varchar AS positionsart,
 
-    pos_created_by_user::numeric AS pos_created_by_user
+    --aus belege_positionen
+    pos_created_by_user::numeric AS pos_created_by_user,
 
-FROM {{ ref('bronze_wencke_belege_positionen') }}
+    --aus belege_positionen_reklamation
+    rekla_grund::varchar AS pos_rekla_grund,
+    verursacher_user::numeric AS pos_verursacher_user,
+    verursacher::varchar AS pos_verursacher,
+    massnahme::varchar AS pos_massnahme,
+    begruendung::varchar AS pos_begruendung
+
+
+FROM {{ ref('bronze_wencke_belege_positionen') }} bp
+
+LEFT JOIN {{ ref('bronze_wencke_belege_positionen_bonus') }} bpb 
+    on bp.internal_id = bpb.wencke_lv_belege_positionen_id
+
+LEFT JOIN {{ ref('bronze_wencke_belege_positionen_reklamation') }} bpr
+    on bp.internal_id = bpr.wencke_lv_belege_positionen_id
 
 WHERE pos_artikel_nr IS NOT NULL

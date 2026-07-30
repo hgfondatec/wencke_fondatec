@@ -248,6 +248,7 @@ def main():
         ("run", "+wencke_gold_facts"),
         ("run", "easymap_customer")
         ("run", "+gold_wencke_facts_belege_positionen")
+        ("run", "+gold_wencke_facts_belege_positionen_reklamation")
     ]
 
     has_errors = False

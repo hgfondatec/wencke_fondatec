@@ -11,7 +11,7 @@ with positionen as (
         pos_rekla_verursacher,
         pos_rekla_massnahme
     from {{ ref('vms_bronze_positionen') }}
-    where pos_zeilenstatus = '0' and pos_rekla_grund <>''
+    where pos_zeilenstatus = '0' and (pos_rekla_grund <>'' and pos_rekla_grund is not null)
 )
 
 select 

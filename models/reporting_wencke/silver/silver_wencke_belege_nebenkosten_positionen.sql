@@ -42,16 +42,31 @@ SELECT
 
     nk_betrag::numeric AS pos_gesamtbetrag,
     nk_betrag::numeric AS pos_gesamtbetrag_ohne_nk,
+    nk_betrag::numeric AS pos_gesamtumsatz,
 
     NULL::numeric AS pos_ek_betrag,
     NULL::numeric AS pos_ek_betrag_euro,
     NULL::numeric AS pos_rohertrag_prozent,
     NULL::numeric AS pos_rohertrag,
-    1::numeric AS pos_menge,
+
+    --aus belege_positionen_bonus
+    NULL::numeric AS pos_rohertrag_vor_bonus,
+
+    --aus belege_positionen
+    NULL::numeric AS pos_menge,
     NULL::numeric AS pos_skontofaehig_betrag,
 
     'Nebenkosten'::varchar AS positionsart,
-    NULL::numeric AS pos_created_by_user
+
+    --aus belege_positionen
+    NULL::numeric AS pos_created_by_user,
+
+    --aus belege_positionen_reklamation
+    NULL::varchar AS pos_rekla_grund,
+    NULL::numeric AS pos_verursacher_user,
+    NULL::varchar AS pos_verursacher,
+    NULL::varchar AS pos_massnahme,
+    NULL::varchar AS pos_begruendung
 
 FROM {{ ref('bronze_wencke_belege_nebenkosten') }}
 

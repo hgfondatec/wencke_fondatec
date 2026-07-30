@@ -57,57 +57,51 @@ SELECT
 
     CASE
         WHEN bel_pos.rechnung_steuerart IN ('3', '5')
-            AND bel_pos.bg_beleggruppe IN ('R00', 'R83')
+            AND bel_pos.bg_beleggruppe IN ('R00', 'R83','R70')
             THEN bel_pos.pos_gesamtumsatz
         WHEN bel_pos.rechnung_steuerart IN ('3', '5')
-            AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02')
+            AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02','G50')
             THEN bel_pos.pos_gesamtumsatz * -1
         WHEN bel_pos.rechnung_steuerart <> '3'
-            AND bel_pos.bg_beleggruppe IN ('R00', 'R83')
+            AND bel_pos.bg_beleggruppe IN ('R00', 'R83','R70')
             THEN (COALESCE(bel_pos.pos_gesamtrohertrag , 0) + COALESCE(bel_pos.pos_ek_einzeln, 0) * COALESCE(bel_pos.pos_gesamtmenge, 0))
         WHEN bel_pos.rechnung_steuerart <> '3'
-            AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02')
+            AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02','G50')
             THEN (COALESCE(bel_pos.pos_gesamtrohertrag , 0) + COALESCE(bel_pos.pos_ek_einzeln, 0) * COALESCE(bel_pos.pos_gesamtmenge, 0))* -1
         ELSE bel_pos.pos_gesamtrohertrag
     END AS rechnung_umsatz_calc,
 
     CASE
         WHEN bel_pos.rechnung_steuerart IN ('3', '5')
-            AND bel_pos.bg_beleggruppe IN ('R00', 'R83')
+            AND bel_pos.bg_beleggruppe IN ('R00', 'R83','R70')
             THEN bel_pos.pos_gesamtumsatz_vor_bonus
         WHEN bel_pos.rechnung_steuerart IN ('3', '5')
-            AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02')
+            AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02','G50')
             THEN bel_pos.pos_gesamtumsatz_vor_bonus * -1
         WHEN bel_pos.rechnung_steuerart <> '3'
-            AND bel_pos.bg_beleggruppe IN ('R00', 'R83')
-            THEN bel_pos.pos_rohertrag_vor_bonus + (bel_pos.pos_ek_einzeln * bel_pos.pos_gesamtmenge)
+            AND bel_pos.bg_beleggruppe IN ('R00', 'R83','R70')
+            THEN (COALESCE(bel_pos.pos_rohertrag_vor_bonus,0) + COALESCE(bel_pos.pos_ek_einzeln,0) * COALESCE(bel_pos.pos_gesamtmenge,0)) 
         WHEN bel_pos.rechnung_steuerart <> '3'
-            AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02')
-            THEN (bel_pos.pos_rohertrag_vor_bonus + (bel_pos.pos_ek_einzeln * bel_pos.pos_gesamtmenge)) * -1
+            AND bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02','G50')
+            THEN (COALESCE(bel_pos.pos_rohertrag_vor_bonus,0) + COALESCE(bel_pos.pos_ek_einzeln,0) * COALESCE(bel_pos.pos_gesamtmenge,0)) * -1
         ELSE bel_pos.pos_rohertrag_vor_bonus
     END AS rechnung_umsatz_vor_bonus_calc,
 
     CASE
-        WHEN bel_pos.bg_beleggruppe IN ('R00', 'R83')
+        WHEN bel_pos.bg_beleggruppe IN ('R00', 'R83','R70')
             THEN bel_pos.pos_gesamtrohertrag
-        WHEN bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02')
+        WHEN bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02','G50')
             THEN bel_pos.pos_gesamtrohertrag * -1
         ELSE NULL
     END AS rechnung_rohertrag_calc,
 
     CASE
-        WHEN bel_pos.bg_beleggruppe IN ('R00', 'R83')
+        WHEN bel_pos.bg_beleggruppe IN ('R00', 'R83','R70')
             THEN bel_pos.pos_rohertrag_vor_bonus
-        WHEN bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02')
+        WHEN bel_pos.bg_beleggruppe IN ('G00', 'G01', 'G02','G50')
             THEN bel_pos.pos_rohertrag_vor_bonus * -1
         ELSE NULL
-    END AS rechnung_rohertrag_vor_bonus_calc,
-
-    CASE
-        WHEN wgp.adressart_id IS NOT NULL
-            THEN 'Ja'
-        ELSE 'Nein'
-    END AS rechnung_pflichtkauf_kategorie
+    END AS rechnung_rohertrag_vor_bonus_calc
 
 
 FROM silver_belege_positionen bel_pos

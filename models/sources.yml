@@ -17,6 +17,8 @@ sources:
       - name: m36bg
       - name: m36fil
       - name: m36idbid0208
+      - name: m36idbid0234
+      - name: m36idbid0236
       - name: m36id0234
       - name: m36id0236
       - name: m36lag
@@ -81,9 +83,12 @@ sources:
 
       #wencke
       - name: wencke_lv_belege
+      - name: wencke_lv_belege_reklamation
       - name: wencke_lv_belege_positionen
       - name: wencke_lv_belege_nebenkosten
       - name: wencke_lv_bw_user_stats
+      - name: wencke_lv_belege_positionen_bonus
+      - name: wencke_lv_belege_positionen_reklamation
 
   - name: reporting
     database: wenke

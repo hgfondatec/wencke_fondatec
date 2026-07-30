@@ -4,6 +4,7 @@
 ) }}
 
 SELECT
+    internal_id,
     wencke_lv_belege_id,
     pos_nr,
     pos_artikel_nr,
@@ -24,6 +25,7 @@ SELECT
     pos_aktionspreis,
     pos_gesamtbetrag,
     pos_gesamtbetrag_ohne_nk,
+    pos_gesamtumsatz,
     pos_ek_betrag,
     pos_ek_betrag_euro,
     pos_rohertrag_prozent,

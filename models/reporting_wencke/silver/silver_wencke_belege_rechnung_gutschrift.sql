@@ -17,6 +17,7 @@ SELECT
     bel_date,
     bel_project_nr,
     bel_oe_5,
+    bel_beleg_bonus,
 
     CASE
         WHEN bel_project_nr is not null 
