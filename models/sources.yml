@@ -76,6 +76,12 @@ sources:
       - name: m32pos_test
       - name: m32vtr 
 
+       # M38
+      - name: m38adr
+      - name: m38adrgrp
+      - name: m38art
+      - name: m38vtr 
+
       # Sonstige
       - name: m00id0202
       - name: idbse0043

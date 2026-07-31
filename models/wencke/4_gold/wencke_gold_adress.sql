@@ -14,6 +14,8 @@ with final as (
     select concat(mapping_adressnummer,'_32') as key, lloyd.*, 32 as manadant_id, concat(adr_vertreternummer,'_32') as vertreter_key from {{ ref('lloyd_gold_adress') }} lloyd
     union
     select concat(mapping_adressnummer,'_39') as key, glasofix.*, 39 as manadant_id, concat(adr_vertreternummer,'_39') as vertreter_key from {{ ref('glasofix_gold_adress') }} glasofix
+    union
+    select concat(mapping_adressnummer,'_38') as key, kernreich.*, 38 as manadant_id, concat(adr_vertreternummer,'_38') as vertreter_key from {{ ref('kernreich_gold_adress') }} kernreich
 
 )
 

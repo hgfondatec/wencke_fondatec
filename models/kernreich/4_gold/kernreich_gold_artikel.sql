@@ -1,0 +1,83 @@
+{{ 
+    config(
+        materialized='table',
+        tags=['artikel']
+    ) 
+}}
+
+with artikel as (
+    select *
+    from {{ ref('nonne_bronze_artikel') }}
+),
+
+hauptwarengruppe as (
+    select *
+    from {{ ref('nonne_silver_hauptwarengruppe') }}
+),
+
+nebenwarengruppe as (
+    select *
+    from {{ ref('nonne_silver_nebenwarengruppe') }}
+),
+
+lieferant as (
+    select *
+    from {{ ref('nonne_silver_lieferant') }}
+)
+
+select 
+    artikel.art_artikelnummer,
+    artikel.art_artikelname,
+    artikel.art_bezeichnung_2,
+    artikel.art_artikelname_kurz,
+    artikel.art_artikel_alt,
+    artikel.art_artikelnummer || '-' || artikel.art_artikelname as art_bezeichnung,
+
+    hauptwarengruppe.wg_nummer as art_hauptwarengruppe_nummer,
+
+    coalesce(hauptwarengruppe.wg_name, 'keine Bezeichnung') as art_hauptwarengruppe,
+
+    coalesce(hauptwarengruppe.wg_nummer, 'XX') || '-' || 
+    coalesce(hauptwarengruppe.wg_name, 'keine Bezeichnung') 
+        as art_hauptwarenbezeichnung,
+
+    nebenwarengruppe.wg_nummer as art_nebenwarengruppe_nummer,
+
+    coalesce(nebenwarengruppe.wg_name, 'keine Bezeichnung') 
+        as art_nebenwarengruppe,
+
+    coalesce(nebenwarengruppe.wg_nummer, 'XX') || '-' || 
+    coalesce(nebenwarengruppe.wg_name, 'keine Bezeichnung') 
+        as art_nebenwarengruppebezeichnung,
+
+    artikel.art_herstellernummer,
+
+    coalesce(lieferant.adr_standardlieferantname, 'keine Bezeichnung') as art_lieferant,
+
+    coalesce(cast(lieferant.art_standardlieferantnummer as varchar(30)), 'XX') || '-' || 
+    coalesce(lieferant.adr_standardlieferantname, 'keine Bezeichnung') 
+        as art_lieferantbezeichnung,
+
+    CASE when artikel.art_divers_flag = 'J' then 'Nur diverse Produkten'
+    ELSE 'Ohne diversen Produkten'
+    END as art_divers_flag,
+
+    artikel.art_ek_netto,
+    artikel.art_lagereinheit,
+    artikel.art_sort_kz,
+    artikel.art_pauschalartikel,
+    artikel.art_pflege_divisor
+
+
+from artikel
+
+left join hauptwarengruppe 
+    on artikel.art_hauptkategorie_id = hauptwarengruppe.wg_nummer
+
+left join nebenwarengruppe 
+    on artikel.art_nebenkategorie_id = nebenwarengruppe.wg_nummer
+
+left join lieferant 
+    on artikel.art_standardlieferantnummer = lieferant.art_standardlieferantnummer
+
+order by artikel.art_artikelnummer
