@@ -107,6 +107,8 @@ select
     {{ match_score('art_hauptwarenbezeichnung') }}          as art_hauptwarenbezeichnung_matchscore,
     {{ match_value('art_hauptwarenbezeichnung') }}          as art_hauptwarenbezeichnung_match,
 
+    {{ match_value_unique('art_hauptwarenbezeichnung') }}   as art_hauptwarenbezeichnung_reporting,
+
     t39.art_nebenwarengruppe_nummer                         as art_nebenwarengruppe_nummer_39,
     t32.art_nebenwarengruppe_nummer                         as art_nebenwarengruppe_nummer_32,
     t42.art_nebenwarengruppe_nummer                         as art_nebenwarengruppe_nummer_42,
@@ -128,12 +130,16 @@ select
     {{ match_score('art_nebenwarengruppebezeichnung') }}    as art_nebenwarengruppebezeichnung_matchscore,
     {{ match_value('art_nebenwarengruppebezeichnung') }}    as art_nebenwarengruppebezeichnung_match,
 
+    {{ match_value_unique('art_nebenwarengruppebezeichnung') }}        as art_nebenwarengruppebezeichnung_reporting,
+
     t39.art_herstellernummer                                as art_herstellernummer_39,
     t32.art_herstellernummer                                as art_herstellernummer_32,
     t42.art_herstellernummer                                as art_herstellernummer_42,
     t36.art_herstellernummer                                as art_herstellernummer_36,
     {{ match_score('art_herstellernummer') }}               as art_herstellernummer_matchscore,
     {{ match_value('art_herstellernummer') }}               as art_herstellernummer_match,
+
+    {{ match_value_unique('art_herstellernummer') }}        as art_herstellernummer_reporting,
 
     t39.art_lieferant                                       as art_lieferant_39,
     t32.art_lieferant                                       as art_lieferant_32,
@@ -148,6 +154,8 @@ select
     t36.art_lieferantbezeichnung                            as art_lieferantbezeichnung_36,
     {{ match_score('art_lieferantbezeichnung') }}           as art_lieferantbezeichnung_matchscore,
     {{ match_value('art_lieferantbezeichnung') }}           as art_lieferantbezeichnung_match,
+
+    {{ match_value_unique('art_lieferantbezeichnung') }}    as art_lieferantbezeichnung_reporting,
 
     t39.art_divers_flag                                     as art_divers_flag_39,
     t32.art_divers_flag                                     as art_divers_flag_32,

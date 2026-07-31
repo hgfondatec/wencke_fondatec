@@ -237,13 +237,13 @@ def run_dbt_command(command_type, selector):
 
 def main():
     commands = [
-        ("run", "tag:gold_facts"),
-        ("snapshot", "snapshot_gold_facts"),
-        ("run", "tag:gold_adress"),
-        ("run", "tag:gold_artikel"),
+        #("run", "tag:gold_facts"),
+        #("snapshot", "snapshot_gold_facts"),
+        #("run", "tag:gold_adress"),
+        #("run", "tag:gold_artikel"),
         ("run", "+wencke_gold_nebenwarengruppe_check"),
         ("run", "+wencke_gold_hauptwarengruppe_check"),
-        ("run", "+wencke_gold_rekla_facts"),
+        #("run", "+wencke_gold_rekla_facts"),
         ("run", "+wencke_gold_adress"),
         ("run", "+wencke_gold_facts"),
         ("run", "easymap_customer"),
