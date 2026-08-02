@@ -14,13 +14,13 @@ DATABASE_URI = f"postgresql+psycopg2://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_POR
 
 REPORT_TABLE = "dbt_run_log"
 
-SOURCE_SCHEMA = "reporting"
 BACKUP_SCHEMA = "backup"
 
 TABLES = [
-    "nonne_gold_facts",
-    "nonne_gold_artikel",
-    "nonne_gold_adress"
+    "gold_wencke_facts_belege_positionen",
+    "gold_wencke_facts_belege_positionen_reklamation",
+    "wencke_gold_adress",
+    "wencke_gold_artikel",
 ]
 
 # Wenn leer: kein Restore, nur Cleanup
@@ -68,6 +68,12 @@ def restore_tables():
 
     with engine.begin() as conn:
         for table in TABLES:
+
+            for table in TABLES:
+                if table in ("wencke_gold_artikel", "wencke_gold_adress"):
+                    SOURCE_SCHEMA = "reporting"
+                else:
+                    SOURCE_SCHEMA = "reporting_wencke"
             timestamp = datetime.datetime.now()
             start_time = datetime.datetime.now()
             status = "ERFOLGREICH"
