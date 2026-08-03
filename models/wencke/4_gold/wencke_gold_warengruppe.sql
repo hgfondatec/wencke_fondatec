@@ -5,198 +5,146 @@
     )
 }}
 
-with t39 as (
+with alle_warengruppen as (
 
     select distinct
         art_hauptwarengruppe_nummer,
-        art_hauptwarengruppe,
-        art_hauptwarenbezeichnung,
+        nullif(trim(art_hauptwarengruppe::text), '') as art_hauptwarengruppe,
+        nullif(trim(art_hauptwarenbezeichnung::text), '') as art_hauptwarenbezeichnung,
         art_nebenwarengruppe_nummer,
-        art_nebenwarengruppe,
-        art_nebenwarengruppebezeichnung
+        nullif(trim(art_nebenwarengruppe::text), '') as art_nebenwarengruppe,
+        nullif(trim(art_nebenwarengruppebezeichnung::text), '') as art_nebenwarengruppebezeichnung
     from {{ ref('glasofix_gold_artikel') }}
 
-),
-
-t32 as (
+    union all
 
     select distinct
         art_hauptwarengruppe_nummer,
-        art_hauptwarengruppe,
-        art_hauptwarenbezeichnung,
+        nullif(trim(art_hauptwarengruppe::text), ''),
+        nullif(trim(art_hauptwarenbezeichnung::text), ''),
         art_nebenwarengruppe_nummer,
-        art_nebenwarengruppe,
-        art_nebenwarengruppebezeichnung
+        nullif(trim(art_nebenwarengruppe::text), ''),
+        nullif(trim(art_nebenwarengruppebezeichnung::text), '')
     from {{ ref('lloyd_gold_artikel') }}
 
-),
-
-t42 as (
+    union all
 
     select distinct
         art_hauptwarengruppe_nummer,
-        art_hauptwarengruppe,
-        art_hauptwarenbezeichnung,
+        nullif(trim(art_hauptwarengruppe::text), ''),
+        nullif(trim(art_hauptwarenbezeichnung::text), ''),
         art_nebenwarengruppe_nummer,
-        art_nebenwarengruppe,
-        art_nebenwarengruppebezeichnung
+        nullif(trim(art_nebenwarengruppe::text), ''),
+        nullif(trim(art_nebenwarengruppebezeichnung::text), '')
     from {{ ref('vms_gold_artikel') }}
 
-),
-
-t36 as (
+    union all
 
     select distinct
         art_hauptwarengruppe_nummer,
-        art_hauptwarengruppe,
-        art_hauptwarenbezeichnung,
+        nullif(trim(art_hauptwarengruppe::text), ''),
+        nullif(trim(art_hauptwarenbezeichnung::text), ''),
         art_nebenwarengruppe_nummer,
-        art_nebenwarengruppe,
-        art_nebenwarengruppebezeichnung
+        nullif(trim(art_nebenwarengruppe::text), ''),
+        nullif(trim(art_nebenwarengruppebezeichnung::text), '')
     from {{ ref('nonne_gold_artikel_v2') }}
 
-),
-
-t38 as (
+    union all
 
     select distinct
         art_hauptwarengruppe_nummer,
-        art_hauptwarengruppe,
-        art_hauptwarenbezeichnung,
+        nullif(trim(art_hauptwarengruppe::text), ''),
+        nullif(trim(art_hauptwarenbezeichnung::text), ''),
         art_nebenwarengruppe_nummer,
-        art_nebenwarengruppe,
-        art_nebenwarengruppebezeichnung
+        nullif(trim(art_nebenwarengruppe::text), ''),
+        nullif(trim(art_nebenwarengruppebezeichnung::text), '')
     from {{ ref('kernreich_gold_artikel_v2') }}
-
-),
-
-hauptwarengruppe_ids as (
-
-    select art_hauptwarengruppe_nummer from t39
-    union
-    select art_hauptwarengruppe_nummer from t32
-    union
-    select art_hauptwarengruppe_nummer from t42
-    union
-    select art_hauptwarengruppe_nummer from t36
-    union
-    select art_hauptwarengruppe_nummer from t38
 
 ),
 
 gold_hauptwarengruppe as (
 
-    select
+    select distinct on (art_hauptwarengruppe_nummer)
+        art_hauptwarengruppe_nummer,
+        art_hauptwarengruppe,
+        art_hauptwarenbezeichnung
 
-        base.art_hauptwarengruppe_nummer,
+    from (
+        select
+            art_hauptwarengruppe_nummer,
+            art_hauptwarengruppe,
+            art_hauptwarenbezeichnung,
+            count(*) as score
 
-        {{ golden_value('art_hauptwarengruppe') }}
-            as art_hauptwarengruppe,
+        from alle_warengruppen
 
-        {{ golden_value('art_hauptwarenbezeichnung') }}
-            as art_hauptwarenbezeichnung
+        group by
+            art_hauptwarengruppe_nummer,
+            art_hauptwarengruppe,
+            art_hauptwarenbezeichnung
+    ) x
 
-    from hauptwarengruppe_ids base
-
-    left join t39
-        on base.art_hauptwarengruppe_nummer = t39.art_hauptwarengruppe_nummer
-
-    left join t32
-        on base.art_hauptwarengruppe_nummer = t32.art_hauptwarengruppe_nummer
-
-    left join t42
-        on base.art_hauptwarengruppe_nummer = t42.art_hauptwarengruppe_nummer
-
-    left join t36
-        on base.art_hauptwarengruppe_nummer = t36.art_hauptwarengruppe_nummer
-
-    left join t38
-        on base.art_hauptwarengruppe_nummer = t38.art_hauptwarengruppe_nummer
+    order by
+        art_hauptwarengruppe_nummer,
+        score desc,
+        length(regexp_replace(coalesce(art_hauptwarengruppe, ''), '\s+', '', 'g')),
+        art_hauptwarengruppe
 
 ),
 
-warengruppe_ids as (
+gold_nebenwarengruppe as (
 
-    select
+    select distinct on (
         art_hauptwarengruppe_nummer,
         art_nebenwarengruppe_nummer
-    from t39
-
-    union
-
-    select
+    )
         art_hauptwarengruppe_nummer,
-        art_nebenwarengruppe_nummer
-    from t32
+        art_nebenwarengruppe_nummer,
+        art_nebenwarengruppe,
+        art_nebenwarengruppebezeichnung
 
-    union
+    from (
+        select
+            art_hauptwarengruppe_nummer,
+            art_nebenwarengruppe_nummer,
+            art_nebenwarengruppe,
+            art_nebenwarengruppebezeichnung,
+            count(*) as score
 
-    select
+        from alle_warengruppen
+
+        where art_nebenwarengruppe_nummer is not null
+
+        group by
+            art_hauptwarengruppe_nummer,
+            art_nebenwarengruppe_nummer,
+            art_nebenwarengruppe,
+            art_nebenwarengruppebezeichnung
+    ) x
+
+    order by
         art_hauptwarengruppe_nummer,
-        art_nebenwarengruppe_nummer
-    from t42
-
-    union
-
-    select
-        art_hauptwarengruppe_nummer,
-        art_nebenwarengruppe_nummer
-    from t36
-
-    union
-
-    select
-        art_hauptwarengruppe_nummer,
-        art_nebenwarengruppe_nummer
-    from t38
+        art_nebenwarengruppe_nummer,
+        score desc,
+        length(regexp_replace(coalesce(art_nebenwarengruppe, ''), '\s+', '', 'g')),
+        art_nebenwarengruppe
 
 )
 
 select
-
-    wg.art_hauptwarengruppe_nummer,
+    nwg.art_hauptwarengruppe_nummer,
     hwg.art_hauptwarengruppe,
     hwg.art_hauptwarenbezeichnung,
+    nwg.art_nebenwarengruppe_nummer,
+    nwg.art_nebenwarengruppe,
+    nwg.art_nebenwarengruppebezeichnung
 
-    wg.art_nebenwarengruppe_nummer,
-
-    {{ golden_value('art_nebenwarengruppe') }}
-        as art_nebenwarengruppe,
-
-    {{ golden_value('art_nebenwarengruppebezeichnung') }}
-        as art_nebenwarengruppebezeichnung
-
-from warengruppe_ids wg
+from gold_nebenwarengruppe nwg
 
 left join gold_hauptwarengruppe hwg
-    on wg.art_hauptwarengruppe_nummer = hwg.art_hauptwarengruppe_nummer
-
-left join t39
-    on wg.art_hauptwarengruppe_nummer = t39.art_hauptwarengruppe_nummer
-   and wg.art_nebenwarengruppe_nummer = t39.art_nebenwarengruppe_nummer
-
-left join t32
-    on wg.art_hauptwarengruppe_nummer = t32.art_hauptwarengruppe_nummer
-   and wg.art_nebenwarengruppe_nummer = t32.art_nebenwarengruppe_nummer
-
-left join t42
-    on wg.art_hauptwarengruppe_nummer = t42.art_hauptwarengruppe_nummer
-   and wg.art_nebenwarengruppe_nummer = t42.art_nebenwarengruppe_nummer
-
-left join t36
-    on wg.art_hauptwarengruppe_nummer = t36.art_hauptwarengruppe_nummer
-   and wg.art_nebenwarengruppe_nummer = t36.art_nebenwarengruppe_nummer
-
-left join t38
-    on wg.art_hauptwarengruppe_nummer = t38.art_hauptwarengruppe_nummer
-   and wg.art_nebenwarengruppe_nummer = t38.art_nebenwarengruppe_nummer
-
-group by
-    wg.art_hauptwarengruppe_nummer,
-    hwg.art_hauptwarengruppe,
-    hwg.art_hauptwarenbezeichnung,
-    wg.art_nebenwarengruppe_nummer
+    on nwg.art_hauptwarengruppe_nummer
+       = hwg.art_hauptwarengruppe_nummer
 
 order by
-    wg.art_hauptwarengruppe_nummer,
-    wg.art_nebenwarengruppe_nummer
+    nwg.art_hauptwarengruppe_nummer,
+    nwg.art_nebenwarengruppe_nummer
