@@ -81,6 +81,7 @@ sources:
       - name: m38adrgrp
       - name: m38art
       - name: m38vtr 
+      - name: m38bel_test 
 
       # Sonstige
       - name: m00id0202
@@ -95,6 +96,7 @@ sources:
       - name: wencke_lv_bw_user_stats
       - name: wencke_lv_belege_positionen_bonus
       - name: wencke_lv_belege_positionen_reklamation
+      - name: wencke_lv_belege_adressen
 
   - name: reporting
     database: wenke

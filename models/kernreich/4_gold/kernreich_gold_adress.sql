@@ -7,7 +7,7 @@ WITH belege AS (
                 THEN NULLIF(TRIM(bel_heim), '')
             ELSE TRIM(bel_adressnummer)
         END AS belege_adress_nr
-    FROM {{ ref('nonne_bronze_belege') }}
+    FROM {{ ref('kernreich_bronze_belege') }}
 ),
 adressen AS (
     SELECT distinct
@@ -34,7 +34,7 @@ adressen AS (
         adr_letzte_schulung_monat,
         adr_haende_hygieneplan_vorhanden,
         adr_gefahrstoffverzeichnis
-    FROM {{ ref('nonne_bronze_adresse') }}
+    FROM {{ ref('kernreich_bronze_adresse') }}
 ),
 heim AS (
     SELECT
@@ -44,19 +44,19 @@ heim AS (
         heim_praesident_3,
         heim_praesident_2,
         heim_praesident_1
-    FROM {{ ref('nonne_silver_heim') }}
+    FROM {{ ref('kernreich_silver_heim') }}
 ),
 rechnungsempfaenger AS (
     SELECT
         rechnungsempfaenger_id,
         rechnungsempfaenger_bezeichnung
-    FROM {{ ref('nonne_silver_re_empfaenger') }}
+    FROM {{ ref('kernreich_silver_re_empfaenger') }}
 ),
 adressgruppe AS (
     SELECT
         adrgruppe_id,
         adrgruppe_name
-    FROM {{ ref('nonne_bronze_adressgruppe') }}
+    FROM {{ ref('kernreich_bronze_adressgruppe') }}
 ),
 final AS (
     SELECT DISTINCT

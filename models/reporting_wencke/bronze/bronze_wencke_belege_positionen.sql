@@ -4,8 +4,8 @@
 ) }}
 
 SELECT
-    internal_id,
-    wencke_lv_belege_id,
+    wencke_id,
+    bel_wencke_id,
     pos_nr,
     pos_artikel_nr,
     pos_artikel_text,

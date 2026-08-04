@@ -6,7 +6,7 @@
 SELECT
 
     --aus belege_positionen
-    wencke_lv_belege_id,
+    bp.bel_wencke_id,
     pos_nr::varchar AS pos_nr,
     pos_artikel_nr::varchar AS pos_artikel_nr,
     pos_artikel_text::varchar AS pos_artikel_text,
@@ -34,6 +34,9 @@ SELECT
 
     --aus belege_positionen_bonus
     roh_vor_bonus::numeric AS pos_rohertrag_vor_bonus,
+    bonus_erledigt::boolean AS pos_bonus_erledigt,
+    bonus_betrag_endgueltig::numeric AS pos_bonus_betrag_endgueltig,
+    bonus_betrag_vorlaeufig::numeric AS pos_bonus_betrag_vorlaeufig,
 
     --aus belege_positionen
     pos_menge::numeric AS pos_menge,
@@ -55,9 +58,9 @@ SELECT
 FROM {{ ref('bronze_wencke_belege_positionen') }} bp
 
 LEFT JOIN {{ ref('bronze_wencke_belege_positionen_bonus') }} bpb 
-    on bp.internal_id = bpb.wencke_lv_belege_positionen_id
+    on bp.wencke_id = bpb.wencke_id
 
 LEFT JOIN {{ ref('bronze_wencke_belege_positionen_reklamation') }} bpr
-    on bp.internal_id = bpr.wencke_lv_belege_positionen_id
+    on bp.wencke_id = bpr.wencke_id
 
 WHERE pos_artikel_nr IS NOT NULL

@@ -7,7 +7,7 @@
 
 with artikel as (
     select *
-    from {{ ref('nonne_bronze_artikel') }}
+    from {{ ref('kernreich_bronze_artikel') }}
 ),
 
 hauptwarengruppe as (
@@ -85,6 +85,10 @@ select
     artikel.art_lagertemperatur_bis,
     artikel.art_transporttemperatur_von,
     artikel.art_transporttemperatur_bis,
+
+    artikel.art_sort_kz,
+    artikel.art_pauschalartikel,
+    artikel.art_pflege_divisor,
 
     case
         when tos.art_artikelnummer is not null then 'J'

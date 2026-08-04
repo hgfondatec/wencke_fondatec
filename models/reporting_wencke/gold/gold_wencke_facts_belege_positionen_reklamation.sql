@@ -6,7 +6,6 @@
 WITH belege_positionen_reklamation AS (
 
     SELECT
-        b.internal_id,
         b.wencke_id,
         b.mandant,
         b.bel_status,
@@ -37,7 +36,7 @@ WITH belege_positionen_reklamation AS (
     FROM {{ ref('silver_wencke_belege_reklamation') }} b
 
     INNER JOIN {{ ref('silver_wencke_belege_positionen_gesamt') }} p
-        ON b.internal_id = p.wencke_lv_belege_id
+        ON b.wencke_id = p.bel_wencke_id
 
     LEFT JOIN {{ ref('bronze_wencke_reklamation_grund') }} rg
         ON rg.rekla_grund_id = p.pos_rekla_grund

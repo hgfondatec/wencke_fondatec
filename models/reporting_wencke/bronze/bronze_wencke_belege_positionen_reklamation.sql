@@ -4,7 +4,7 @@
 ) }}
 
 SELECT
-    wencke_lv_belege_positionen_id,
+    wencke_id,
     rekla_grund,
     verursacher_user,
     verursacher,

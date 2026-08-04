@@ -80,7 +80,12 @@ select
     {{ golden_value('art_transporttemperatur_von') }} as art_transporttemperatur_von,
     {{ golden_value('art_transporttemperatur_bis') }} as art_transporttemperatur_bis,
 
-    {{ golden_value('art_tos_verfuegbar') }} as art_tos_verfuegbar
+    {{ golden_value('art_tos_verfuegbar') }} as art_tos_verfuegbar,
+
+    {{ golden_value('art_sort_kz') }} as art_sort_kz,
+    {{ golden_value('art_pauschalartikel') }} as art_pauschalartikel,
+    {{ golden_value('art_pflege_divisor') }} as art_pflege_divisor
+
 
 from artikel_ids base
 

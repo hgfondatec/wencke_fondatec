@@ -4,7 +4,6 @@
 ) }}
 
 SELECT
-    internal_id,
     wencke_id,
     mandant,
     bel_status,

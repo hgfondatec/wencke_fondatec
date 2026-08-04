@@ -28,11 +28,11 @@ final as (
         x.pos_positionsnummer,
 
         null::float as pos_ek_einzeln,
-        0 as pos_gesamtrohertrag,
-        0 as pos_rohertrag_vor_bonus,
+        x.betrag as pos_gesamtrohertrag,
+        x.betrag as pos_rohertrag_vor_bonus,
         x.betrag as pos_gesamtumsatz,
         x.betrag as pos_gesamtumsatz_vor_bonus,
-        0::float as pos_gesamtmenge
+        1::float as pos_gesamtmenge
 
     from nebkosten n
 

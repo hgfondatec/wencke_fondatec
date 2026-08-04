@@ -5,7 +5,7 @@
 
 
 SELECT
-    wencke_lv_belege_id,
+    wencke_id as bel_wencke_id,
 
     (9000 + nk_nr)::varchar AS pos_nr,
 
@@ -47,13 +47,16 @@ SELECT
     NULL::numeric AS pos_ek_betrag,
     NULL::numeric AS pos_ek_betrag_euro,
     NULL::numeric AS pos_rohertrag_prozent,
-    NULL::numeric AS pos_rohertrag,
+    nk_betrag::numeric AS pos_rohertrag,
 
     --aus belege_positionen_bonus
-    NULL::numeric AS pos_rohertrag_vor_bonus,
+    nk_betrag::numeric AS pos_rohertrag_vor_bonus,
+    NULL::boolean AS pos_bonus_erledigt,
+    NULL::numeric AS pos_bonus_betrag_endgueltig,
+    NULL::numeric AS pos_bonus_betrag_vorlaeufig,
 
     --aus belege_positionen
-    NULL::numeric AS pos_menge,
+    1::numeric AS pos_menge,
     NULL::numeric AS pos_skontofaehig_betrag,
 
     'Nebenkosten'::varchar AS positionsart,

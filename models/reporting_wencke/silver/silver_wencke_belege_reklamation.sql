@@ -4,7 +4,6 @@
 ) }}
 
 SELECT
-    b.internal_id,
     b.wencke_id,
     b.mandant,
     b.bel_status,
@@ -34,7 +33,7 @@ SELECT
 FROM {{ ref('bronze_wencke_belege') }} b
 
 LEFT JOIN {{ ref('bronze_wencke_belege_reklamation') }} br
-    on b.internal_id = br.wencke_lv_belege_id
+    on b.wencke_id = br.wencke_id
 
 WHERE b.bel_date >= DATE '2025-01-01'
   AND b.bel_date < DATE '2027-01-01'

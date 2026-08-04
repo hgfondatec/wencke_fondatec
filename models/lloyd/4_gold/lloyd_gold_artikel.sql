@@ -86,6 +86,10 @@ select
     artikel.art_transporttemperatur_von,
     artikel.art_transporttemperatur_bis,
 
+    artikel.art_sort_kz,
+    artikel.art_pauschalartikel,
+    artikel.art_pflege_divisor,
+
     case
         when tos.art_artikelnummer is not null then 'J'
         else 'N'

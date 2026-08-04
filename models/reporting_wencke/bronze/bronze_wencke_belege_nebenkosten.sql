@@ -4,7 +4,7 @@
 ) }}
 
 SELECT
-    wencke_lv_belege_id,
+    wencke_id,
     nk_nr,
     nk_betrag
 FROM {{ source('raw', 'wencke_lv_belege_nebenkosten') }}
