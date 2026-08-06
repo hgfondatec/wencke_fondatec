@@ -6,19 +6,19 @@
 }}
 
 select *
-from {{ ref('m32_silver_besuchsberichte') }}
+from {{ ref('lloyd_gold_besuchsberichte') }}
 
 union all
 
 select *
-from {{ ref('m36_silver_besuchsberichte') }}
+from {{ ref('nonne_gold_besuchsberichte') }}
 
 union all
 
 select *
-from {{ ref('m39_silver_besuchsberichte') }}
+from {{ ref('glasofix_gold_besuchsberichte') }}
 
 union all
 
 select *
-from {{ ref('m42_silver_besuchsberichte') }}
+from {{ ref('vms_gold_besuchsberichte') }}

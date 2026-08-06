@@ -83,7 +83,6 @@ sources:
        # M38
       - name: m38adr
       - name: m38adrgrp
-      - name: m38idbse0043
       - name: m38art
       - name: m38vtr 
       - name: m38bel_test 
