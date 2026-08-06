@@ -13,7 +13,7 @@ with source_data as (
         adr_347_30                           as adr_ansprechpartner,
         adr_466_8                            as adr_vertreternummer,
         adr_498_8                            as adr_debitorenkonto,
-        TRIM(adr_482_8)                            as adr_praesident,
+        TRIM(adr_482_8)                      as adr_praesident,
         adr_681_8                            as adr_rechnungsempfaenger,
         adr_673_8                            as adr_heim,
         adr_689_8                            as adr_krankenkasse,

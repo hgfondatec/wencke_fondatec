@@ -19,6 +19,7 @@ sources:
       - name: m36idbid0208
       - name: m36idbid0234
       - name: m36idbid0236
+      - name: m36idbse0043
       - name: m36id0234
       - name: m36id0236
       - name: m36lag
@@ -37,6 +38,7 @@ sources:
       - name: m42idbid0208
       - name: m42idbid0234
       - name: m42idbid0236
+      - name: m42idbse0043
       - name: m42lag
       - name: m42nk
       - name: m42pos_test
@@ -54,6 +56,7 @@ sources:
       - name: m39idbid0208
       - name: m39idbid0234      
       - name: m39idbid0236
+      - name: m39idbse0043
       - name: m39lag
       - name: m39nk
       - name: m39pos_test
@@ -71,6 +74,7 @@ sources:
       - name: m32idbid0208
       - name: m32idbid0234      
       - name: m32idbid0236
+      - name: m32idbse0043
       - name: m32lag
       - name: m32nk
       - name: m32pos_test
@@ -79,13 +83,13 @@ sources:
        # M38
       - name: m38adr
       - name: m38adrgrp
+      - name: m38idbse0043
       - name: m38art
       - name: m38vtr 
       - name: m38bel_test 
 
       # Sonstige
       - name: m00id0202
-      - name: idbse0043
       - name: tos_artikel_attribut
 
       #wencke

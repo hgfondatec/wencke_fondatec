@@ -20,7 +20,7 @@ with source_data as (
         idbse0043_274_10 as kampagnen_nr,
         idbse0043_643_10 as pan_prozess,
         idbse0043_653_10 as pan_aufgabe
-    from {{ source('raw', 'm36idbse0043') }}
+    from {{ source('raw', 'm42idbse0043') }}
 
 )
 
