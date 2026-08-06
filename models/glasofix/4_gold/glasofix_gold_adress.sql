@@ -37,7 +37,9 @@ adressen AS (
         adr_letzte_schulung_jahr,
         adr_letzte_schulung_monat,
         adr_haende_hygieneplan_vorhanden,
-        adr_gefahrstoffverzeichnis
+        adr_gefahrstoffverzeichnis,
+        adr_sort_kz,
+        adr_abc_kategorie
     FROM {{ ref('glasofix_bronze_adresse') }}
 ),
 heim AS (
@@ -88,6 +90,8 @@ final AS (
         a.adr_letzte_schulung_monat,
         a.adr_haende_hygieneplan_vorhanden,
         a.adr_gefahrstoffverzeichnis,
+        a.adr_sort_kz,
+        a.adr_abc_kategorie,
         CAST(ag.adrgruppe_id as varchar(2)) as adrgruppe_id,
         ag.adrgruppe_name,
         r.rechnungsempfaenger_id,

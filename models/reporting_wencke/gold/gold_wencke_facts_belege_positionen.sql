@@ -20,6 +20,7 @@ WITH belege_positionen AS (
         b.bel_project_nr,
         b.bel_oe_5,
         b.bel_beleg_bonus,
+        b.rezept_variante,
 
         p.pos_nr,
         p.pos_artikel_nr,

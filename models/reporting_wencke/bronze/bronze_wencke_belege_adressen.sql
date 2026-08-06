@@ -4,6 +4,7 @@
 ) }}
 
 SELECT
+
     wencke_id,
     adr_typ,
     adr_kurzname,
