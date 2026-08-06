@@ -17,8 +17,8 @@ with lieferant_ids as (
 adressen as (
 
     select distinct
-        adr_adressnummer,
-        adr_name
+        TRIM(adr_adressnummer) as adr_adressnummer,
+        COALESCE(adr_name, 'keine Bezeichnung') AS adr_name
     from {{ ref('glasofix_bronze_adresse') }}
 
 ),
@@ -30,7 +30,7 @@ silver_lieferant as (
         adressen.adr_name                                  as adr_standardlieferantname
     from lieferant_ids
     left join adressen
-        on CAST(lieferant_ids.art_standardlieferantnummer AS text) = CAST(adressen.adr_adressnummer AS text)
+        on CAST(TRIM(lieferant_ids.art_standardlieferantnummer) AS text) = adressen.adr_adressnummer
     order by lieferant_ids.art_standardlieferantnummer
 
 )

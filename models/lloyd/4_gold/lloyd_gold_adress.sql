@@ -1,14 +1,18 @@
 {{ config(materialized='table') }}
 
 WITH belege AS (
+
     SELECT DISTINCT
         CASE
-            WHEN NULLIF(TRIM(bel_projektnummer), '') IS NOT NULL
-                THEN NULLIF(TRIM(bel_heim), '')
-            ELSE TRIM(bel_adressnummer)
+            WHEN bel_project_nr is not null 
+                THEN bel_oe_5
+            ELSE bel_adr_nr
         END AS belege_adress_nr
-    FROM {{ ref('lloyd_bronze_belege') }}
+
+    FROM {{ ref('bronze_wencke_belege') }}
+    WHERE mandant = 32
 ),
+
 adressen AS (
     SELECT distinct
         adr_adressnummer,
@@ -65,8 +69,10 @@ final AS (
         COALESCE(a.adr_name, 'keine Bezeichnung') AS final_name,
         COALESCE(a.adr_name_2, 'keine Bezeichnung') AS final_name_2,
         COALESCE(a.adr_name_3, 'keine Bezeichnung') AS final_name_3,
-        CAST(b.belege_adress_nr AS VARCHAR(10))
-            || '-' || COALESCE(a.adr_name, 'keine Bezeichnung') AS final_adress_name,
+        b.belege_adress_nr
+            || '-' || COALESCE(a.adr_name, 'keine Bezeichnung')
+            || ' ' || COALESCE(a.adr_name_2, 'keine Bezeichnung')
+            || ' ' || COALESCE(a.adr_name_3, 'keine Bezeichnung') AS final_adress_name,
         a.adr_adresse,
         a.adr_plz,
         a.adr_stadt,
@@ -91,7 +97,7 @@ final AS (
         h.heim_praesident_1 AS praesident_1
     FROM belege b
     LEFT JOIN adressen a
-        ON CAST(TRIM(b.belege_adress_nr) AS VARCHAR(10)) = TRIM(a.adr_adressnummer)
+        ON b.belege_adress_nr = TRIM(a.adr_adressnummer)
     LEFT JOIN heim h
         ON h.heim_id = b.belege_adress_nr
     LEFT JOIN rechnungsempfaenger r

@@ -24,7 +24,7 @@
     ) x
     order by
         score desc,
-        length(regexp_replace(value, '\s+', '', 'g')) asc,
+        length(regexp_replace(value, '\s+', '', 'g')) desc,
         value asc
     limit 1
 )

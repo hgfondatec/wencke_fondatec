@@ -3,8 +3,8 @@
 with source_data as (
 
     select
-        distinct TRUNC(agp_1_2)            as adrgruppe_id,
-        agp_3_30                           as adrgruppe_name
+        distinct TRIM(agp_0_60)            as adrgruppe_id,
+        agp_60_8                           as adrgruppe_name
 
     from {{ source('raw', 'm38adrgrp') }}
 
