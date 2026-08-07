@@ -62,11 +62,6 @@ select
     {{ golden_value('art_nebenwarengruppe') }} as art_nebenwarengruppe,
     {{ golden_value('art_nebenwarengruppebezeichnung') }} as art_nebenwarengruppebezeichnung,
 
-    {{ golden_value('art_herstellernummer') }} as art_herstellernummer,
-
-    {{ golden_value('art_lieferant') }} as art_lieferant,
-    {{ golden_value('art_lieferantbezeichnung') }} as art_lieferantbezeichnung,
-
     {{ golden_value('art_divers_flag') }} as art_divers_flag,
     {{ golden_value('art_ek_netto') }} as art_ek_netto,
     {{ golden_value('art_lagereinheit') }} as art_lagereinheit,
