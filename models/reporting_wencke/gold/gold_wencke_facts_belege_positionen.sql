@@ -56,17 +56,17 @@ WITH belege_positionen AS (
         p.pos_created_by_user,
 
 
-        lfa.adr_kurzname,
-        lfa.adr_anrede,
-        lfa.adr_vorname,
-        lfa.adr_nachname,
-        lfa.adr_name1,
-        lfa.adr_name2,
-        lfa.adr_name3,
-        lfa.adr_strasse,
-        lfa.adr_hausnr,
-        lfa.adr_plz,
-        lfa.adr_ort
+        lfa.lieferant_kurzname,
+        lfa.lieferant_anrede,
+        lfa.lieferant_vorname,
+        lfa.lieferant_nachname,
+        lfa.lieferant_name1,
+        lfa.lieferant_name2,
+        lfa.lieferant_name3,
+        lfa.lieferant_strasse,
+        lfa.lieferant_hausnr,
+        lfa.lieferant_plz,
+        lfa.lieferant_ort
 
     FROM {{ ref('silver_wencke_belege_rechnung_gutschrift') }} b
 
@@ -99,6 +99,12 @@ SELECT
         '_',
         COALESCE(mandant::text, '')
     ) AS adress_key,
+
+    CONCAT(
+        COALESCE(pos_artikel_nr::text, ''),
+        '_',
+        COALESCE(mandant::text, '')
+    ) AS artikel_key,
 
     CASE
         WHEN bg_beleggruppe IN ('G00', 'G01', 'G02', 'G50')

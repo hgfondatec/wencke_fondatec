@@ -10,10 +10,23 @@ WITH adresse AS (
     SELECT
         a.*,
         CONCAT(
+            a.adr_vertreter_nr,
+            '_',
+            a.mandant
+        ) AS vertreter_key,
+        
+        CONCAT(
             LTRIM(a.adr_nr, '0'),
             '_',
             a.mandant
-        ) AS adress_key
+        ) AS adress_key,
+
+        CONCAT(
+            a.adr_adressgruppe,
+            '_',
+            a.mandant
+        ) AS adr_adressgruppe_key
+
 
     FROM {{ ref('silver_wencke_adressen') }} AS a
 

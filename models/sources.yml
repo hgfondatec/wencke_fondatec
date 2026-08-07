@@ -8,7 +8,7 @@ sources:
     tables:
       # M36
 
-      - name: m36adr 
+      - name: m36adr_test 
       - name: m36adrgrp
       - name: m36art_test
       - name: m36art_lgr
@@ -84,7 +84,7 @@ sources:
       - name: m38adr
       - name: m38adrgrp
       - name: m38art
-      - name: m38vtr 
+      - name: m38adr_vtr 
       - name: m38bel_test 
 
       # Sonstige

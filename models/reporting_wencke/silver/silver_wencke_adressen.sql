@@ -23,11 +23,11 @@ WITH adresse AS (
         CONCAT(
             a.adr_nr,
             '-',
-            COALESCE(a.adr_firmenname, 'keine Bezeichnung'),
+            COALESCE(a.adr_firmenname, ''),
             ' ',
-            COALESCE(a.adr_firmenname2, 'keine Bezeichnung'),
+            COALESCE(a.adr_firmenname2, ''),
             ' ',
-            COALESCE(a.adr_firmenname3, 'keine Bezeichnung')
+            COALESCE(a.adr_firmenname3, '')
         ) AS adr_text,
 
         a.adr_firmenname,

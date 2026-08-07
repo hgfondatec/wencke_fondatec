@@ -35,9 +35,7 @@ with source_data as (
         adr_1062_1                           as adr_haende_hygieneplan_vorhanden,
         adr_1063_1                           as adr_gefahrstoffverzeichnis,
 
-        TRIM(adr_1602_3)                     as adr_sort_kz,
-
-        adr_1998_1                           as adr_abckategorie
+        TRIM(adr_1602_3)                     as adr_sort_kz
 
     from {{ source('raw', 'm38adr') }}
 
