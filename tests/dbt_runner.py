@@ -252,7 +252,8 @@ def main():
         ("run", "easymap_customer"),
         ("run", "+gold_wencke_facts_belege_positionen"),
         ("run", "+gold_wencke_facts_belege_positionen_reklamation"),
-        ("run", "+gold_wencke_adressen")
+        ("run", "+gold_wencke_adressen"),
+        ("run", "+gold_wencke_artikel_lieferant")
 
     ]
 

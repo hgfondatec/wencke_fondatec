@@ -5,6 +5,7 @@
 
 SELECT
     
+    lfa.wencke_id as wencke_id,
     lfa.adr_kurzname as lieferant_kurzname,
     lfa.adr_anrede as lieferant_anrede,
     lfa.adr_vorname as lieferant_vorname,

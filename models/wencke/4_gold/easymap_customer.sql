@@ -6,20 +6,20 @@
 WITH adressen AS (
 
     SELECT
-        nga.final_adress_nummer,
-        nga.final_name,
-        nga.adr_adresse,
+        nga.adr_nr final_adress_nummer,
+        nga.adr_text final_name,
+        nga.adr_strasse adr_adresse,
         nga.adr_plz,
-        nga.adr_stadt,
-        nga.adrgruppe_name,
-        nga.adr_vertreternummer,
+        nga.adr_ort adr_stadt,
+        '' adrgruppe_name,
+        nga.adr_vertreter_nr adr_vertreternummer,
 
-        CASE
-            WHEN TRIM(nga.final_adress_nummer) ~ '^[0-9]+$'
-                THEN TRIM(nga.final_adress_nummer)::bigint
-        END AS adressnummer_num
+        nga.adr_nr::bigint as adressnummer_num
+    
 
-    FROM {{ ref('nonne_gold_adress') }} AS nga
+    FROM {{ ref('gold_wencke_adressen') }} AS nga
+
+    where mandant = 36
 
 ),
 
@@ -50,19 +50,19 @@ kunden AS (
     FROM adressen AS a
 
     LEFT JOIN {{ ref('raw_vertreter') }} AS rv
-        ON a.adr_vertreternummer = rv.ver_vertreternummer::varchar(20)
+        ON a.adr_vertreternummer::varchar(20) = rv.ver_vertreternummer::varchar(20)
 
 ),
 
 umsatz AS (
 
     SELECT
-        f.rechnung_adress_nr,
+        f.bel_final_adr_nr rechnung_adress_nr,
 
         SUM(
             CASE
-                WHEN f.rechnnung_bel_datum >= DATE_TRUNC('month', CURRENT_DATE)
-                 AND f.rechnnung_bel_datum < DATE_TRUNC('month', CURRENT_DATE)
+                WHEN f.bel_date >= DATE_TRUNC('month', CURRENT_DATE)
+                 AND f.bel_date < DATE_TRUNC('month', CURRENT_DATE)
                                             + INTERVAL '1 month'
                     THEN f.rechnung_umsatz_calc
                 ELSE 0
@@ -71,18 +71,20 @@ umsatz AS (
 
         SUM(
             CASE
-                WHEN f.rechnnung_bel_datum >= CURRENT_DATE - INTERVAL '12 months'
+                WHEN f.bel_date >= CURRENT_DATE - INTERVAL '12 months'
                     THEN f.rechnung_umsatz_calc
                 ELSE 0
             END
         ) AS umsatz_letzte_12_monate,
 
-        MAX(f.rechnnung_bel_datum) AS letzter_umsatz_am
+        MAX(f.bel_date) AS letzter_umsatz_am
 
-    FROM {{ ref('nonne_gold_facts') }} AS f
+    FROM {{ ref('gold_wencke_facts_belege_positionen') }} AS f
+
+    WHERE mandant = 36
 
     GROUP BY
-        f.rechnung_adress_nr
+        f.bel_final_adr_nr
 
 )
 
