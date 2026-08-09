@@ -9,12 +9,13 @@ WITH adresse AS (
 
     SELECT
         a.*,
+
         CONCAT(
             a.adr_vertreter_nr,
             '_',
             a.mandant
         ) AS vertreter_key,
-        
+
         CONCAT(
             LTRIM(a.adr_nr, '0'),
             '_',
@@ -26,7 +27,6 @@ WITH adresse AS (
             '_',
             a.mandant
         ) AS adr_adressgruppe_key
-
 
     FROM {{ ref('silver_wencke_adressen') }} AS a
 
@@ -53,6 +53,7 @@ belege_adress_nr AS (
 )
 
 SELECT
+    ba_nr.adress_key AS beleg_adress_key,
     a.*
 
 FROM belege_adress_nr AS ba_nr
@@ -60,4 +61,4 @@ FROM belege_adress_nr AS ba_nr
 LEFT JOIN adresse AS a
     ON ba_nr.adress_key = a.adress_key
 
-WHERE a.adress_key is not null
+WHERE ba_nr.adress_key IS NOT NULL
