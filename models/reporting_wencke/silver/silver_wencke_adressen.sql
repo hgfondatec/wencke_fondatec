@@ -46,6 +46,7 @@ WITH adresse AS (
         a.adr_vertreter_nr,
         a.adr_hauptvertreter_nr,
         a.adr_abc_kunde,
+        a.adr_skonto1_prozent,
 
         hc.heim AS heim_adr_nr,
         h.heim_firmenname,
@@ -57,12 +58,18 @@ WITH adresse AS (
         kk.pflegekasse_text,
 
         a.adr_re_empfaenger_nr AS re_empfaenger_adr_nr,
-        re.re_empfaenger_firmenname
+        re.re_empfaenger_firmenname,
+
+        i.topserv_statistik_nr,
+        i.topserv_lieferanten_nr
 
     FROM {{ ref('bronze_wencke_adressen') }} AS a
 
     LEFT JOIN {{ ref('bronze_wencke_adressen_healthcare') }} AS hc
         ON a.wencke_id = hc.wencke_id
+
+    LEFT JOIN {{ ref('bronze_wencke_adressen_identifikatoren') }} AS i
+        ON a.wencke_id = i.wencke_id
 
     LEFT JOIN {{ ref('silver_wencke_adressen_heim') }} AS h
         ON hc.heim = h.heim_adr_nr

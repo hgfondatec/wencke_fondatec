@@ -31,5 +31,6 @@ SELECT
     adr_email,
     adr_vertreter_nr,   
     adr_hauptvertreter_nr, 
-    adr_abc_kunde
+    adr_abc_kunde,
+    adr_skonto1_prozent
 FROM {{ source('raw', 'wencke_lv_adressen') }}

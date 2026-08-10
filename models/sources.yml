@@ -103,6 +103,7 @@ sources:
       - name: wencke_lv_belege_rezept
       - name: wencke_lv_adressen
       - name: wencke_lv_adressen_healthcare
+      - name: wencke_lv_adressen_identifikatoren
 
   - name: reporting
     database: wenke

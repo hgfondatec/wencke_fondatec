@@ -94,6 +94,11 @@ SELECT
         ELSE 'Ohne Bonusbelege'
     END AS rechnung_bonusbelege_flag,
 
+    CASE
+        WHEN pos_artikel_nr IN ('ZZ','09990016') THEN 'Nur ZZ & 09990016'
+        ELSE 'Ohne Zusatzartikel'
+    END AS sbs_artikel_filter,
+
     CONCAT(
         COALESCE(bel_final_adr_nr::text, ''),
         '_',
