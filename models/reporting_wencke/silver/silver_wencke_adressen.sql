@@ -49,16 +49,41 @@ WITH adresse AS (
         a.adr_skonto1_prozent,
 
         hc.heim AS heim_adr_nr,
-        h.heim_firmenname,
-        h.praesident_ebene_1_bezeichnung,
-        h.praesident_ebene_2_bezeichnung,
-        h.praesident_ebene_3_bezeichnung,
+        h.adr_firmenname as heim_firmenname,
+
+        CONCAT(
+            p1.adr_nr,
+            '-',
+            COALESCE(p1.adr_firmenname, ''))
+         AS praesident_ebene_1_bezeichnung,
+
+         CONCAT(
+            p2.adr_nr,
+            '-',
+            COALESCE(p2.adr_firmenname, ''))
+         AS praesident_ebene_2_bezeichnung,
+
+         CONCAT(
+            p3.adr_nr,
+            '-',
+            COALESCE(p3.adr_firmenname, ''))
+         AS praesident_ebene_3_bezeichnung,
 
         hc.pflegekasse AS pflegekasse_adr_nr,
-        kk.pflegekasse_text,
+
+        CONCAT(
+            hc.pflegekasse,
+            '-',
+            COALESCE(kk.adr_firmenname, ''))
+         AS pflegekasse_text,
 
         a.adr_re_empfaenger_nr AS re_empfaenger_adr_nr,
-        re.re_empfaenger_firmenname,
+
+        CONCAT(
+            a.adr_re_empfaenger_nr,
+            '-',
+            COALESCE(re.adr_firmenname, ''))
+         AS re_empfaenger_firmenname,
 
         i.topserv_statistik_nr,
         i.topserv_lieferanten_nr
@@ -71,17 +96,29 @@ WITH adresse AS (
     LEFT JOIN {{ ref('bronze_wencke_adressen_identifikatoren') }} AS i
         ON a.wencke_id = i.wencke_id
 
-    LEFT JOIN {{ ref('silver_wencke_adressen_heim') }} AS h
-        ON hc.heim = h.heim_adr_nr
+    LEFT JOIN {{ ref('bronze_wencke_adressen') }} AS h
+        ON hc.heim = h.adr_nr
         AND a.mandant = h.mandant
 
-    LEFT JOIN {{ ref('silver_wencke_adressen_krankenkassen') }} AS kk
+    LEFT JOIN {{ ref('bronze_wencke_adressen') }} AS kk
         ON hc.pflegekasse = kk.adr_nr
         AND a.mandant = kk.mandant
 
-    LEFT JOIN {{ ref('silver_wencke_adressen_re_empfaenger') }} AS re
+    LEFT JOIN {{ ref('bronze_wencke_adressen') }} AS re
         ON a.adr_re_empfaenger_nr = re.adr_nr
         AND a.mandant = re.mandant
+
+    LEFT JOIN {{ ref('bronze_wencke_adressen') }} AS p3
+        ON a.adr_parent_adr = p3.adr_nr
+        AND a.mandant = p3.mandant
+
+    LEFT JOIN {{ ref('bronze_wencke_adressen') }} AS p2
+        ON p3.adr_parent_adr = p2.adr_nr
+        AND p3.mandant = p2.mandant
+
+    LEFT JOIN {{ ref('bronze_wencke_adressen') }} AS p1
+        ON p2.adr_parent_adr = p1.adr_nr
+        AND p2.mandant = p1.mandant
 
 )
 
