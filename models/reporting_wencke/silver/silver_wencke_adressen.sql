@@ -47,6 +47,19 @@ WITH adresse AS (
         a.adr_hauptvertreter_nr,
         a.adr_abc_kunde,
         a.adr_skonto1_prozent,
+        a.adr_sort_kz,
+
+        serv.adr_servicehandbuch_vorhanden,
+        serv.adr_servicehandbuch_jahr,
+        serv.adr_servicehandbuch_monat,
+        serv.adr_servicehandbuch_datum,
+        serv.adr_dosiertechnik,
+        serv.adr_serviceintervall_anzahl_jaehrlich,
+        serv.adr_schulung,
+        serv.adr_letzte_schulung_jahr,
+        serv.adr_letzte_schulung_monat,
+        serv.adr_haende_hygieneplan_vorhanden,
+        serv.adr_gefahrstoffverzeichnis,
 
         hc.heim AS heim_adr_nr,
         h.adr_firmenname as heim_firmenname,
@@ -95,6 +108,9 @@ WITH adresse AS (
 
     LEFT JOIN {{ ref('bronze_wencke_adressen_identifikatoren') }} AS i
         ON a.wencke_id = i.wencke_id
+
+    LEFT JOIN {{ ref('bronze_wencke_adressen_service') }} AS serv
+        ON a.wencke_id = serv.wencke_id
 
     LEFT JOIN {{ ref('bronze_wencke_adressen') }} AS h
         ON hc.heim = h.adr_nr

@@ -104,6 +104,8 @@ sources:
       - name: wencke_lv_adressen
       - name: wencke_lv_adressen_healthcare
       - name: wencke_lv_adressen_identifikatoren
+      - name: wencke_lv_adressen_service
+      - name: wencke_lv_belege_versand
 
   - name: reporting
     database: wenke

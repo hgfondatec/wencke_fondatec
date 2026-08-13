@@ -32,5 +32,6 @@ SELECT
     adr_vertreter_nr,   
     adr_hauptvertreter_nr, 
     adr_abc_kunde,
-    adr_skonto1_prozent
+    adr_skonto1_prozent,
+    adr_sort_kz
 FROM {{ source('raw', 'wencke_lv_adressen') }}
