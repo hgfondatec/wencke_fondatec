@@ -28,16 +28,7 @@ filiale_glasofix as (
 
     select
         filiale_id,
-
-        case
-            when count(*) over () = 1 and filiale_id = '000'
-                then 'L1'
-
-            when filiale_id ~ '^[0-9]+$'
-                then 'L' || cast(cast(filiale_id as integer) as varchar)
-
-            else filiale_id
-        end::varchar(10) as lager_id_mapping,
+        'L' || cast(cast(filiale_id as integer) as varchar) as lager_id_mapping,
         filiale_name,
         firmenname,
         firmenzusatz,

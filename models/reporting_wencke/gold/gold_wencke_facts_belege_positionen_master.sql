@@ -25,7 +25,12 @@ WITH belege_positionen AS (
         b.bel_oe_5,
         b.bel_beleg_bonus,
         CONCAT(b.bel_art,b.bel_beleg_gruppe) as bg_beleggruppe,
-
+        b.bel_filiale,
+        b.bel_liefernde_filiale,
+        'A' || LPAD(b.bel_created_by_user::text, 3, '0') AS bel_auftrag_ersteller,
+        'L' || LPAD(l.bel_updated_by_user::text, 3, '0') AS bel_lieferschein_ersteller,
+        'R' || LPAD(l.bel_updated_by_user::text, 3, '0') AS bel_rechnung_updater,
+        b.bel_versand_art,
 
         br.rezept_variante,
 
@@ -85,6 +90,11 @@ WITH belege_positionen AS (
 
     FROM {{ ref('bronze_wencke_belege') }} b
 
+    LEFT JOIN {{ ref('bronze_wencke_belege') }} l
+        ON l.bel_nr = b.bel_lieferschein_nr
+        AND b.mandant = l.mandant
+        AND l.bel_art = 'L'
+
     LEFT JOIN {{ ref('bronze_wencke_belege_rezept') }} br
         ON b.wencke_id = br.wencke_id
 
@@ -97,9 +107,9 @@ WITH belege_positionen AS (
     LEFT JOIN {{ ref('silver_wencke_belege_adressen_lfa') }} lfa
         ON lfa.wencke_id = b.wencke_id
 
-    WHERE bel_date >= DATE '2025-01-01'
-        AND bel_date < DATE '2027-01-01'
-        AND bel_status = 'N'
+    WHERE b.bel_date >= DATE '2025-01-01'
+        AND b.bel_date < DATE '2027-01-01'
+        AND b.bel_status = 'N'
 
 )
 
@@ -135,6 +145,13 @@ SELECT
         '_',
         COALESCE(mandant::text, '')
     ) AS artikel_key,
+
+    CONCAT(
+        COALESCE(mandant::text, ''),
+        '_',
+        COALESCE(bel_filiale::text, '')
+    ) AS mandant_filial_key,
+
 
     CASE
         WHEN bg_beleggruppe IN ('G00', 'G01', 'G02', 'G50')
