@@ -1,0 +1,42 @@
+MANAGEMENT SUMMARY
+
+- Der Umsatz ist zurückgegangen.
+- Der Rohertrag ist gesunken.
+- Die Marge ist abgenommen.
+
+UMSATZENTWICKLUNG
+
+- Der aktuelle Umsatz beträgt 7.211.067,39 EUR.
+- Der Umsatz im Vormonat betrug 7.167.394,03 EUR.
+- Der Umsatzrückgang beträgt 43.673,36 EUR oder 0,61 %.
+
+ROHERTRAG UND MARGE
+
+- Der aktuelle Rohertrag beträgt 2.287.654,91 EUR.
+- Der Rohertrag im Vormonat betrug 2.369.078,45 EUR.
+- Der Rohertragrückgang beträgt -81.423,54 EUR oder -3,44 %.
+- Die aktuelle Marge beträgt 31,72 %.
+- Die Marge im Vormonat betrug 33,05 %.
+- Die Margenabnahme beträgt -1,33 Prozentpunkte.
+
+WICHTIGSTE KUNDENTREIBER
+
+- Der negative Kundentreiber mit dem Kunden-ID "109380" hat einen Umsatzrückgang von 105.167,76 EUR.
+- Der negative Kundentreiber mit dem Kunden-ID "400020" hat einen Umsatzrückgang von 80.653,05 EUR.
+- Der negative Kundentreiber mit dem Kunden-ID "179850" hat einen Umsatzrückgang von 48.681,12 EUR.
+
+WICHTIGSTE ARTIKELTREIBER
+
+- Der negative Artikeltreiber mit dem Produkt-ID "14020106" hat einen Umsatzrückgang von 149.572,43 EUR.
+- Der negative Artikeltreiber mit dem Produkt-ID "14020101" hat einen Umsatzrückgang von 47.641,62 EUR.
+- Der negative Artikeltreiber mit dem Produkt-ID "09717777" hat einen Umsatzrückgang von 44.191,32 EUR.
+
+MENGENBEOBACHTUNGEN
+
+Es scheint, dass bei den Umsatzrückgangen gleichzeitig deutliche Mengenrückgänge in den betroffenen Produkten aufgetreten sind. Dies könnte auf eine mögliche Reduzierung der Liefermengen oder eine mögliche Reduzierung der Verkaufsabläufe hindeuten.
+
+NÄCHSTE ANALYSE
+
+1. Eine genaue Analyse der Kunden, die einen Umsatzrückgang verursacht haben.
+2. Eine Analyse der Produkte, die einen Umsatzrückgang verursacht haben.
+3. Eine Überprüfung der Liefermengen und der Verkaufsabläufe für die betroffenen Produkte.

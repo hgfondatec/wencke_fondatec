@@ -1,0 +1,130 @@
+{
+    "period": "2026-07-01",
+    "company_kpis": {
+        "revenue_current_eur": 7211067.38,
+        "revenue_previous_eur": 7167394.03,
+        "revenue_change_eur": 43673.36,
+        "revenue_change_pct": 0.61,
+        "gross_profit_current_eur": 2287654.91,
+        "gross_profit_previous_eur": 2369078.45,
+        "gross_profit_change_eur": -81423.54,
+        "gross_profit_change_pct": -3.44,
+        "margin_current_pct": 31.72,
+        "margin_previous_pct": 33.05,
+        "margin_change_percentage_points": -1.33,
+        "quantity_current": 1520673.6,
+        "quantity_previous": 1515810.6,
+        "quantity_change": 4863.0,
+        "quantity_change_pct": 0.32
+    },
+    "top_negative_customers": [
+        {
+            "customer_id": "109380",
+            "revenue_change_eur": -105167.76,
+            "revenue_change_pct": -52.05,
+            "quantity_current": 9922.0,
+            "quantity_previous": 21769.0,
+            "quantity_change": -11847.0
+        },
+        {
+            "customer_id": "400020",
+            "revenue_change_eur": -80653.05,
+            "revenue_change_pct": -100.0,
+            "quantity_current": 10.0,
+            "quantity_previous": 11892.0,
+            "quantity_change": -11882.0
+        },
+        {
+            "customer_id": "179850",
+            "revenue_change_eur": -48681.12,
+            "revenue_change_pct": -99.95,
+            "quantity_current": 2.0,
+            "quantity_previous": 11649.5,
+            "quantity_change": -11647.5
+        }
+    ],
+    "top_positive_customers": [
+        {
+            "customer_id": "400020",
+            "revenue_change_eur": 82206.1,
+            "revenue_change_pct": 9134011.11,
+            "quantity_current": 20049.0,
+            "quantity_previous": 10.0,
+            "quantity_change": 20039.0
+        },
+        {
+            "customer_id": "103660",
+            "revenue_change_eur": 44224.68,
+            "revenue_change_pct": 3345.29,
+            "quantity_current": 2621.0,
+            "quantity_previous": 266.0,
+            "quantity_change": 2355.0
+        },
+        {
+            "customer_id": "105110",
+            "revenue_change_eur": 39931.54,
+            "revenue_change_pct": 1462.3,
+            "quantity_current": 15063.0,
+            "quantity_previous": 815.0,
+            "quantity_change": 14248.0
+        }
+    ],
+    "top_negative_products": [
+        {
+            "product_id": "14020106",
+            "product_name": "bestfour Handtuchpapier 2lg., 25x23cm",
+            "revenue_change_eur": -149572.43,
+            "revenue_change_pct": -92.96,
+            "quantity_current": 470.0,
+            "quantity_previous": 7793.0,
+            "quantity_change": -7323.0
+        },
+        {
+            "product_id": "14020101",
+            "product_name": "bestfour Toilettenpapier",
+            "revenue_change_eur": -47641.62,
+            "revenue_change_pct": -60.33,
+            "quantity_current": 3016.0,
+            "quantity_previous": 5378.0,
+            "quantity_change": -2362.0
+        },
+        {
+            "product_id": "09717777",
+            "product_name": "KÜSTENSANFT Handtuchpapier weiß",
+            "revenue_change_eur": -44191.32,
+            "revenue_change_pct": -81.14,
+            "quantity_current": 363.0,
+            "quantity_previous": 2096.0,
+            "quantity_change": -1733.0
+        }
+    ],
+    "top_positive_products": [
+        {
+            "product_id": "03300828",
+            "product_name": "Satino HiCycle Handtuchpapier PT3",
+            "revenue_change_eur": 168934.52,
+            "revenue_change_pct": 15289.99,
+            "quantity_current": 9730.0,
+            "quantity_previous": 72.0,
+            "quantity_change": 9658.0
+        },
+        {
+            "product_id": "14020106",
+            "product_name": "bestfour Handtuchpapier",
+            "revenue_change_eur": 56850.78,
+            "revenue_change_pct": 502.02,
+            "quantity_current": 3441.0,
+            "quantity_previous": 470.0,
+            "quantity_change": 2971.0
+        },
+        {
+            "product_id": "14020103",
+            "product_name": "bestfour Toilettenpapier 3lg., Recycling",
+            "revenue_change_eur": 50370.91,
+            "revenue_change_pct": 154.12,
+            "quantity_current": 3770.0,
+            "quantity_previous": 1483.0,
+            "quantity_change": 2287.0
+        }
+    ]
+}
