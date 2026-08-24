@@ -50,7 +50,15 @@ SELECT
         ELSE 'nein'
     END AS umsatzrelevant,
 
-    bel_pos.pos_gesamtmenge AS rechnung_gesamtmenge,
+
+    
+    CASE
+        WHEN bg_beleggruppe IN ('G00', 'G01', 'G02', 'G50')
+            THEN COALESCE(bel_pos.pos_gesamtmenge, 0) * -1
+        WHEN bg_beleggruppe IN ('R00', 'R83', 'R70')
+            THEN COALESCE(bel_pos.pos_gesamtmenge, 0)
+        ELSE 0
+    END AS rechnung_gesamtmenge,
     bel_pos.pos_gesamtumsatz AS rechnung_gesamtumsatz,
     bel_pos.pos_gesamtrohertrag AS rechnung_gesamtrohertrag,
     bel_pos.pos_ek_einzeln AS rechnung_ek_einzeln,

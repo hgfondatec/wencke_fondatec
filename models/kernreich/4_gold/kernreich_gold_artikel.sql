@@ -7,7 +7,7 @@
 
 with artikel as (
     select *
-    from {{ ref('nonne_bronze_artikel') }}
+    from {{ ref('kernreich_bronze_artikel') }}
 ),
 
 hauptwarengruppe as (

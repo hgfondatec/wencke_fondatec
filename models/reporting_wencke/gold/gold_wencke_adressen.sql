@@ -46,7 +46,9 @@ belege_adress_nr AS (
             ),
             '_',
             b.mandant
-        ) AS adress_key
+        ) AS adress_key,
+
+        b.mandant
 
     FROM {{ ref('bronze_wencke_belege') }} AS b
 
@@ -54,6 +56,7 @@ belege_adress_nr AS (
 
 SELECT
     ba_nr.adress_key AS beleg_adress_key,
+    ba_nr.mandant as beleg_mandant_id,
     a.*
 
 FROM belege_adress_nr AS ba_nr
@@ -61,4 +64,4 @@ FROM belege_adress_nr AS ba_nr
 LEFT JOIN adresse AS a
     ON ba_nr.adress_key = a.adress_key
 
-WHERE ba_nr.adress_key IS NOT NULL
+--WHERE ba_nr.adress_key IS NOT NULL
