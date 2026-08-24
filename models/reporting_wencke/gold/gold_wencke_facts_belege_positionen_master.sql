@@ -147,10 +147,14 @@ SELECT
     ) AS artikel_key,
 
     CONCAT(
-        COALESCE(mandant::text, ''),
-        '_',
-        COALESCE(bel_filiale::text, '')
-    ) AS mandant_filial_key,
+    COALESCE(mandant::text, ''),
+    '_',
+    CASE
+        WHEN bel_filiale IS NULL THEN '001'
+        WHEN bel_filiale::text = '1' THEN '001'
+        ELSE bel_filiale::text
+    END
+) AS mandant_filial_key,
 
 
     CASE
