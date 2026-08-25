@@ -26,6 +26,8 @@ sources:
       - name: m36nk
       - name: m36pos
       - name: m36vtr
+      - name: m36adr_ekv
+      - name: m36idbid0136
       
       # M42
       - name: m42adr
@@ -43,6 +45,8 @@ sources:
       - name: m42nk
       - name: m42pos_test
       - name: m42vtr      
+      - name: m42adr_ekv
+      - name: m42idbid0136
     
 
       # M39
@@ -61,6 +65,7 @@ sources:
       - name: m39nk
       - name: m39pos_test
       - name: m39vtr 
+      - name: m39adr_ekv
       
 
       # M32
@@ -79,6 +84,7 @@ sources:
       - name: m32nk
       - name: m32pos_test
       - name: m32vtr 
+      - name: m32adr_ekv
 
        # M38
       - name: m38adr
@@ -86,6 +92,7 @@ sources:
       - name: m38art
       - name: m38adr_vtr 
       - name: m38bel_test 
+      - name: m38adr_ekv
 
       # Sonstige
       - name: m00id0202
