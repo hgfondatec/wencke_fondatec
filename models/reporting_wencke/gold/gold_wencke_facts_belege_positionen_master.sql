@@ -22,6 +22,7 @@ WITH belege_positionen AS (
 
         b.bel_vertreter_nr,
         b.bel_date,
+        b.bel_nl_nachlieferung,
         b.bel_project_nr,
         b.bel_oe_5,
         b.bel_beleg_bonus,
@@ -65,6 +66,11 @@ WITH belege_positionen AS (
         p.pos_bonus_betrag_vorlaeufig,
         p.pos_menge,
         p.pos_skontofaehig_betrag,
+        p.pos_gefahrgut_betrag,
+        p.pos_zusatzdruckspalte,
+        p.pos_ausgleich_akt_ek,
+        p.pos_stuetzung_gesamt,
+        p.pos_vorgabe_prozent_euro,
         p.positionsart,
         p.pos_created_by_user,
 
@@ -155,14 +161,14 @@ SELECT
     ) AS artikel_key,
 
     CONCAT(
-    COALESCE(mandant::text, ''),
-    '_',
-    CASE
-        WHEN bel_filiale IS NULL THEN '001'
-        WHEN bel_filiale::text = '1' THEN '001'
-        ELSE bel_filiale::text
-    END
-) AS mandant_filial_key,
+        COALESCE(mandant::text, ''),
+        '_',
+        CASE
+            WHEN bel_filiale IS NULL THEN '001'
+            WHEN bel_filiale::text = '1' THEN '001'
+            ELSE bel_filiale::text
+        END
+    ) AS mandant_filial_key,
 
 
     CASE

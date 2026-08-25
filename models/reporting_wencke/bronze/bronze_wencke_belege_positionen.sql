@@ -32,5 +32,7 @@ SELECT
     pos_rohertrag,
     pos_menge,
     pos_skontofaehig_betrag,
+    pos_gefahrgut_betrag,
+    pos_zusatzdruckspalte,
     pos_created_by_user
 FROM {{ source('raw', 'wencke_lv_belege_positionen') }}

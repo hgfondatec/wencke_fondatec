@@ -41,6 +41,12 @@ SELECT
     --aus belege_positionen
     pos_menge::numeric AS pos_menge,
     pos_skontofaehig_betrag::numeric AS pos_skontofaehig_betrag,
+    pos_gefahrgut_betrag::numeric AS pos_gefahrgut_betrag,
+    pos_zusatzdruckspalte::numeric AS pos_zusatzdruckspalte,
+
+    ausgleich_akt_ek::numeric AS pos_ausgleich_akt_ek,
+    stuetzung_gesamt::numeric AS pos_stuetzung_gesamt,
+    vorgabe_prozent_euro::numeric AS pos_vorgabe_prozent_euro,
 
     'Artikelposition'::varchar AS positionsart,
 
@@ -62,5 +68,8 @@ LEFT JOIN {{ ref('bronze_wencke_belege_positionen_bonus') }} bpb
 
 LEFT JOIN {{ ref('bronze_wencke_belege_positionen_reklamation') }} bpr
     on bp.wencke_id = bpr.wencke_id
+
+LEFT JOIN {{ ref('bronze_wencke_belege_positionen_stuetzung') }} bps
+    on bp.wencke_id = bps.wencke_id
 
 WHERE pos_artikel_nr IS NOT NULL

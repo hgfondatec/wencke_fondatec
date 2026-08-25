@@ -99,6 +99,7 @@ sources:
       - name: wencke_lv_bw_user_stats
       - name: wencke_lv_belege_positionen_bonus
       - name: wencke_lv_belege_positionen_reklamation
+      - name: wencke_lv_belege_positionen_stuetzung
       - name: wencke_lv_belege_adressen
       - name: wencke_lv_belege_rezept
       - name: wencke_lv_adressen

@@ -30,6 +30,7 @@ WITH adresse AS (
             COALESCE(a.adr_firmenname3, '')
         ) AS adr_text,
 
+        a.adr_gesperrt_neue_belege,
         a.adr_firmenname,
         a.adr_firmenname2,
         a.adr_firmenname3,

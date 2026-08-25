@@ -14,6 +14,7 @@ SELECT
     bel_adr_nr,
     bel_vertreter_nr,
     bel_versand_art,
+    bel_nl_nachlieferung,
     bel_date,
     bel_project_nr,
     bel_oe_5,

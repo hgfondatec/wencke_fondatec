@@ -16,6 +16,7 @@ SELECT
     adr_adressgruppe, 
     adr_parent_adr,
     adr_re_empfaenger_nr,
+    adr_gesperrt_neue_belege,
     adr_firmenname, 
     adr_firmenname2, 
     adr_firmenname3, 

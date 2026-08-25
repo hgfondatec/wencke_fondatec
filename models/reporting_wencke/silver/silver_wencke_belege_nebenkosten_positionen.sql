@@ -58,6 +58,11 @@ SELECT
     --aus belege_positionen
     1::numeric AS pos_menge,
     NULL::numeric AS pos_skontofaehig_betrag,
+    NULL::numeric AS pos_gefahrgut_betrag,
+    NULL::numeric AS pos_zusatzdruckspalte,
+    NULL::numeric AS pos_ausgleich_akt_ek,
+    NULL::numeric AS pos_stuetzung_gesamt,
+    NULL::numeric AS pos_vorgabe_prozent_euro,
 
     'Nebenkosten'::varchar AS positionsart,
 
