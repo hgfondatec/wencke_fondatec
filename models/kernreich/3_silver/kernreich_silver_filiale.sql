@@ -1,0 +1,57 @@
+{{
+    config(
+        materialized='table',
+        tags=['lager']
+    )
+}}
+
+with filiale_kernreich_ref as (
+
+    select
+        lager_id::varchar(10)       as filiale_id,
+        lager_name::varchar(255)    as filiale_name,
+        firmenname::varchar(255)    as firmenname,
+        firmenzusatz::varchar(255)  as firmenzusatz,
+        filiale::varchar(255)       as filiale,
+        adresse::varchar(255)       as adresse,
+        plz::varchar(20)            as plz,
+        ort::varchar(255)           as ort,
+        lagergruppe::varchar(255)   as lagergruppe,
+        -- land::varchar(10)        as land,
+        '39'::varchar(10)           as mandant_id
+
+    from {{ ref('kernreich_bronze_filiale') }}
+
+),
+
+filiale_kernreich as (
+
+    select
+        filiale_id,
+        'L' || cast(cast(filiale_id as integer) as varchar) as lager_id_mapping,
+        filiale_name,
+        firmenname,
+        firmenzusatz,
+        filiale,
+        adresse,
+        plz,
+        ort,
+        lagergruppe,
+        -- land,
+        mandant_id
+
+    from filiale_kernreich_ref
+
+),
+
+final as (
+
+    select
+        *,
+        mandant_id || '_' || lager_id_mapping as mandant_lager_key
+    from filiale_kernreich
+
+)
+
+select *
+from final
