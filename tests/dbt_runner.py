@@ -248,6 +248,7 @@ def main():
         ("snapshot", "snapshot_nw_check"),
         ("snapshot", "snapshot_artikel_check"),
         #("run", "+wencke_gold_rekla_facts"),
+        ("run", "+wencke_gold_artikel"),
         ("run", "easymap_customer"),
         ("run", "+gold_wencke_facts_belege_positionen"),
         ("run", "+gold_wencke_facts_belege_positionen_reklamation"),

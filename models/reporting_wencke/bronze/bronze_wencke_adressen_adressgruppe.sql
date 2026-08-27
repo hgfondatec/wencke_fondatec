@@ -31,11 +31,11 @@ WITH adr_gruppe AS (
 
     SELECT DISTINCT
         CASE
-            WHEN TRIM(agp_0_2::text) ~ '^-?[0-9]+([.,][0-9]+)?$'
-            THEN TRUNC(REPLACE(TRIM(agp_0_60::text), ',', '.')::numeric)
+            WHEN TRIM(agp_1_2::text) ~ '^-?[0-9]+([.,][0-9]+)?$'
+            THEN TRUNC(REPLACE(TRIM(agp_1_2::text), ',', '.')::numeric)
             ELSE NULL
         END AS adrgruppe_id,
-        agp_60_8 AS adrgruppe_name,
+        agp_3_30 AS adrgruppe_name,
         '38' AS adrgruppe_mandant
     FROM {{ source('raw', 'm38adrgrp') }}
 
