@@ -47,6 +47,7 @@ WITH adresse AS (
         a.adr_vertreter_nr,
         a.adr_hauptvertreter_nr,
         a.adr_abc_kunde,
+        crm.abc_manuell,
         a.adr_skonto1_prozent,
         a.adr_sort_kz,
 
@@ -100,7 +101,12 @@ WITH adresse AS (
          AS re_empfaenger_firmenname,
 
         i.topserv_statistik_nr,
-        i.topserv_lieferanten_nr
+        i.topserv_lieferanten_nr,
+
+	    crm.besuchsberichte_soll,
+	    crm.besuch_ist,
+        crm.letzter_besuch
+        
 
     FROM {{ ref('bronze_wencke_adressen') }} AS a
 
@@ -136,6 +142,9 @@ WITH adresse AS (
     LEFT JOIN {{ ref('bronze_wencke_adressen') }} AS p1
         ON p2.adr_parent_adr = p1.adr_nr
         AND p2.mandant = p1.mandant
+
+    LEFT JOIN {{ ref('bronze_wencke_adressen_crm') }} AS crm
+        ON a.wencke_id = crm.wencke_id
 
 )
 
