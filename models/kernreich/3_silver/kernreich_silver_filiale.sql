@@ -18,7 +18,7 @@ with filiale_kernreich_ref as (
         ort::varchar(255)           as ort,
         lagergruppe::varchar(255)   as lagergruppe,
         -- land::varchar(10)        as land,
-        '39'::varchar(10)           as mandant_id
+        '38'::varchar(10)           as mandant_id
 
     from {{ ref('kernreich_bronze_filiale') }}
 
