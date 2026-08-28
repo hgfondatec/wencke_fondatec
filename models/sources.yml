@@ -116,6 +116,7 @@ sources:
       - name: wencke_lv_adressen_service
       - name: wencke_lv_adressen_crm
       - name: wencke_lv_belege_versand
+      - name: wencke_lv_vertreter
 
 
   - name: reporting

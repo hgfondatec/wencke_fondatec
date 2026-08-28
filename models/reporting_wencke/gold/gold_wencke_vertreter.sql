@@ -10,7 +10,7 @@ WITH vertreter AS (
     SELECT 
         *,
 
-        CONCAT(TRIM(ver_vertreternummer), '-', ver_vertretername) AS ver_vertreternummer_name,
+        CONCAT(ver_vertreternummer::text, '-', ver_vertretername) AS ver_vertreternummer_name,
 
         CONCAT(
             COALESCE(ver_vertreternummer::text, ''),
