@@ -40,6 +40,7 @@ select distinct
 select 
     artikel.art_artikelnummer,
     artikel.art_artikelname,
+    artikel.art_warengruppe,
     artikel.art_artikelnummer || '-' || artikel.art_artikelname as art_bezeichnung,
 
     hauptwarengruppe.wg_nummer as art_hauptwarengruppe_nummer,

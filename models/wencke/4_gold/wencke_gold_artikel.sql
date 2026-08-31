@@ -53,6 +53,7 @@ select
     {{ golden_value('art_bezeichnung_2') }} as art_bezeichnung_2,
     {{ golden_value('art_bezeichnung_3') }} as art_bezeichnung_3,
     {{ golden_value('art_bezeichnung_4') }} as art_bezeichnung_4,
+    {{ golden_value('art_warengruppe') }} as art_warengruppe,
 
     {{ golden_value('art_hauptwarengruppe_nummer') }} as art_hauptwarengruppe_nummer,
     {{ golden_value('art_hauptwarengruppe') }} as art_hauptwarengruppe,

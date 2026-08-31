@@ -9,6 +9,7 @@ with source_data as (
 
     select distinct
         art_1_25    as art_artikelnummer,
+        art_36_5    as art_warengruppe,
         art_51_60   as art_artikelname,
         art_870_40  as art_bezeichnung_2,
         art_910_40  as art_bezeichnung_3,
