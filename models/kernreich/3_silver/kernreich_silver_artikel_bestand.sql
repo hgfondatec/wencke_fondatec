@@ -81,8 +81,8 @@ artikelbestand_kernreich as (
         ueberbestand_l1           as ueberbestand,
         mindestbestand_l1         as mindestbestand,
         reichweite_l1             as reichweite,
-        '36'::varchar(10)         as mandant_id,
-        '36_L1'::varchar(20)      as mandant_lager_key
+        '38'::varchar(10)         as mandant_id,
+        '38_L1'::varchar(20)      as mandant_lager_key
     from artikelbestand_kernreich_ref
 
     union all
@@ -106,8 +106,8 @@ artikelbestand_kernreich as (
         ueberbestand_l2           as ueberbestand,
         mindestbestand_l2         as mindestbestand,
         reichweite_l2             as reichweite,
-        '36'::varchar(10)         as mandant_id,
-        '36_L2'::varchar(20)      as mandant_lager_key
+        '38'::varchar(10)         as mandant_id,
+        '38_L2'::varchar(20)      as mandant_lager_key
     from artikelbestand_kernreich_ref
 
     union all
@@ -131,8 +131,8 @@ artikelbestand_kernreich as (
         ueberbestand_l3           as ueberbestand,
         mindestbestand_l3         as mindestbestand,
         reichweite_l3             as reichweite,
-        '36'::varchar(10)         as mandant_id,
-        '36_L3'::varchar(20)      as mandant_lager_key
+        '38'::varchar(10)         as mandant_id,
+        '38_L3'::varchar(20)      as mandant_lager_key
     from artikelbestand_kernreich_ref
 
     union all
@@ -156,8 +156,8 @@ artikelbestand_kernreich as (
         ueberbestand_l5           as ueberbestand,
         mindestbestand_l5         as mindestbestand,
         reichweite_l5             as reichweite,
-        '36'::varchar(10)         as mandant_id,
-        '36_L5'::varchar(20)      as mandant_lager_key
+        '38'::varchar(10)         as mandant_id,
+        '38_L5'::varchar(20)      as mandant_lager_key
     from artikelbestand_kernreich_ref
 
 )
