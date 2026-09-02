@@ -21,6 +21,10 @@ with artikel_bestand as (
 
     select * from {{ ref('vms_silver_artikel_bestand') }}
 
+    union all
+
+    select * from {{ ref('kernreich_silver_artikel_bestand') }}
+
 )
 
 select
