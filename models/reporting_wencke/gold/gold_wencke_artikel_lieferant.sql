@@ -7,15 +7,19 @@
 
 WITH artikel_lieferant AS (
 
-    SELECT 
-        *,
+    SELECT distinct
+        mandant                                             AS mandant,
+        art_artikelnummer                                   AS art_artikelnummer,
+        art_herstellernummer                                AS art_herstellernummer,
+        art_lieferant                                       AS art_lieferant,
+        art_lieferantbezeichnung                            AS art_lieferantbezeichnung,
         CONCAT(
             COALESCE(art_artikelnummer::text, ''),
             '_',
             COALESCE(mandant::text, '')
         ) AS artikel_key
 
-    FROM {{ ref('bronze_wencke_artikel_lieferant') }}
+    FROM {{ ref('silver_wencke_artikel') }}
 
 )
 
