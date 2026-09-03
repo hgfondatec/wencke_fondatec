@@ -89,12 +89,11 @@ hauptwarengruppe AS (
 
     UNION ALL
 
-    -- Kernreich: Warengruppentabelle noch nicht vorhanden
     SELECT
         38 AS mandant,
-        NULL::varchar AS wg_nummer,
-        NULL::varchar AS wg_name
-    WHERE FALSE
+        wg_nummer,
+        wg_name
+    FROM {{ ref('kernreich_silver_hauptwarengruppe') }}
 
     UNION ALL
 
@@ -132,12 +131,11 @@ nebenwarengruppe AS (
 
     UNION ALL
 
-    -- Kernreich: Warengruppentabelle noch nicht vorhanden
     SELECT
         38 AS mandant,
-        NULL::varchar AS wg_nummer,
-        NULL::varchar AS wg_name
-    WHERE FALSE
+        wg_nummer,
+        wg_name
+    FROM {{ ref('kernreich_silver_nebenwarengruppe') }}
 
     UNION ALL
 
