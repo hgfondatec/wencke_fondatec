@@ -120,7 +120,8 @@ sources:
       - name: wencke_lv_artikel
       - name: wencke_lv_artikel_attribute
       - name: wencke_lv_artikel_attribute_gefahr
-      - name: wencke_lv_artikel_attribute_temp     
+      - name: wencke_lv_artikel_attribute_temp
+      - name: wencke_lv_artikel_attribute_lager
       - name: wencke_lv_belege_versand
       - name: wencke_lv_vertreter
 
