@@ -19,4 +19,4 @@ SELECT
     art_ueberbestand,
     art_mindestbestand,
     art_reichweite
-FROM {{ source('raw', 'wencke_lv_artikel_bestand') }}
+FROM {{ source('raw', 'wencke_lv_artikel_attribute_lager') }}
