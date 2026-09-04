@@ -19,7 +19,6 @@ SELECT
     beauftragt,
     verfuegbar,
     bestellt,
-    bestelltzum,
     naechster_bestelltermin,
     naechste_bestellmenge,
     ueberbestand,

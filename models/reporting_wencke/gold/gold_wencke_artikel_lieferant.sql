@@ -22,7 +22,7 @@ WITH artikel_lieferant AS (
             COALESCE(mandant::text, '')
         ) AS artikel_key
 
-    FROM {{ ref('silver_wencke_lieferant_artikel') }}
+    FROM {{ ref('silver_wencke_artikel_lieferant') }}
 
 )
 

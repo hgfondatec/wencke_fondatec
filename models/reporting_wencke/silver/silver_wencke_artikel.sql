@@ -67,7 +67,7 @@ lieferant AS (
         art_lieferant,
         art_lieferantbezeichnung
 
-    FROM {{ ref('silver_wencke_lieferant_artikel') }}
+    FROM {{ ref('silver_wencke_artikel_lieferant') }}
 
 ),
 

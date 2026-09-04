@@ -15,7 +15,6 @@ WITH bestand AS (
         art_beauftragt,
         art_verfuegbar,
         art_bestellt,
-        art_bestelltzum,
         art_naechster_bestelltermin,
         art_naechste_bestellmenge,
         art_ueberbestand,
@@ -53,7 +52,7 @@ lieferant AS (
     SELECT
         wencke_id,
         art_lieferantbezeichnung
-    FROM {{ ref('silver_wencke_lieferant_artikel') }}
+    FROM {{ ref('silver_wencke_artikel_lieferant') }}
 
 )
 
@@ -70,7 +69,6 @@ SELECT
     b.art_beauftragt::float8 AS beauftragt,
     b.art_verfuegbar::float8 AS verfuegbar,
     b.art_bestellt::float8 AS bestellt,
-    b.art_bestelltzum::varchar(255) AS bestelltzum,
     b.art_naechster_bestelltermin::varchar(255) AS naechster_bestelltermin,
     b.art_naechste_bestellmenge::float8 AS naechste_bestellmenge,
     b.art_ueberbestand::varchar(1) AS ueberbestand,

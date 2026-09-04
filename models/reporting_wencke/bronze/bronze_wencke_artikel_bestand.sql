@@ -13,7 +13,6 @@ SELECT
     art_beauftragt,
     art_verfuegbar,
     art_bestellt,
-    art_bestelltzum,
     art_naechster_bestelltermin,
     art_naechste_bestellmenge,
     art_ueberbestand,

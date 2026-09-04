@@ -254,7 +254,9 @@ def main():
         ("run", "+gold_wencke_facts_belege_positionen_reklamation"),
         ("run", "+gold_wencke_adressen"),
         ("run", "+gold_wencke_artikel_lieferant"),
-        ("snapshot", "snapshot_vertreter_kunde_mapping")
+        ("snapshot", "snapshot_gold_adressen"),
+        ("run", "+gold_wencke_artikel"),
+        ("run", "+gold_wencke_artikel_check")
     ]
 
     has_errors = False
