@@ -7,22 +7,24 @@
 
 WITH artikel_lieferant AS (
 
-    SELECT distinct
-        mandant                                             AS mandant,
-        art_artikelnummer                                   AS art_artikelnummer,
-        art_herstellernummer                                AS art_herstellernummer,
-        art_lieferant                                       AS art_lieferant,
-        art_lieferantbezeichnung                            AS art_lieferantbezeichnung,
+    SELECT DISTINCT
+        mandant,
+        art_artikelnummer,
+        art_herstellernummer,
+        art_lieferant,
+        art_lieferantbezeichnung,
+        topserv_lieferanten_nr,
+        adr_zentral_kunden_nr,
+
         CONCAT(
             COALESCE(art_artikelnummer::text, ''),
             '_',
             COALESCE(mandant::text, '')
         ) AS artikel_key
 
-    FROM {{ ref('silver_wencke_artikel') }}
+    FROM {{ ref('silver_wencke_lieferant_artikel') }}
 
 )
 
-SELECT
-    *
+SELECT *
 FROM artikel_lieferant

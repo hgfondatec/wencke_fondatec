@@ -50,6 +50,7 @@ WITH adresse AS (
         crm.abc_manuell,
         a.adr_skonto1_prozent,
         a.adr_sort_kz,
+        a.adr_zentral_kunden_nr,
 
         serv.adr_servicehandbuch_vorhanden,
         serv.adr_servicehandbuch_jahr,
@@ -64,49 +65,48 @@ WITH adresse AS (
         serv.adr_gefahrstoffverzeichnis,
 
         hc.heim AS heim_adr_nr,
-        h.adr_firmenname as heim_firmenname,
+        h.adr_firmenname AS heim_firmenname,
 
         CONCAT(
             p1.adr_nr,
             '-',
-            COALESCE(p1.adr_firmenname, ''))
-         AS praesident_ebene_1_bezeichnung,
+            COALESCE(p1.adr_firmenname, '')
+        ) AS praesident_ebene_1_bezeichnung,
 
-         CONCAT(
+        CONCAT(
             p2.adr_nr,
             '-',
-            COALESCE(p2.adr_firmenname, ''))
-         AS praesident_ebene_2_bezeichnung,
+            COALESCE(p2.adr_firmenname, '')
+        ) AS praesident_ebene_2_bezeichnung,
 
-         CONCAT(
+        CONCAT(
             p3.adr_nr,
             '-',
-            COALESCE(p3.adr_firmenname, ''))
-         AS praesident_ebene_3_bezeichnung,
+            COALESCE(p3.adr_firmenname, '')
+        ) AS praesident_ebene_3_bezeichnung,
 
         hc.pflegekasse AS pflegekasse_adr_nr,
 
         CONCAT(
             hc.pflegekasse,
             '-',
-            COALESCE(kk.adr_firmenname, ''))
-         AS pflegekasse_text,
+            COALESCE(kk.adr_firmenname, '')
+        ) AS pflegekasse_text,
 
         a.adr_re_empfaenger_nr AS re_empfaenger_adr_nr,
 
         CONCAT(
             a.adr_re_empfaenger_nr,
             '-',
-            COALESCE(re.adr_firmenname, ''))
-         AS re_empfaenger_firmenname,
+            COALESCE(re.adr_firmenname, '')
+        ) AS re_empfaenger_firmenname,
 
         i.topserv_statistik_nr,
         i.topserv_lieferanten_nr,
 
-	    crm.besuchsberichte_soll,
-	    crm.besuch_ist,
+        crm.besuchsberichte_soll,
+        crm.besuch_ist,
         crm.letzter_besuch
-        
 
     FROM {{ ref('bronze_wencke_adressen') }} AS a
 
