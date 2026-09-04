@@ -60,6 +60,7 @@ current_state AS (
 
     SELECT
         *,
+
         ROW_NUMBER() OVER (
             PARTITION BY beleg_adress_key
             ORDER BY dbt_valid_from DESC
@@ -78,37 +79,39 @@ SELECT
     p2,
     p3,
 
+    dbt_valid_from AS letzter_stand,
+
     CASE
         WHEN adr_text IS DISTINCT FROM adr_text_letzter_wert
-            AND adr_text_letzter_wert IS NOT NULL
+             AND adr_text_letzter_wert IS NOT NULL
         THEN 1
         ELSE 0
     END AS adr_text_änderung,
 
     CASE
         WHEN vertreter IS DISTINCT FROM vertreter_letzter_wert
-            AND vertreter_letzter_wert IS NOT NULL
+             AND vertreter_letzter_wert IS NOT NULL
         THEN 1
         ELSE 0
     END AS vertreter_änderung,
 
     CASE
         WHEN p1 IS DISTINCT FROM p1_letzter_wert
-            AND p1_letzter_wert IS NOT NULL
+             AND p1_letzter_wert IS NOT NULL
         THEN 1
         ELSE 0
     END AS p1_änderung,
 
     CASE
         WHEN p2 IS DISTINCT FROM p2_letzter_wert
-            AND p2_letzter_wert IS NOT NULL
+             AND p2_letzter_wert IS NOT NULL
         THEN 1
         ELSE 0
     END AS p2_änderung,
 
     CASE
         WHEN p3 IS DISTINCT FROM p3_letzter_wert
-            AND p3_letzter_wert IS NOT NULL
+             AND p3_letzter_wert IS NOT NULL
         THEN 1
         ELSE 0
     END AS p3_änderung,

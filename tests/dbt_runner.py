@@ -256,7 +256,8 @@ def main():
         ("run", "+gold_wencke_artikel_lieferant"),
         ("snapshot", "snapshot_gold_adressen"),
         ("run", "+gold_wencke_artikel"),
-        ("run", "+gold_wencke_artikel_check")
+        ("run", "+gold_wencke_artikel_check"),
+        ("run", "+gold_wencke_adressen_changes")
     ]
 
     has_errors = False
