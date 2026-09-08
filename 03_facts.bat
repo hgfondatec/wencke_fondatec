@@ -6,7 +6,7 @@ call "C:\dbt\.venv\Scripts\activate.bat"
 REM Zum Python-Skript wechseln
 cd /d "C:\dbt\wencke_fondatec\tests"
 
-REM Adressen ausführen
-python dbt_runner.py artikel_bestand
+REM Facts ausführen
+python dbt_runner.py facts
 
 exit /b %ERRORLEVEL%

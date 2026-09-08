@@ -7,6 +7,6 @@ REM Zum Python-Skript wechseln
 cd /d "C:\dbt\wencke_fondatec\tests"
 
 REM Adressen ausführen
-python dbt_runner.py artikel_bestand
+python dbt_runner.py adressen
 
 exit /b %ERRORLEVEL%
