@@ -81,6 +81,7 @@ JOBS = {
             ("run", "+gold_wencke_adressen_changes"),
             ("run", "+gold_wencke_vertreter"),
             ("run", "+gold_wencke_bediener"),
+            ("run", "gold_wencke_adressgruppe_check"),
         ],
     },
 

@@ -10,3 +10,8 @@ UNION ALL
 
 SELECT *
 FROM {{ ref('silver_wencke_belege_nebenkosten_positionen') }}
+
+UNION ALL
+
+SELECT *
+FROM {{ ref('silver_wencke_belege_kommentare_positionen') }}
