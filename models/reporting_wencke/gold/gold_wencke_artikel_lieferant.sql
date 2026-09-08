@@ -85,14 +85,35 @@ harmonisierung AS (
 )
 
 SELECT
-    a.*,
+    a.mandant,
+    a.art_artikelnummer,
+    a.art_herstellernummer,
+    a.art_lieferant,
+    a.art_lieferantbezeichnung,
+    a.topserv_lieferanten_nr,
+    a.adr_zentral_kunden_nr,
+    a.artikel_key,
+
     h.art_lieferantbezeichnung_harmonisiert,
 
-    CONCAT(
-        a.adr_zentral_kunden_nr,
-        ' - ',
-        h.art_lieferantbezeichnung_harmonisiert
-    ) AS art_lieferant_harmonisiert
+    CASE
+        WHEN a.adr_zentral_kunden_nr IS NOT NULL
+         AND h.art_lieferantbezeichnung_harmonisiert IS NOT NULL
+        THEN CONCAT(
+            a.adr_zentral_kunden_nr,
+            ' - ',
+            h.art_lieferantbezeichnung_harmonisiert
+        )
+
+        WHEN a.adr_zentral_kunden_nr IS NOT NULL
+        THEN a.adr_zentral_kunden_nr::text
+
+        WHEN h.art_lieferantbezeichnung_harmonisiert IS NOT NULL
+        THEN h.art_lieferantbezeichnung_harmonisiert
+
+        ELSE NULL
+
+    END AS art_lieferant_harmonisiert
 
 FROM artikel_lieferant AS a
 
