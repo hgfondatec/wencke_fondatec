@@ -41,8 +41,7 @@ harmonisierung_basis AS (
 
     SELECT
         adr_zentral_kunden_nr,
-        lieferantenbezeichnung_bereinigt,
-        COUNT(*) AS anzahl
+        lieferantenbezeichnung_bereinigt
 
     FROM artikel_lieferant
 
@@ -84,7 +83,13 @@ harmonisierung AS (
 
 SELECT
     a.*,
-    h.art_lieferantbezeichnung_harmonisiert
+    h.art_lieferantbezeichnung_harmonisiert,
+
+    CONCAT(
+        a.adr_zentral_kunden_nr,
+        ' - ',
+        h.art_lieferantbezeichnung_harmonisiert
+    ) AS art_lieferant_harmonisiert
 
 FROM artikel_lieferant AS a
 
