@@ -48,6 +48,7 @@ harmonisierung_basis AS (
 
     WHERE adr_zentral_kunden_nr IS NOT NULL
       AND lieferantenbezeichnung_bereinigt IS NOT NULL
+      AND LENGTH(lieferantenbezeichnung_bereinigt) >= 5
 
     GROUP BY
         adr_zentral_kunden_nr,
@@ -69,7 +70,6 @@ harmonisierung AS (
             ROW_NUMBER() OVER (
                 PARTITION BY adr_zentral_kunden_nr
                 ORDER BY
-                    anzahl DESC,
                     LENGTH(lieferantenbezeichnung_bereinigt) ASC,
                     lieferantenbezeichnung_bereinigt ASC
             ) AS rn
