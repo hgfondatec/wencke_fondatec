@@ -8,6 +8,7 @@ SELECT
     user_id,
     stat_type,
     stat_value,
+    
     stat_date,
     CONCAT(
         user_id::VARCHAR,

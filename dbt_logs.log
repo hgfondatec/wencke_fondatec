@@ -7950,3 +7950,18 @@ ENDE JOB: ARTIKEL_BESTAND
 Status: ERFOLGREICH
 Dauer: 12.76 Sekunden
 ################################################################################
+
+################################################################################
+START JOB: ARTIKEL_BESTAND
+Startzeit: 2026-09-09 09:55:05
+################################################################################
+
+--- DBT RUN +wencke_gold_facts_artikel_bestand 2026-09-09 09:55:06.198473 ---
+07:55:12  Running with dbt=1.11.9 | 07:55:12  Registered adapter: postgres=1.10.0 | 07:55:15  Found 4 seeds, 257 models, 5 snapshots, 104 sources, 470 macros | 07:55:15   | 07:55:15  Concurrency: 4 threads (target='dev') | 07:55:15   | 07:55:15  1 of 11 START sql table model reporting.glasofix_bronze_artikel_bestand ........ [RUN] | 07:55:15  2 of 11 START sql table model reporting.kernreich_bronze_artikel_bestand ....... [RUN] | 07:55:15  3 of 11 START sql table model reporting.lloyd_bronze_artikel_bestand ........... [RUN] | 07:55:15  4 of 11 START sql table model reporting.nonne_bronze_artikel_bestand ........... [RUN] | 07:55:16  1 of 11 OK created sql table model reporting.glasofix_bronze_artikel_bestand ... [SELECT 27036 in 0.38s] | 07:55:16  5 of 11 START sql table model reporting.vms_bronze_artikel_bestand ............. [RUN] | 07:55:16  2 of 11 OK created sql table model reporting.kernreich_bronze_artikel_bestand .. [SELECT 39426 in 0.39s] | 07:55:16  3 of 11 OK created sql table model reporting.lloyd_bronze_artikel_bestand ...... [SELECT 50515 in 0.38s] | 07:55:16  6 of 11 START sql table model reporting.glasofix_silver_artikel_bestand ........ [RUN] | 07:55:16  4 of 11 OK created sql table model reporting.nonne_bronze_artikel_bestand ...... [SELECT 37645 in 0.38s] | 07:55:16  7 of 11 START sql table model reporting.kernreich_silver_artikel_bestand ....... [RUN] | 07:55:16  8 of 11 START sql table model reporting.lloyd_silver_artikel_bestand ........... [RUN] | 07:55:16  5 of 11 OK created sql table model reporting.vms_bronze_artikel_bestand ........ [SELECT 30130 in 0.21s] | 07:55:16  9 of 11 START sql table model reporting.nonne_silver_artikel_bestand ........... [RUN] | 07:55:16  6 of 11 OK created sql table model reporting.glasofix_silver_artikel_bestand ... [SELECT 27036 in 0.25s] | 07:55:16  10 of 11 START sql table model reporting.vms_silver_artikel_bestand ............ [RUN] | 07:55:16  8 of 11 OK created sql table model reporting.lloyd_silver_artikel_bestand ...... [SELECT 101030 in 0.59s] | 07:55:16  7 of 11 OK created sql table model reporting.kernreich_silver_artikel_bestand .. [SELECT 157704 in 0.65s] | 07:55:17  10 of 11 OK created sql table model reporting.vms_silver_artikel_bestand ....... [SELECT 90390 in 0.46s] | 07:55:17  9 of 11 OK created sql table model reporting.nonne_silver_artikel_bestand ...... [SELECT 150580 in 0.62s] | 07:55:17  11 of 11 START sql table model reporting.wencke_gold_facts_artikel_bestand ..... [RUN] | 07:55:17  11 of 11 OK created sql table model reporting.wencke_gold_facts_artikel_bestand  [SELECT 526740 in 0.49s] | 07:55:17   | 07:55:17  Finished running 11 table models in 0 hours 0 minutes and 2.31 seconds (2.31s). | 07:55:17   | 07:55:17  Completed successfully | 07:55:17   | 07:55:17  Done. PASS=11 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=11 | 
+Status: ERFOLGREICH, Dauer: 13.20 Sekunden
+
+################################################################################
+ENDE JOB: ARTIKEL_BESTAND
+Status: ERFOLGREICH
+Dauer: 13.47 Sekunden
+################################################################################
