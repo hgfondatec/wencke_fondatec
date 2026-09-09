@@ -13,7 +13,7 @@ with artikel_ids as (
     union
     select art_artikelnummer from {{ ref('vms_gold_artikel') }}
     union
-    select art_artikelnummer from {{ ref('nonne_gold_artikel_v2') }}
+    select art_artikelnummer from {{ ref('nonne_gold_artikel_v2') }} 
 
 ),
 
