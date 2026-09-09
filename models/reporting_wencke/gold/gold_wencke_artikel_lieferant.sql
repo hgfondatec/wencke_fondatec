@@ -59,7 +59,7 @@ harmonisierung AS (
     SELECT
         adr_zentral_kunden_nr,
         lieferantenbezeichnung_bereinigt
-            AS art_lieferantbezeichnung_harmonisiert
+            AS adr_zentral_kunden_name_harmonisiert
 
     FROM (
 
@@ -94,26 +94,27 @@ SELECT
     a.adr_zentral_kunden_nr,
     a.artikel_key,
 
-    h.art_lieferantbezeichnung_harmonisiert,
+    h.adr_zentral_kunden_name_harmonisiert
+        AS "adr_zentral_kunden_name (harmonisiert)",
 
     CASE
         WHEN a.adr_zentral_kunden_nr IS NOT NULL
-         AND h.art_lieferantbezeichnung_harmonisiert IS NOT NULL
+         AND h.adr_zentral_kunden_name_harmonisiert IS NOT NULL
         THEN CONCAT(
             a.adr_zentral_kunden_nr,
             ' - ',
-            h.art_lieferantbezeichnung_harmonisiert
+            h.adr_zentral_kunden_name_harmonisiert
         )
 
         WHEN a.adr_zentral_kunden_nr IS NOT NULL
         THEN a.adr_zentral_kunden_nr::text
 
-        WHEN h.art_lieferantbezeichnung_harmonisiert IS NOT NULL
-        THEN h.art_lieferantbezeichnung_harmonisiert
+        WHEN h.adr_zentral_kunden_name_harmonisiert IS NOT NULL
+        THEN h.adr_zentral_kunden_name_harmonisiert
 
         ELSE NULL
 
-    END AS art_lieferant_harmonisiert
+    END AS "adr_zentral_kunden_bez (harmonisiert)"
 
 FROM artikel_lieferant AS a
 
