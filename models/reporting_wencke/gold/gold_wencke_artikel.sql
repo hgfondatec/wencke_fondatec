@@ -16,7 +16,7 @@ WITH artikel_ids AS (
 values_long AS (
 
     SELECT
-        s.art_artikelnummer,
+        s.art_artikelnummer, 
         v.field_name,
         v.value
 
