@@ -11,15 +11,20 @@ SELECT DISTINCT
         '_',
         nebenkategorie_nummer
     ) AS kategorie_key,
+
     mandant,
+
     hauptkategorie_nummer,
     hauptkategorie_name,
-    hauptkategorie_harmonisiert,
+    hauptkategorie_name_harmonisiert,
+    hauptkategorie_bezeichnung_harmonisiert,
+
     nebenkategorie_nummer,
     nebenkategorie_name,
-    nebenkategorie_harmonisiert
+    nebenkategorie_name_harmonisiert,
+    nebenkategorie_bezeichnung_harmonisiert
 
-FROM {{ ref('silver_wencke_artikel_kategorien') }}
+FROM {{ ref('silver_wencke_kategorien') }}
 
 WHERE nebenkategorie_nummer IS NOT NULL
 
