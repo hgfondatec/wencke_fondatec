@@ -1,7 +1,7 @@
 {{
     config(
         materialized = 'table',
-        tags = ['artikel']
+        schema = 'wencke'
     )
 }}
 
@@ -23,7 +23,7 @@ SELECT
     kat_aenderungsflag_dbk_dbp,
     kat_wfl_script,
     kat_wfl_verarbeitung,
-    kat_wechsel_kartenummer,
+    kat_wechsel_karteinummer,
     kat_logo_hauptkategorie,
     kat_werbebild_a4,
     kat_erfasst_von,
@@ -31,5 +31,4 @@ SELECT
     created_at,
     updated_at,
     source_hash
-
 FROM {{ source('raw', 'wencke_lv_artikel_kategorien') }}

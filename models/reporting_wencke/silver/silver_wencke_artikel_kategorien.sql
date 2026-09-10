@@ -1,32 +1,71 @@
 {{
     config(
         materialized = 'table',
-        tags = ['artikel']
+        schema = 'wencke'
     )
 }}
 
-SELECT DISTINCT
-    CONCAT(
+WITH kategorien AS (
+
+    SELECT
+        kategorie_nr AS kategorie_nummer,
         mandant,
-        '_',
-        nebenkategorie_nummer
-    ) AS kategorie_key,
+        wencke_id,
+        is_hauptkategorie,
+        kat_bezeichnung AS kategorie_name
 
-    mandant,
+    FROM {{ ref('bronze_wencke_artikel_kategorien') }}
 
-    hauptkategorie_nummer,
-    hauptkategorie_name,
-    hauptkategorie_harmonisiert,
+),
 
-    nebenkategorie_nummer,
-    nebenkategorie_name,
-    nebenkategorie_harmonisiert
+hauptkategorien AS (
 
-FROM {{ ref('silver_wencke_artikel_kategorien') }}
+    SELECT
+        mandant,
+        kategorie_nummer AS hauptkategorie_nummer,
+        kategorie_name AS hauptkategorie_name
 
-WHERE nebenkategorie_nummer IS NOT NULL
+    FROM kategorien
 
-ORDER BY
-    mandant,
-    hauptkategorie_nummer,
-    nebenkategorie_nummer
+    WHERE is_hauptkategorie = TRUE
+      AND LENGTH(kategorie_nummer) = 2
+
+),
+
+nebenkategorien AS (
+
+    SELECT
+        mandant,
+        kategorie_nummer AS nebenkategorie_nummer,
+        kategorie_name AS nebenkategorie_name,
+        LEFT(kategorie_nummer, 2) AS hauptkategorie_nummer
+
+    FROM kategorien
+
+    WHERE is_hauptkategorie = FALSE
+      AND LENGTH(kategorie_nummer) = 5
+
+)
+
+SELECT
+    n.mandant,
+    h.hauptkategorie_nummer,
+    h.hauptkategorie_name,
+    CONCAT(
+        h.hauptkategorie_nummer,
+        ' | ',
+        h.hauptkategorie_name
+    ) AS hauptkategorie_harmonisiert,
+    n.nebenkategorie_nummer,
+    n.nebenkategorie_name,
+    CONCAT(
+        n.nebenkategorie_nummer,
+        ' | ',
+        n.nebenkategorie_name
+    ) AS nebenkategorie_harmonisiert
+
+FROM nebenkategorien n
+
+LEFT JOIN hauptkategorien h
+    ON n.mandant = h.mandant
+    AND n.hauptkategorie_nummer = h.hauptkategorie_nummer

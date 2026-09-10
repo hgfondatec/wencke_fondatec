@@ -1,7 +1,7 @@
 {{
     config(
         materialized = 'table',
-        tags = ['artikel']
+        schema = 'wencke'
     )
 }}
 
@@ -11,13 +11,10 @@ SELECT DISTINCT
         '_',
         nebenkategorie_nummer
     ) AS kategorie_key,
-
     mandant,
-
     hauptkategorie_nummer,
     hauptkategorie_name,
     hauptkategorie_harmonisiert,
-
     nebenkategorie_nummer,
     nebenkategorie_name,
     nebenkategorie_harmonisiert
