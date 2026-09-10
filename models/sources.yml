@@ -119,6 +119,7 @@ sources:
       - name: wencke_lv_adressen_service
       - name: wencke_lv_adressen_crm
       - name: wencke_lv_artikel
+      - name: wencke_lv_artikel_kategorien
       - name: wencke_lv_artikel_attribute
       - name: wencke_lv_artikel_attribute_gefahr
       - name: wencke_lv_artikel_attribute_temp
