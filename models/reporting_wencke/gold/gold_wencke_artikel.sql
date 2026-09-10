@@ -268,11 +268,7 @@ SELECT
 
     g.art_artikelname,
 
-    CASE
-        WHEN g.art_artikelname IS NOT NULL
-        THEN base.art_artikelnummer || '-' || g.art_artikelname
-        ELSE NULL
-    END AS art_bezeichnung,
+    g.art_artikelname || '-' || COALESCE(g.art_artikelname,'') AS art_bezeichnung,
 
     g.art_warengruppe,
 
