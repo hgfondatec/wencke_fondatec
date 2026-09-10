@@ -23,7 +23,7 @@ SELECT DISTINCT
     nebenkategorie_name,
     nebenkategorie_harmonisiert
 
-FROM {{ ref('silver_wencke_kategorien') }}
+FROM {{ ref('silver_wencke_artikel_kategorien') }}
 
 WHERE nebenkategorie_nummer IS NOT NULL
 
