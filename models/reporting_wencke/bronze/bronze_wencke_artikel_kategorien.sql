@@ -27,8 +27,9 @@ SELECT
     kat_logo_hauptkategorie,
     kat_werbebild_a4,
     kat_erfasst_von,
-    kat_geaendert_von
+    kat_geaendert_von,
+    created_at,
+    updated_at,
+    source_hash
 
 FROM {{ source('raw', 'wencke_lv_artikel_kategorien') }}
-
-WHERE kategorie_nr IS NOT NULL

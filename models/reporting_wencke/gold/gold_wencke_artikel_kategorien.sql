@@ -6,7 +6,6 @@
 }}
 
 SELECT DISTINCT
-
     CONCAT(
         mandant,
         '_',
