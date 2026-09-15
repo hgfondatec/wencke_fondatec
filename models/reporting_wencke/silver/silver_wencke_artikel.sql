@@ -73,87 +73,26 @@ lieferant AS (
 
 hauptwarengruppe AS (
 
-    SELECT
-        32 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('lloyd_silver_hauptwarengruppe') }}
+    SELECT distinct
+        mandant,
+        hauptkategorie_nummer                       as wg_nummer, 
+        hauptkategorie_name_harmonisiert            as wg_name,
+        hauptkategorie_bezeichnung_harmonisiert     as wg_bezeichnung
 
-    UNION ALL
-
-    SELECT
-        36 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('nonne_silver_hauptwarengruppe') }}
-
-    UNION ALL
-
-    SELECT
-        38 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('kernreich_silver_hauptwarengruppe') }}
-
-    UNION ALL
-
-    SELECT
-        39 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('glasofix_silver_hauptwarengruppe') }}
-
-    UNION ALL
-
-    SELECT
-        42 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('vms_silver_hauptwarengruppe') }}
-
+    FROM {{ ref('gold_wencke_kategorien') }}
 ),
 
 nebenwarengruppe AS (
 
-    SELECT
-        32 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('lloyd_silver_nebenwarengruppe') }}
+    SELECT distinct
+        mandant,
+        nebenkategorie_nummer                       as wg_nummer, 
+        nebenkategorie_name_harmonisiert            as wg_name,
+        nebenkategorie_bezeichnung_harmonisiert     as wg_bezeichnung
 
-    UNION ALL
-
-    SELECT
-        36 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('nonne_silver_nebenwarengruppe') }}
-
-    UNION ALL
-
-    SELECT
-        38 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('kernreich_silver_nebenwarengruppe') }}
-
-    UNION ALL
-
-    SELECT
-        39 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('glasofix_silver_nebenwarengruppe') }}
-
-    UNION ALL
-
-    SELECT
-        42 AS mandant,
-        wg_nummer,
-        wg_name
-    FROM {{ ref('vms_silver_nebenwarengruppe') }}
-
+    FROM {{ ref('gold_wencke_kategorien') }}
 )
+
 
 SELECT
 
@@ -169,23 +108,11 @@ SELECT
 
     h.wg_nummer AS art_hauptwarengruppe_nummer,
     h.wg_name AS art_hauptwarengruppe,
-
-    CASE
-        WHEN h.wg_nummer IS NOT NULL
-         AND h.wg_name IS NOT NULL
-        THEN h.wg_nummer || '-' || h.wg_name
-        ELSE NULL
-    END AS art_hauptwarenbezeichnung,
+    h.wg_bezeichnung as art_hauptwarenbezeichnung,
 
     n.wg_nummer AS art_nebenwarengruppe_nummer,
     n.wg_name AS art_nebenwarengruppe,
-
-    CASE
-        WHEN n.wg_nummer IS NOT NULL
-         AND n.wg_name IS NOT NULL
-        THEN n.wg_nummer || '-' || n.wg_name
-        ELSE NULL
-    END AS art_nebenwarengruppebezeichnung,
+    h.wg_bezeichnung as art_nebenwarengruppebezeichnung,
 
     a.art_herstellernummer,
 

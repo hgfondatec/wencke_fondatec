@@ -102,7 +102,7 @@ SELECT
     hh.hauptkategorie_name_harmonisiert,
     CONCAT(
         h.hauptkategorie_nummer,
-        ' - ',
+        '-',
         hh.hauptkategorie_name_harmonisiert
     ) AS hauptkategorie_bezeichnung_harmonisiert,
 
@@ -111,7 +111,7 @@ SELECT
     nh.nebenkategorie_name_harmonisiert,
     CONCAT(
         n.nebenkategorie_nummer,
-        ' - ',
+        '-',
         nh.nebenkategorie_name_harmonisiert
     ) AS nebenkategorie_bezeichnung_harmonisiert
 

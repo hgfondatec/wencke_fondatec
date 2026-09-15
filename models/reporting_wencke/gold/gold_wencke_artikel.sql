@@ -9,14 +9,20 @@ WITH artikel_ids AS (
 
     SELECT DISTINCT
         art_artikelnummer
+
     FROM {{ ref('silver_wencke_artikel') }}
 
 ),
 
+/* ============================================================
+   NORMALE ARTIKELFELDER
+   Warengruppen werden separat behandelt
+   ============================================================ */
+
 values_long AS (
 
     SELECT
-        s.art_artikelnummer, 
+        s.art_artikelnummer,
         v.field_name,
         v.value
 
@@ -28,14 +34,6 @@ values_long AS (
 
             ('art_artikelname', s.art_artikelname::text),
             ('art_warengruppe', s.art_warengruppe::text),
-
-            ('art_hauptwarengruppe_nummer', s.art_hauptwarengruppe_nummer::text),
-            ('art_hauptwarengruppe', s.art_hauptwarengruppe::text),
-            ('art_hauptwarenbezeichnung', s.art_hauptwarenbezeichnung::text),
-
-            ('art_nebenwarengruppe_nummer', s.art_nebenwarengruppe_nummer::text),
-            ('art_nebenwarengruppe', s.art_nebenwarengruppe::text),
-            ('art_nebenwarengruppebezeichnung', s.art_nebenwarengruppebezeichnung::text),
 
             ('art_herstellernummer', s.art_herstellernummer::text),
 
@@ -132,30 +130,6 @@ golden_values AS (
         ) AS art_warengruppe,
 
         MAX(value) FILTER (
-            WHERE field_name = 'art_hauptwarengruppe_nummer'
-        ) AS art_hauptwarengruppe_nummer,
-
-        MAX(value) FILTER (
-            WHERE field_name = 'art_hauptwarengruppe'
-        ) AS art_hauptwarengruppe,
-
-        MAX(value) FILTER (
-            WHERE field_name = 'art_hauptwarenbezeichnung'
-        ) AS art_hauptwarenbezeichnung,
-
-        MAX(value) FILTER (
-            WHERE field_name = 'art_nebenwarengruppe_nummer'
-        ) AS art_nebenwarengruppe_nummer,
-
-        MAX(value) FILTER (
-            WHERE field_name = 'art_nebenwarengruppe'
-        ) AS art_nebenwarengruppe,
-
-        MAX(value) FILTER (
-            WHERE field_name = 'art_nebenwarengruppebezeichnung'
-        ) AS art_nebenwarengruppebezeichnung,
-
-        MAX(value) FILTER (
             WHERE field_name = 'art_herstellernummer'
         ) AS art_herstellernummer,
 
@@ -247,9 +221,156 @@ golden_values AS (
 
     WHERE rn = 1
 
-    GROUP BY art_artikelnummer
+    GROUP BY
+        art_artikelnummer
 
 ),
+
+/* ============================================================
+   WARENGRUPPEN
+   Zuerst wird die häufigste Nebenwarengruppe pro Artikel gewählt
+   ============================================================ */
+
+nebenwarengruppe_scores AS (
+
+    SELECT
+
+        art_artikelnummer,
+        art_nebenwarengruppe_nummer,
+
+        COUNT(*) AS score
+
+    FROM {{ ref('silver_wencke_artikel') }}
+
+    WHERE art_nebenwarengruppe_nummer IS NOT NULL
+
+    GROUP BY
+        art_artikelnummer,
+        art_nebenwarengruppe_nummer
+
+),
+
+nebenwarengruppe_ranked AS (
+
+    SELECT
+
+        art_artikelnummer,
+        art_nebenwarengruppe_nummer,
+
+        ROW_NUMBER() OVER (
+
+            PARTITION BY art_artikelnummer
+
+            ORDER BY
+                score DESC,
+                LENGTH(art_nebenwarengruppe_nummer::text) DESC,
+                art_nebenwarengruppe_nummer::text ASC
+
+        ) AS rn
+
+    FROM nebenwarengruppe_scores
+
+),
+
+/* ============================================================
+   Für die gewählte Nebenwarengruppe wird jetzt die häufigste
+   vollständige Kombination ermittelt.
+
+   Dadurch gehören Haupt- und Nebenwarengruppe garantiert
+   zusammen.
+   ============================================================ */
+
+warengruppe_scores AS (
+
+    SELECT
+
+        s.art_artikelnummer,
+
+        s.art_hauptwarengruppe_nummer,
+        s.art_hauptwarengruppe,
+        s.art_hauptwarenbezeichnung,
+
+        s.art_nebenwarengruppe_nummer,
+        s.art_nebenwarengruppe,
+        s.art_nebenwarengruppebezeichnung,
+
+        COUNT(*) AS score
+
+    FROM {{ ref('silver_wencke_artikel') }} s
+
+    INNER JOIN nebenwarengruppe_ranked n
+        ON s.art_artikelnummer = n.art_artikelnummer
+        AND s.art_nebenwarengruppe_nummer = n.art_nebenwarengruppe_nummer
+        AND n.rn = 1
+
+    GROUP BY
+
+        s.art_artikelnummer,
+
+        s.art_hauptwarengruppe_nummer,
+        s.art_hauptwarengruppe,
+        s.art_hauptwarenbezeichnung,
+
+        s.art_nebenwarengruppe_nummer,
+        s.art_nebenwarengruppe,
+        s.art_nebenwarengruppebezeichnung
+
+),
+
+warengruppe_ranked AS (
+
+    SELECT
+
+        *,
+
+        ROW_NUMBER() OVER (
+
+            PARTITION BY art_artikelnummer
+
+            ORDER BY
+                score DESC,
+
+                LENGTH(
+                    COALESCE(
+                        art_nebenwarengruppebezeichnung::text,
+                        ''
+                    )
+                ) DESC,
+
+                COALESCE(
+                    art_nebenwarengruppebezeichnung::text,
+                    ''
+                ) ASC
+
+        ) AS rn
+
+    FROM warengruppe_scores
+
+),
+
+golden_warengruppe AS (
+
+    SELECT
+
+        art_artikelnummer,
+
+        art_hauptwarengruppe_nummer,
+        art_hauptwarengruppe,
+        art_hauptwarenbezeichnung,
+
+        art_nebenwarengruppe_nummer,
+        art_nebenwarengruppe,
+        art_nebenwarengruppebezeichnung
+
+    FROM warengruppe_ranked
+
+    WHERE rn = 1
+
+),
+
+/* ============================================================
+   TOS
+   ============================================================ */
 
 tos AS (
 
@@ -262,23 +383,31 @@ tos AS (
 
 )
 
+/* ============================================================
+   FINAL
+   ============================================================ */
+
 SELECT
 
     base.art_artikelnummer,
 
     g.art_artikelname,
 
-    g.art_artikelname || '-' || COALESCE(g.art_artikelname,'') AS art_bezeichnung,
+    base.art_artikelnummer
+        || '-'
+        || COALESCE(g.art_artikelname, '') AS art_bezeichnung,
 
     g.art_warengruppe,
 
-    g.art_hauptwarengruppe_nummer,
-    g.art_hauptwarengruppe,
-    g.art_hauptwarenbezeichnung,
+    /* Warengruppen kommen gemeinsam aus golden_warengruppe */
 
-    g.art_nebenwarengruppe_nummer,
-    g.art_nebenwarengruppe,
-    g.art_nebenwarengruppebezeichnung,
+    wg.art_hauptwarengruppe_nummer,
+    wg.art_hauptwarengruppe,
+    wg.art_hauptwarenbezeichnung,
+
+    wg.art_nebenwarengruppe_nummer,
+    wg.art_nebenwarengruppe,
+    wg.art_nebenwarengruppebezeichnung,
 
     g.art_herstellernummer,
 
@@ -315,7 +444,8 @@ SELECT
     g.art_gefahrstoff,
 
     CASE
-        WHEN tos.art_artikelnummer IS NOT NULL THEN 'J'
+        WHEN tos.art_artikelnummer IS NOT NULL
+            THEN 'J'
         ELSE 'N'
     END AS art_tos_verfuegbar
 
@@ -323,6 +453,9 @@ FROM artikel_ids base
 
 LEFT JOIN golden_values g
     ON base.art_artikelnummer = g.art_artikelnummer
+
+LEFT JOIN golden_warengruppe wg
+    ON base.art_artikelnummer = wg.art_artikelnummer
 
 LEFT JOIN tos
     ON base.art_artikelnummer = tos.art_artikelnummer
