@@ -28,6 +28,8 @@ sources:
       - name: m36vtr
       - name: m36adr_ekv
       - name: m36idbid0136
+      - name: m36stupre
+      - name: m36bediener
       
       # M42
       - name: m42adr
