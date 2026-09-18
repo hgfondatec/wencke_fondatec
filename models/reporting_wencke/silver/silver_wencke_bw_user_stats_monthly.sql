@@ -5,13 +5,13 @@
 
 SELECT
     mandant,
-    user_id,
+    LPAD(user_id::VARCHAR, 3, '0') AS user_id,
     stat_type,
     stat_value,
     
     stat_date,
     CONCAT(
-        user_id::VARCHAR,
+        LPAD(user_id::VARCHAR, 3, '0'),
         '_',
         mandant::VARCHAR
     ) AS bediener_key

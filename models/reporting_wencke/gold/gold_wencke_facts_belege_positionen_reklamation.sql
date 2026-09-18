@@ -59,7 +59,7 @@ SELECT
     ) AS adress_key,
 
     CONCAT(
-        COALESCE(pos_verursacher_user::text, ''),
+        COALESCE(LPAD(pos_verursacher_user::VARCHAR, 3, '0'), ''),
         '_',
         COALESCE(mandant::text, '')
     ) AS bediener_key
