@@ -8,51 +8,79 @@
 
 WITH artikel AS (
 
-    SELECT *
+    SELECT
+        *,
+
+        TRIM(
+            CONCAT_WS(
+                ' ',
+                NULLIF(TRIM(art_bezeichnung), ''),
+                NULLIF(TRIM(art_bezeichnung_2), ''),
+                NULLIF(TRIM(art_bezeichnung_3), ''),
+                NULLIF(TRIM(art_bezeichnung_4), '')
+            )
+        ) AS art_bezeichnung_gesamt
+
     FROM {{ ref('silver_wencke_artikel') }}
+
     WHERE mandant IN (39, 32, 42, 36)
 
 ),
+
 
 artikel_ids AS (
 
     SELECT DISTINCT
         art_artikelnummer
+
     FROM artikel
 
 ),
+
 
 t39 AS (
 
     SELECT *
+
     FROM artikel
+
     WHERE mandant = 39
 
 ),
 
+
 t32 AS (
 
     SELECT *
+
     FROM artikel
+
     WHERE mandant = 32
 
 ),
 
+
 t42 AS (
 
     SELECT *
+
     FROM artikel
+
     WHERE mandant = 42
 
 ),
 
+
 t36 AS (
 
     SELECT *
+
     FROM artikel
+
     WHERE mandant = 36
 
 ),
+
 
 tos AS (
 
@@ -64,6 +92,7 @@ tos AS (
     WHERE ar_art = 1389
 
 )
+
 
 SELECT
 
@@ -87,7 +116,7 @@ SELECT
     {{ match_value_unique('art_artikelname') }}
         AS art_artikelname_reporting,
 
-    {{ match_value_unique('art_bezeichnung') }}
+    {{ match_value_unique('art_bezeichnung_gesamt') }}
         AS art_bezeichnung_reporting,
 
 
@@ -130,7 +159,7 @@ SELECT
 
 
     /* =========================================================
-       ARTIKELBEZEICHNUNG
+       ARTIKELBEZEICHNUNG 1
     ========================================================= */
 
     t39.art_bezeichnung AS art_bezeichnung_39,
@@ -191,6 +220,23 @@ SELECT
 
     {{ match_value('art_bezeichnung_4') }}
         AS art_bezeichnung_4_match,
+
+
+    /* =========================================================
+       BEZEICHNUNG GESAMT
+       BEZEICHNUNG 1 + 2 + 3 + 4
+    ========================================================= */
+
+    t39.art_bezeichnung_gesamt AS art_bezeichnung_gesamt_39,
+    t32.art_bezeichnung_gesamt AS art_bezeichnung_gesamt_32,
+    t42.art_bezeichnung_gesamt AS art_bezeichnung_gesamt_42,
+    t36.art_bezeichnung_gesamt AS art_bezeichnung_gesamt_36,
+
+    {{ match_score('art_bezeichnung_gesamt') }}
+        AS art_bezeichnung_gesamt_matchscore,
+
+    {{ match_value('art_bezeichnung_gesamt') }}
+        AS art_bezeichnung_gesamt_match,
 
 
     /* =========================================================
@@ -495,6 +541,7 @@ SELECT
 
 FROM artikel_ids base
 
+
 LEFT JOIN t39
     ON base.art_artikelnummer = t39.art_artikelnummer
 
@@ -509,5 +556,6 @@ LEFT JOIN t36
 
 LEFT JOIN tos
     ON base.art_artikelnummer = tos.art_artikelnummer
+
 
 ORDER BY base.art_artikelnummer
