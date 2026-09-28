@@ -139,6 +139,7 @@ SELECT
     a.art_pauschalartikel,
     a.art_pflege_divisor,
     a.art_abc_kategorie,
+    a.art_artikelname_kurz,
 
     a.art_gesperrter_artikel,
     a.art_auswahl_gesperrt,

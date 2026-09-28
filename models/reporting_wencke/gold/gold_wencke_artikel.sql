@@ -66,7 +66,9 @@ values_long AS (
             ('art_gesperrter_artikel', s.art_gesperrter_artikel::text),
             ('art_auswahl_gesperrt', s.art_auswahl_gesperrt::text),
 
-            ('art_gefahrstoff', s.art_gefahrstoff::text)
+            ('art_gefahrstoff', s.art_gefahrstoff::text),
+
+            ('art_artikelname_kurz', s.art_artikelname_kurz::text)
 
     ) v(field_name, value)
 
@@ -215,7 +217,11 @@ golden_values AS (
 
         MAX(value) FILTER (
             WHERE field_name = 'art_gefahrstoff'
-        ) AS art_gefahrstoff
+        ) AS art_gefahrstoff,
+
+        MAX(value) FILTER (
+            WHERE field_name = 'art_artikelname_kurz'
+        ) AS art_artikelname_kurz
 
     FROM ranked
 
@@ -442,6 +448,8 @@ SELECT
     g.art_auswahl_gesperrt,
 
     g.art_gefahrstoff,
+
+    g.art_artikelname_kurz,
 
     CASE
         WHEN tos.art_artikelnummer IS NOT NULL

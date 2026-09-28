@@ -13,6 +13,7 @@ WITH artikel_lieferant AS (
         art_herstellernummer,
         art_lieferant,
         art_lieferantbezeichnung,
+        art_artikel_partner,
         topserv_lieferanten_nr,
         adr_zentral_kunden_nr,
 
@@ -93,6 +94,7 @@ SELECT
     a.topserv_lieferanten_nr,
     a.adr_zentral_kunden_nr,
     a.artikel_key,
+    a.art_artikel_partner,
 
     h.adr_zentral_kunden_name_harmonisiert
         AS "adr_zentral_kunden_name (harmonisiert)",

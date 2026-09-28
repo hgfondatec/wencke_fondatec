@@ -12,7 +12,8 @@ WITH artikel AS (
         mandant,
         artikel_nr,
         art_herstellernummer,
-        adr_lieferant_1
+        adr_lieferant_1,
+        art_artikel_partner
     FROM {{ ref('bronze_wencke_artikel_attribute') }}
 
 ),
@@ -35,6 +36,7 @@ SELECT
     artikel.artikel_nr AS art_artikelnummer,
     artikel.art_herstellernummer,
     artikel.adr_lieferant_1,
+    artikel.art_artikel_partner,
     lieferant.adr_nr AS art_lieferant,
     lieferant.adr_text AS art_lieferantbezeichnung,
     lieferant.topserv_lieferanten_nr,
