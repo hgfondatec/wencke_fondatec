@@ -112,7 +112,7 @@ SELECT
 
     n.wg_nummer AS art_nebenwarengruppe_nummer,
     n.wg_name AS art_nebenwarengruppe,
-    h.wg_bezeichnung as art_nebenwarengruppebezeichnung,
+    n.wg_bezeichnung as art_nebenwarengruppebezeichnung,
 
     a.art_herstellernummer,
 
