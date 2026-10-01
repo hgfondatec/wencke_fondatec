@@ -8,6 +8,7 @@ WITH sortimentpreise AS (
     SELECT
         *
     FROM {{ ref('bronze_wencke_artikel_sortimentpreise') }}
+    WHERE satz_aktiv = 'J'
 
 ),
 

@@ -102,7 +102,8 @@ sortimentpreise AS (
         CAST(NULLIF(REPLACE(TRIM(idbid0201_481_8), ',', '.'), '') AS NUMERIC) AS l_preis,
         CAST(NULLIF(REPLACE(TRIM(idbid0201_489_8), ',', '.'), '') AS NUMERIC) AS rabatt_plus_minus,
 
-        NULLIF(TRIM(idbid0201_521_1), '') AS rabatt_zeichen
+        NULLIF(TRIM(idbid0201_521_1), '') AS rabatt_zeichen,
+        NULLIF(TRIM(idbid0201_522_1), '') AS satz_aktiv
 
     FROM parsed
 )

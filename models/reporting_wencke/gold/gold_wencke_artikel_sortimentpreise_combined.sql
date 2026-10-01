@@ -4,10 +4,10 @@
 ) }}
 
 WITH umsatz AS (
-    -- Nur Debitor + Artikel mit Umsatz im aktuellen oder vorherigen Jahr
     SELECT
+        mandant,
         adress_key,
-        pos_artikel_nr AS artikel,
+        TRIM(pos_artikel_nr::text) AS artikel,
         SUM(rechnung_umsatz_vor_bonus_calc) AS gesamtumsatz,
         SUM(rechnung_umsatz_vor_bonus_calc) FILTER (
             WHERE bel_date >= DATE_TRUNC('YEAR', CURRENT_DATE)
@@ -18,12 +18,27 @@ WITH umsatz AS (
     FROM {{ ref('gold_wencke_facts_belege_positionen') }}
     WHERE bel_date >= DATE_TRUNC('YEAR', CURRENT_DATE) - INTERVAL '1 YEAR'
       AND bel_date < DATE_TRUNC('YEAR', CURRENT_DATE) + INTERVAL '1 YEAR'
-    GROUP BY adress_key, pos_artikel_nr
+    GROUP BY
+        mandant,
+        adress_key,
+        TRIM(pos_artikel_nr::text)
     HAVING SUM(rechnung_umsatz_vor_bonus_calc) <> 0
 ),
 
+relevante_adressen AS (
+    SELECT DISTINCT
+        mandant,
+        adress_key
+    FROM umsatz
+),
+
+relevante_artikel AS (
+    SELECT DISTINCT
+        artikel AS artikel_nummer
+    FROM umsatz
+),
+
 adressen AS (
-    -- Nur relevante Debitoren
     SELECT
         a.beleg_mandant_id,
         a.adr_nr,
@@ -32,15 +47,12 @@ adressen AS (
         a.praesident_ebene_2_bezeichnung,
         a.praesident_ebene_3_bezeichnung
     FROM {{ ref('gold_wencke_adressen') }} a
-    WHERE EXISTS (
-        SELECT 1
-        FROM umsatz u
-        WHERE u.adress_key = a.adress_key
-    )
+    INNER JOIN relevante_adressen r
+        ON r.mandant = a.beleg_mandant_id
+       AND r.adress_key = a.adress_key
 ),
 
 adress_zuordnung AS (
-    -- Kundenhierarchie: Debitor -> Präsident 1 -> Präsident 2 -> Präsident 3
     SELECT
         beleg_mandant_id AS mandant,
         TRIM(adr_nr::text) AS preis_adr_nr,
@@ -55,58 +67,55 @@ adress_zuordnung AS (
     UNION ALL
 
     SELECT
-        beleg_mandant_id,
-        TRIM(SPLIT_PART(praesident_ebene_1_bezeichnung, '-', 1)),
-        adr_nr,
-        adress_key,
-        'Präsident 1',
-        praesident_ebene_1_bezeichnung,
-        2
+        beleg_mandant_id AS mandant,
+        TRIM(SPLIT_PART(praesident_ebene_1_bezeichnung, '-', 1)) AS preis_adr_nr,
+        adr_nr AS debitor_nr,
+        adress_key AS debitor_adress_key,
+        'Präsident 1' AS preis_herkunft,
+        praesident_ebene_1_bezeichnung AS herkunft_bezeichnung,
+        2 AS prioritaet
     FROM adressen
     WHERE NULLIF(TRIM(praesident_ebene_1_bezeichnung), '') IS NOT NULL
 
     UNION ALL
 
     SELECT
-        beleg_mandant_id,
-        TRIM(SPLIT_PART(praesident_ebene_2_bezeichnung, '-', 1)),
-        adr_nr,
-        adress_key,
-        'Präsident 2',
-        praesident_ebene_2_bezeichnung,
-        3
+        beleg_mandant_id AS mandant,
+        TRIM(SPLIT_PART(praesident_ebene_2_bezeichnung, '-', 1)) AS preis_adr_nr,
+        adr_nr AS debitor_nr,
+        adress_key AS debitor_adress_key,
+        'Präsident 2' AS preis_herkunft,
+        praesident_ebene_2_bezeichnung AS herkunft_bezeichnung,
+        3 AS prioritaet
     FROM adressen
     WHERE NULLIF(TRIM(praesident_ebene_2_bezeichnung), '') IS NOT NULL
 
     UNION ALL
 
     SELECT
-        beleg_mandant_id,
-        TRIM(SPLIT_PART(praesident_ebene_3_bezeichnung, '-', 1)),
-        adr_nr,
-        adress_key,
-        'Präsident 3',
-        praesident_ebene_3_bezeichnung,
-        4
+        beleg_mandant_id AS mandant,
+        TRIM(SPLIT_PART(praesident_ebene_3_bezeichnung, '-', 1)) AS preis_adr_nr,
+        adr_nr AS debitor_nr,
+        adress_key AS debitor_adress_key,
+        'Präsident 3' AS preis_herkunft,
+        praesident_ebene_3_bezeichnung AS herkunft_bezeichnung,
+        4 AS prioritaet
     FROM adressen
     WHERE NULLIF(TRIM(praesident_ebene_3_bezeichnung), '') IS NOT NULL
 ),
 
 artikelstamm AS (
-    -- Artikelnummer ist im Artikelstamm eindeutig, daher kein Mandant notwendig
     SELECT DISTINCT
-        art_artikelnummer AS artikel_nummer,
-        art_warengruppe AS warengruppe
-    FROM {{ ref('gold_wencke_artikel') }}
-    WHERE art_artikelnummer IS NOT NULL
+        TRIM(a.art_artikelnummer::text) AS artikel_nummer,
+        TRIM(a.art_warengruppe::text) AS warengruppe
+    FROM {{ ref('gold_wencke_artikel') }} a
+    INNER JOIN relevante_artikel r
+        ON r.artikel_nummer = TRIM(a.art_artikelnummer::text)
+    WHERE a.art_artikelnummer IS NOT NULL
 ),
 
 sortimentpreise_erweitert AS (
-    /*
-    Direkter Artikelpreis:
-    artikel = ursprünglicher Wert aus Sortimentpreise
-    artikel_nummer = konkrete Artikelnummer
-    */
+    -- Direkter Artikelpreis
     SELECT
         sp.*,
         a.artikel_nummer,
@@ -120,11 +129,7 @@ sortimentpreise_erweitert AS (
 
     UNION ALL
 
-    /*
-    Warengruppenpreis:
-    Wenn artikel 4-stellig ist, handelt es sich um eine WGR.
-    Diese wird auf alle konkreten Artikel der WGR aufgefächert.
-    */
+    -- Warengruppenpreis auf konkrete Artikel erweitern
     SELECT
         sp.*,
         a.artikel_nummer,
@@ -138,7 +143,6 @@ sortimentpreise_erweitert AS (
 ),
 
 preise AS (
-    -- Nur Debitor + konkrete Artikel, die tatsächlich Umsatz hatten
     SELECT
         sp.*,
         a.debitor_nr,
@@ -151,47 +155,15 @@ preise AS (
         u.umsatz_vorjahr
     FROM adress_zuordnung a
     INNER JOIN umsatz u
-        ON u.adress_key = a.debitor_adress_key
+        ON u.mandant = a.mandant
+       AND u.adress_key = a.debitor_adress_key
     INNER JOIN sortimentpreise_erweitert sp
         ON sp.mandant = a.mandant
        AND TRIM(sp.adr_nr::text) = a.preis_adr_nr
-       AND sp.artikel_nummer = TRIM(u.artikel::text)
-),
-
-preis_mit_nachfolger AS (
-    /*
-    Nachfolger innerhalb exakt derselben Preisquelle:
-    - Debitor
-    - konkreter Artikel
-    - Kundenebene
-    - Artikelebene
-    - ursprünglicher Artikel/WGR
-    */
-    SELECT
-        *,
-        LEAD(gueltig_ab) OVER (
-            PARTITION BY
-                mandant,
-                debitor_adress_key,
-                artikel_nummer,
-                prioritaet,
-                artikel_prioritaet,
-                artikel
-            ORDER BY gueltig_ab
-        ) AS naechster_preis_ab
-    FROM preise
+       AND sp.artikel_nummer = u.artikel
 ),
 
 preis_logik AS (
-    /*
-    Priorität:
-    1. Bereits gestarteter Preis
-    2. Debitor -> Präsident 1 -> Präsident 2 -> Präsident 3
-    3. Artikel -> Warengruppe
-    4. Neuestes gueltig_ab
-
-    gueltig_bis ist nur Tie-Breaker.
-    */
     SELECT
         *,
         ROW_NUMBER() OVER (
@@ -200,24 +172,109 @@ preis_logik AS (
                 debitor_adress_key,
                 artikel_nummer
             ORDER BY
-                CASE WHEN gueltig_ab <= CURRENT_DATE THEN 0 ELSE 1 END,
-                prioritaet,
-                artikel_prioritaet,
-                CASE WHEN gueltig_ab <= CURRENT_DATE THEN gueltig_ab END DESC,
-                gueltig_bis DESC
+                -- 1 = aktuell, 2 = abgelaufen, 3 = zukünftig
+                CASE
+                    WHEN gueltig_ab <= CURRENT_DATE
+                     AND gueltig_bis >= CURRENT_DATE THEN 1
+                    WHEN gueltig_bis < CURRENT_DATE THEN 2
+                    ELSE 3
+                END ASC,
+
+                -- AKTUELL: Debitor -> P1 -> P2 -> P3
+                CASE
+                    WHEN gueltig_ab <= CURRENT_DATE
+                     AND gueltig_bis >= CURRENT_DATE
+                    THEN prioritaet
+                END ASC,
+
+                -- AKTUELL: Artikel -> Warengruppe
+                CASE
+                    WHEN gueltig_ab <= CURRENT_DATE
+                     AND gueltig_bis >= CURRENT_DATE
+                    THEN artikel_prioritaet
+                END ASC,
+
+                -- AKTUELL: neuesten Start bevorzugen
+                CASE
+                    WHEN gueltig_ab <= CURRENT_DATE
+                     AND gueltig_bis >= CURRENT_DATE
+                    THEN gueltig_ab
+                END DESC,
+
+                -- ABGELAUFEN: zuletzt abgelaufenen Preis nehmen
+                CASE
+                    WHEN gueltig_bis < CURRENT_DATE
+                    THEN gueltig_bis
+                END DESC,
+
+                -- Bei gleichem Ende: Debitor -> P1 -> P2 -> P3
+                CASE
+                    WHEN gueltig_bis < CURRENT_DATE
+                    THEN prioritaet
+                END ASC,
+
+                -- Danach Artikel -> Warengruppe
+                CASE
+                    WHEN gueltig_bis < CURRENT_DATE
+                    THEN artikel_prioritaet
+                END ASC,
+
+                -- Zusätzlicher Tie-Breaker
+                CASE
+                    WHEN gueltig_bis < CURRENT_DATE
+                    THEN gueltig_ab
+                END DESC,
+
+                -- Zukunft: frühesten Nachfolger zuerst
+                CASE
+                    WHEN gueltig_ab > CURRENT_DATE
+                    THEN gueltig_ab
+                END ASC,
+
+                CASE
+                    WHEN gueltig_ab > CURRENT_DATE
+                    THEN prioritaet
+                END ASC,
+
+                CASE
+                    WHEN gueltig_ab > CURRENT_DATE
+                    THEN artikel_prioritaet
+                END ASC
         ) AS reporting_rang_debitor
-    FROM preis_mit_nachfolger
+    FROM preise
+),
+
+preis_mit_flags AS (
+    SELECT
+        *,
+        (
+            reporting_rang_debitor = 1
+            AND gueltig_ab <= CURRENT_DATE
+        ) AS wird_reported_debitor,
+
+        MIN(
+            CASE
+                WHEN gueltig_ab > CURRENT_DATE
+                THEN gueltig_ab
+            END
+        ) OVER (
+            PARTITION BY
+                mandant,
+                debitor_adress_key,
+                artikel_nummer
+        ) AS naechster_preis_ab_debitor
+    FROM preis_logik
 ),
 
 preise_final AS (
     SELECT
         *,
-        (reporting_rang_debitor = 1 AND gueltig_ab <= CURRENT_DATE) AS wird_reported_debitor,
         CASE
-            WHEN naechster_preis_ab IS NOT NULL THEN 'Mit Nachfolger'
+            WHEN naechster_preis_ab_debitor IS NOT NULL
+                THEN 'Mit Nachfolger'
             ELSE 'Ohne Nachfolger'
         END AS hat_nl_debitor
-    FROM preis_logik
+    FROM preis_mit_flags
 )
 
 SELECT *

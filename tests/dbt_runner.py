@@ -88,7 +88,7 @@ JOBS = {
     "artikel_bestand": {
             "stop_on_error": True,
             "commands": [
-                ("run", "+wencke_gold_facts_artikel_bestand"),
+                ("run", "+gold_wencke_artikel_bestand"),
         ],
     },
 
