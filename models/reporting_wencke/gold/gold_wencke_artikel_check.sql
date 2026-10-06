@@ -41,9 +41,7 @@ artikel_ids AS (
 t39 AS (
 
     SELECT *
-
     FROM artikel
-
     WHERE mandant = 39
 
 ),
@@ -52,9 +50,7 @@ t39 AS (
 t32 AS (
 
     SELECT *
-
     FROM artikel
-
     WHERE mandant = 32
 
 ),
@@ -63,9 +59,7 @@ t32 AS (
 t42 AS (
 
     SELECT *
-
     FROM artikel
-
     WHERE mandant = 42
 
 ),
@@ -74,9 +68,7 @@ t42 AS (
 t36 AS (
 
     SELECT *
-
     FROM artikel
-
     WHERE mandant = 36
 
 ),
@@ -107,6 +99,17 @@ SELECT
     CASE WHEN t32.art_artikelnummer IS NOT NULL THEN 1 ELSE 0 END AS verfuegbar_32,
     CASE WHEN t42.art_artikelnummer IS NOT NULL THEN 1 ELSE 0 END AS verfuegbar_42,
     CASE WHEN t36.art_artikelnummer IS NOT NULL THEN 1 ELSE 0 END AS verfuegbar_36,
+
+
+    /* =========================================================
+       GESPERRTER ARTIKEL
+       2 = GESPERRT
+    ========================================================= */
+
+    CASE WHEN t39.art_gesperrter_artikel = '2' THEN 1 ELSE 0 END AS gesperrt_39,
+    CASE WHEN t32.art_gesperrter_artikel = '2' THEN 1 ELSE 0 END AS gesperrt_32,
+    CASE WHEN t42.art_gesperrter_artikel = '2' THEN 1 ELSE 0 END AS gesperrt_42,
+    CASE WHEN t36.art_gesperrter_artikel = '2' THEN 1 ELSE 0 END AS gesperrt_36,
 
 
     /* =========================================================
@@ -412,6 +415,22 @@ SELECT
 
 
     /* =========================================================
+       GESPERRTER ARTIKEL – VERGLEICH
+    ========================================================= */
+
+    t39.art_gesperrter_artikel AS art_gesperrter_artikel_39,
+    t32.art_gesperrter_artikel AS art_gesperrter_artikel_32,
+    t42.art_gesperrter_artikel AS art_gesperrter_artikel_42,
+    t36.art_gesperrter_artikel AS art_gesperrter_artikel_36,
+
+    {{ match_score('art_gesperrter_artikel') }}
+        AS art_gesperrter_artikel_matchscore,
+
+    {{ match_value('art_gesperrter_artikel') }}
+        AS art_gesperrter_artikel_match,
+
+
+    /* =========================================================
        EK NETTO
     ========================================================= */
 
@@ -541,7 +560,6 @@ SELECT
 
 FROM artikel_ids base
 
-
 LEFT JOIN t39
     ON base.art_artikelnummer = t39.art_artikelnummer
 
@@ -556,6 +574,5 @@ LEFT JOIN t36
 
 LEFT JOIN tos
     ON base.art_artikelnummer = tos.art_artikelnummer
-
 
 ORDER BY base.art_artikelnummer
