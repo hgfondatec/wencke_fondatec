@@ -70,6 +70,7 @@ JOBS = {
         "commands": [
             ("run", "+gold_wencke_facts_belege_positionen"),
             ("run", "+gold_wencke_facts_belege_positionen_reklamation"),
+            ("run", "+gold_wencke_artikel_sortimentpreise_combined"),
         ],
     },
 
@@ -91,10 +92,7 @@ JOBS = {
                 ("run", "+gold_wencke_artikel_bestand"),
         ],
     },
-
-
-
-    
+   
 }
 
 
