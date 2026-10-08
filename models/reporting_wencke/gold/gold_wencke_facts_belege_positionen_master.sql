@@ -114,9 +114,8 @@ WITH belege_positionen AS (
     LEFT JOIN {{ ref('silver_wencke_belege_adressen_lfa') }} lfa
         ON lfa.wencke_id = b.wencke_id
 
-    WHERE b.bel_date >= DATE '2025-01-01'
+    WHERE b.bel_date >= DATE '2024-01-01'
         AND b.bel_date < DATE '2027-01-01'
-        AND b.bel_status = 'N'
 
 )
 
