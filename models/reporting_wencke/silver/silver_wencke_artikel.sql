@@ -29,7 +29,16 @@ WITH artikel AS (
         art_sort_kz,
         art_pflege_divisor,
         art_gesperrter_artikel,
-        art_auswahl_gesperrt
+        art_auswahl_gesperrt,
+
+        art_nachhaltiger_artikel,
+        art_nh_blauer_engel,
+        art_nh_eu_ecolabel,
+        art_nh_nordic_ecolabel,
+        art_nh_fsc,
+        art_nh_sonstiges,
+        art_nh_sonstiges_name,
+        art_nh_bitmap
 
     FROM {{ ref('bronze_wencke_artikel_attribute') }}
 
@@ -73,24 +82,26 @@ lieferant AS (
 
 hauptwarengruppe AS (
 
-    SELECT distinct
+    SELECT DISTINCT
         mandant,
-        hauptkategorie_nummer                       as wg_nummer, 
-        hauptkategorie_name_harmonisiert            as wg_name,
-        hauptkategorie_bezeichnung_harmonisiert     as wg_bezeichnung
+        hauptkategorie_nummer AS wg_nummer,
+        hauptkategorie_name_harmonisiert AS wg_name,
+        hauptkategorie_bezeichnung_harmonisiert AS wg_bezeichnung
 
     FROM {{ ref('gold_wencke_kategorien') }}
+
 ),
 
 nebenwarengruppe AS (
 
-    SELECT distinct
+    SELECT DISTINCT
         mandant,
-        nebenkategorie_nummer                       as wg_nummer, 
-        nebenkategorie_name_harmonisiert            as wg_name,
-        nebenkategorie_bezeichnung_harmonisiert     as wg_bezeichnung
+        nebenkategorie_nummer AS wg_nummer,
+        nebenkategorie_name_harmonisiert AS wg_name,
+        nebenkategorie_bezeichnung_harmonisiert AS wg_bezeichnung
 
     FROM {{ ref('gold_wencke_kategorien') }}
+
 )
 
 
@@ -108,11 +119,11 @@ SELECT
 
     h.wg_nummer AS art_hauptwarengruppe_nummer,
     h.wg_name AS art_hauptwarengruppe,
-    h.wg_bezeichnung as art_hauptwarenbezeichnung,
+    h.wg_bezeichnung AS art_hauptwarenbezeichnung,
 
     n.wg_nummer AS art_nebenwarengruppe_nummer,
     n.wg_name AS art_nebenwarengruppe,
-    n.wg_bezeichnung as art_nebenwarengruppebezeichnung,
+    n.wg_bezeichnung AS art_nebenwarengruppebezeichnung,
 
     a.art_herstellernummer,
 
@@ -144,7 +155,16 @@ SELECT
     a.art_gesperrter_artikel,
     a.art_auswahl_gesperrt,
 
-    g.art_gefahrstoff
+    g.art_gefahrstoff,
+
+    a.art_nachhaltiger_artikel,
+    a.art_nh_blauer_engel,
+    a.art_nh_eu_ecolabel,
+    a.art_nh_nordic_ecolabel,
+    a.art_nh_fsc,
+    a.art_nh_sonstiges,
+    a.art_nh_sonstiges_name,
+    a.art_nh_bitmap
 
 FROM artikel a
 

@@ -27,7 +27,6 @@ WITH artikel AS (
 
 ),
 
-
 artikel_ids AS (
 
     SELECT DISTINCT
@@ -37,7 +36,6 @@ artikel_ids AS (
 
 ),
 
-
 t39 AS (
 
     SELECT *
@@ -45,7 +43,6 @@ t39 AS (
     WHERE mandant = 39
 
 ),
-
 
 t32 AS (
 
@@ -55,7 +52,6 @@ t32 AS (
 
 ),
 
-
 t42 AS (
 
     SELECT *
@@ -64,7 +60,6 @@ t42 AS (
 
 ),
 
-
 t36 AS (
 
     SELECT *
@@ -72,7 +67,6 @@ t36 AS (
     WHERE mandant = 36
 
 ),
-
 
 tos AS (
 
@@ -227,7 +221,6 @@ SELECT
 
     /* =========================================================
        BEZEICHNUNG GESAMT
-       BEZEICHNUNG 1 + 2 + 3 + 4
     ========================================================= */
 
     t39.art_bezeichnung_gesamt AS art_bezeichnung_gesamt_39,
@@ -555,7 +548,137 @@ SELECT
         AS art_transporttemperatur_bis_matchscore,
 
     {{ match_value('art_transporttemperatur_bis') }}
-        AS art_transporttemperatur_bis_match
+        AS art_transporttemperatur_bis_match,
+
+
+    /* =========================================================
+       NACHHALTIGER ARTIKEL
+    ========================================================= */
+
+    t39.art_nachhaltiger_artikel AS art_nachhaltiger_artikel_39,
+    t32.art_nachhaltiger_artikel AS art_nachhaltiger_artikel_32,
+    t42.art_nachhaltiger_artikel AS art_nachhaltiger_artikel_42,
+    t36.art_nachhaltiger_artikel AS art_nachhaltiger_artikel_36,
+
+    {{ match_score('art_nachhaltiger_artikel') }}
+        AS art_nachhaltiger_artikel_matchscore,
+
+    CASE
+        WHEN LOWER({{ match_value('art_nachhaltiger_artikel') }}::text) = 'true' THEN 'True'
+        WHEN LOWER({{ match_value('art_nachhaltiger_artikel') }}::text) = 'false' THEN 'False'
+        ELSE {{ match_value('art_nachhaltiger_artikel') }}::text
+    END AS art_nachhaltiger_artikel_match,
+
+
+    /* =========================================================
+       BLAUER ENGEL
+    ========================================================= */
+
+    t39.art_nh_blauer_engel AS art_nh_blauer_engel_39,
+    t32.art_nh_blauer_engel AS art_nh_blauer_engel_32,
+    t42.art_nh_blauer_engel AS art_nh_blauer_engel_42,
+    t36.art_nh_blauer_engel AS art_nh_blauer_engel_36,
+
+    {{ match_score('art_nh_blauer_engel') }}
+        AS art_nh_blauer_engel_matchscore,
+
+    CASE
+        WHEN LOWER({{ match_value('art_nh_blauer_engel') }}::text) = 'true' THEN 'True'
+        WHEN LOWER({{ match_value('art_nh_blauer_engel') }}::text) = 'false' THEN 'False'
+        ELSE {{ match_value('art_nh_blauer_engel') }}::text
+    END AS art_nh_blauer_engel_match,
+
+
+    /* =========================================================
+       EU ECOLABEL
+    ========================================================= */
+
+    t39.art_nh_eu_ecolabel AS art_nh_eu_ecolabel_39,
+    t32.art_nh_eu_ecolabel AS art_nh_eu_ecolabel_32,
+    t42.art_nh_eu_ecolabel AS art_nh_eu_ecolabel_42,
+    t36.art_nh_eu_ecolabel AS art_nh_eu_ecolabel_36,
+
+    {{ match_score('art_nh_eu_ecolabel') }}
+        AS art_nh_eu_ecolabel_matchscore,
+
+    CASE
+        WHEN LOWER({{ match_value('art_nh_eu_ecolabel') }}::text) = 'true' THEN 'True'
+        WHEN LOWER({{ match_value('art_nh_eu_ecolabel') }}::text) = 'false' THEN 'False'
+        ELSE {{ match_value('art_nh_eu_ecolabel') }}::text
+    END AS art_nh_eu_ecolabel_match,
+
+
+    /* =========================================================
+       NORDIC ECOLABEL
+    ========================================================= */
+
+    t39.art_nh_nordic_ecolabel AS art_nh_nordic_ecolabel_39,
+    t32.art_nh_nordic_ecolabel AS art_nh_nordic_ecolabel_32,
+    t42.art_nh_nordic_ecolabel AS art_nh_nordic_ecolabel_42,
+    t36.art_nh_nordic_ecolabel AS art_nh_nordic_ecolabel_36,
+
+    {{ match_score('art_nh_nordic_ecolabel') }}
+        AS art_nh_nordic_ecolabel_matchscore,
+
+    CASE
+        WHEN LOWER({{ match_value('art_nh_nordic_ecolabel') }}::text) = 'true' THEN 'True'
+        WHEN LOWER({{ match_value('art_nh_nordic_ecolabel') }}::text) = 'false' THEN 'False'
+        ELSE {{ match_value('art_nh_nordic_ecolabel') }}::text
+    END AS art_nh_nordic_ecolabel_match,
+
+
+    /* =========================================================
+       FSC
+    ========================================================= */
+
+    t39.art_nh_fsc AS art_nh_fsc_39,
+    t32.art_nh_fsc AS art_nh_fsc_32,
+    t42.art_nh_fsc AS art_nh_fsc_42,
+    t36.art_nh_fsc AS art_nh_fsc_36,
+
+    {{ match_score('art_nh_fsc') }}
+        AS art_nh_fsc_matchscore,
+
+    CASE
+        WHEN LOWER({{ match_value('art_nh_fsc') }}::text) = 'true' THEN 'True'
+        WHEN LOWER({{ match_value('art_nh_fsc') }}::text) = 'false' THEN 'False'
+        ELSE {{ match_value('art_nh_fsc') }}::text
+    END AS art_nh_fsc_match,
+
+
+    /* =========================================================
+       SONSTIGES NACHHALTIGKEIT
+    ========================================================= */
+
+    t39.art_nh_sonstiges AS art_nh_sonstiges_39,
+    t32.art_nh_sonstiges AS art_nh_sonstiges_32,
+    t42.art_nh_sonstiges AS art_nh_sonstiges_42,
+    t36.art_nh_sonstiges AS art_nh_sonstiges_36,
+
+    {{ match_score('art_nh_sonstiges') }}
+        AS art_nh_sonstiges_matchscore,
+
+    CASE
+        WHEN LOWER({{ match_value('art_nh_sonstiges') }}::text) = 'true' THEN 'True'
+        WHEN LOWER({{ match_value('art_nh_sonstiges') }}::text) = 'false' THEN 'False'
+        ELSE {{ match_value('art_nh_sonstiges') }}::text
+    END AS art_nh_sonstiges_match,
+
+
+    /* =========================================================
+       SONSTIGES NACHHALTIGKEIT NAME
+    ========================================================= */
+
+    t39.art_nh_sonstiges_name AS art_nh_sonstiges_name_39,
+    t32.art_nh_sonstiges_name AS art_nh_sonstiges_name_32,
+    t42.art_nh_sonstiges_name AS art_nh_sonstiges_name_42,
+    t36.art_nh_sonstiges_name AS art_nh_sonstiges_name_36,
+
+    {{ match_score('art_nh_sonstiges_name') }}
+        AS art_nh_sonstiges_name_matchscore,
+
+    {{ match_value('art_nh_sonstiges_name') }}
+        AS art_nh_sonstiges_name_match
 
 
 FROM artikel_ids base

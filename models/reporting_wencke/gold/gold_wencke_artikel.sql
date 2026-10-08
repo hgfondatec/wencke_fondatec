@@ -68,7 +68,15 @@ values_long AS (
 
             ('art_gefahrstoff', s.art_gefahrstoff::text),
 
-            ('art_artikelname_kurz', s.art_artikelname_kurz::text)
+            ('art_artikelname_kurz', s.art_artikelname_kurz::text),
+
+            ('art_nachhaltiger_artikel', s.art_nachhaltiger_artikel::text),
+            ('art_nh_blauer_engel', s.art_nh_blauer_engel::text),
+            ('art_nh_eu_ecolabel', s.art_nh_eu_ecolabel::text),
+            ('art_nh_nordic_ecolabel', s.art_nh_nordic_ecolabel::text),
+            ('art_nh_fsc', s.art_nh_fsc::text),
+            ('art_nh_sonstiges', s.art_nh_sonstiges::text),
+            ('art_nh_sonstiges_name', s.art_nh_sonstiges_name::text)
 
     ) v(field_name, value)
 
@@ -221,7 +229,35 @@ golden_values AS (
 
         MAX(value) FILTER (
             WHERE field_name = 'art_artikelname_kurz'
-        ) AS art_artikelname_kurz
+        ) AS art_artikelname_kurz,
+
+        MAX(value) FILTER (
+            WHERE field_name = 'art_nachhaltiger_artikel'
+        ) AS art_nachhaltiger_artikel,
+
+        MAX(value) FILTER (
+            WHERE field_name = 'art_nh_blauer_engel'
+        ) AS art_nh_blauer_engel,
+
+        MAX(value) FILTER (
+            WHERE field_name = 'art_nh_eu_ecolabel'
+        ) AS art_nh_eu_ecolabel,
+
+        MAX(value) FILTER (
+            WHERE field_name = 'art_nh_nordic_ecolabel'
+        ) AS art_nh_nordic_ecolabel,
+
+        MAX(value) FILTER (
+            WHERE field_name = 'art_nh_fsc'
+        ) AS art_nh_fsc,
+
+        MAX(value) FILTER (
+            WHERE field_name = 'art_nh_sonstiges'
+        ) AS art_nh_sonstiges,
+
+        MAX(value) FILTER (
+            WHERE field_name = 'art_nh_sonstiges_name'
+        ) AS art_nh_sonstiges_name
 
     FROM ranked
 
@@ -389,6 +425,7 @@ tos AS (
 
 )
 
+
 /* ============================================================
    FINAL
    ============================================================ */
@@ -450,6 +487,16 @@ SELECT
     g.art_gefahrstoff,
 
     g.art_artikelname_kurz,
+
+    /* Nachhaltigkeit */
+
+    g.art_nachhaltiger_artikel,
+    g.art_nh_blauer_engel,
+    g.art_nh_eu_ecolabel,
+    g.art_nh_nordic_ecolabel,
+    g.art_nh_fsc,
+    g.art_nh_sonstiges,
+    g.art_nh_sonstiges_name,
 
     CASE
         WHEN tos.art_artikelnummer IS NOT NULL
