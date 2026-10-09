@@ -43,6 +43,7 @@ adressen AS (
         a.beleg_mandant_id,
         a.adr_nr,
         a.adress_key,
+        a.adr_text,
         a.praesident_ebene_1_bezeichnung,
         a.praesident_ebene_2_bezeichnung,
         a.praesident_ebene_3_bezeichnung
@@ -59,7 +60,7 @@ adress_zuordnung AS (
         adr_nr AS debitor_nr,
         adress_key AS debitor_adress_key,
         'Debitor' AS preis_herkunft,
-        NULL::text AS herkunft_bezeichnung,
+        adr_text AS herkunft_bezeichnung,
         1 AS prioritaet
     FROM adressen
     WHERE adr_nr IS NOT NULL

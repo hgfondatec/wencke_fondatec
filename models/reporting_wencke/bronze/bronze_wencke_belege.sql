@@ -12,6 +12,7 @@ SELECT
     bel_art,
     bel_beleg_gruppe,
     bel_adr_nr,
+    bel_herkunft,
     bel_vertreter_nr,
     bel_versand_art,
     bel_nl_nachlieferung,

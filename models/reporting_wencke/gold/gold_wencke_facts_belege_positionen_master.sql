@@ -21,6 +21,7 @@ WITH belege_positionen AS (
         END AS bel_final_adr_nr,
 
         b.bel_vertreter_nr,
+        b.bel_herkunft,
         b.bel_date,
         b.bel_nl_nachlieferung,
         b.bel_project_nr,
