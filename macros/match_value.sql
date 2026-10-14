@@ -14,67 +14,34 @@
 (
     WITH werte AS (
 
-        SELECT
-            {% if ist_nachhaltigkeit %}
-                CASE
-                    WHEN t39.art_artikelnummer IS NULL THEN NULL
-                    WHEN LOWER(TRIM(t39.{{ field }}::text)) = 'true'
-                        THEN 'true'
-                    WHEN LOWER(TRIM(t39.{{ field }}::text)) = 'false'
-                        THEN 'false'
-                    ELSE 'nicht klassifiziert'
-                END
-            {% else %}
-                NULLIF(TRIM(t39.{{ field }}::text), '')
-            {% endif %} AS value
+        {% for alias in ['t39', 't32', 't42', 't36'] %}
 
-        UNION ALL
-
-        SELECT
-            {% if ist_nachhaltigkeit %}
-                CASE
-                    WHEN t32.art_artikelnummer IS NULL THEN NULL
-                    WHEN LOWER(TRIM(t32.{{ field }}::text)) = 'true'
-                        THEN 'true'
-                    WHEN LOWER(TRIM(t32.{{ field }}::text)) = 'false'
-                        THEN 'false'
-                    ELSE 'nicht klassifiziert'
-                END
-            {% else %}
-                NULLIF(TRIM(t32.{{ field }}::text), '')
+            {% if not loop.first %}
+                UNION ALL
             {% endif %}
 
-        UNION ALL
+            SELECT
+                {% if ist_nachhaltigkeit %}
+                    CASE
+                        WHEN {{ alias }}.art_artikelnummer IS NULL
+                            THEN NULL
 
-        SELECT
-            {% if ist_nachhaltigkeit %}
-                CASE
-                    WHEN t42.art_artikelnummer IS NULL THEN NULL
-                    WHEN LOWER(TRIM(t42.{{ field }}::text)) = 'true'
-                        THEN 'true'
-                    WHEN LOWER(TRIM(t42.{{ field }}::text)) = 'false'
-                        THEN 'false'
-                    ELSE 'nicht klassifiziert'
-                END
-            {% else %}
-                NULLIF(TRIM(t42.{{ field }}::text), '')
-            {% endif %}
+                        WHEN LOWER(TRIM({{ alias }}.{{ field }}::text)) = 'true'
+                            THEN 'true'
 
-        UNION ALL
+                        WHEN LOWER(TRIM({{ alias }}.{{ field }}::text)) = 'false'
+                            THEN 'false'
 
-        SELECT
-            {% if ist_nachhaltigkeit %}
-                CASE
-                    WHEN t36.art_artikelnummer IS NULL THEN NULL
-                    WHEN LOWER(TRIM(t36.{{ field }}::text)) = 'true'
-                        THEN 'true'
-                    WHEN LOWER(TRIM(t36.{{ field }}::text)) = 'false'
-                        THEN 'false'
-                    ELSE 'nicht klassifiziert'
-                END
-            {% else %}
-                NULLIF(TRIM(t36.{{ field }}::text), '')
-            {% endif %}
+                        ELSE 'nicht klassifiziert'
+                    END
+                {% else %}
+                    NULLIF(
+                        TRIM({{ alias }}.{{ field }}::text),
+                        ''
+                    )
+                {% endif %} AS value
+
+        {% endfor %}
 
     ),
 
@@ -104,25 +71,25 @@
 
     SELECT
         CASE
-            WHEN MAX(score) <= 1 THEN NULL
+            WHEN MAX(score) <= 1
+                THEN NULL
 
             ELSE STRING_AGG(
-                CASE
-                    WHEN '{{ field }}' = 'art_ek_netto'
-                    THEN
-                        REPLACE(
-                            TO_CHAR(
-                                NULLIF(
-                                    REPLACE(value, ',', '.'),
-                                    ''
-                                )::numeric,
-                                'FM999999999990D00'
-                            ),
-                            '.',
-                            ','
-                        )
-                    ELSE value
-                END,
+                {% if field == 'art_ek_netto' %}
+                    REPLACE(
+                        TO_CHAR(
+                            NULLIF(
+                                REPLACE(value, ',', '.'),
+                                ''
+                            )::numeric,
+                            'FM999999999990D00'
+                        ),
+                        '.',
+                        ','
+                    )
+                {% else %}
+                    value
+                {% endif %},
                 '///' ORDER BY value
             )
         END

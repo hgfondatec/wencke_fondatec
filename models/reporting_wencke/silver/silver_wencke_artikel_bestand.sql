@@ -60,7 +60,7 @@ SELECT
     a.artikel_nr::varchar(255) AS artikelnummer,
     a.art_ek_netto::float8 AS art_ek_netto,
     a.art_lagereinheit::varchar(10) AS art_lagereinheit,
-    l.art_lieferantbezeichnung::varchar(6) AS lieferantenbezeichnung,
+    l.art_lieferantbezeichnung::varchar(50) AS lieferantenbezeichnung,
     a.art_gesperrter_artikel::varchar(1) AS gesperrter_artikel,
     a.art_auswahl_gesperrt::varchar(1) AS auswahl_gesperrt,
     g.art_gefahrstoff::varchar(1) AS gefahrstoff,

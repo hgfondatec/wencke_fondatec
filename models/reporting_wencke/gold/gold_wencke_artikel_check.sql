@@ -1,3 +1,4 @@
+
 {{
     config(
         materialized = 'table',
@@ -54,7 +55,7 @@ artikel_bestand AS (
         artikelnummer::text AS artikelnummer,
         SUM(COALESCE(lagerbestand, 0)) AS bestand_gesamt
     FROM {{ ref('gold_wencke_artikel_bestand') }}
-    WHERE mandant_id IN ('39', '32', '42', '36')
+    WHERE mandant_id::text IN ('39', '32', '42', '36')
     GROUP BY artikelnummer::text
 )
 
@@ -80,7 +81,6 @@ SELECT
 
     /* =========================================================
        GESPERRTER ARTIKEL
-       2 = GESPERRT
     ========================================================= */
     CASE WHEN t39.art_gesperrter_artikel = '2' THEN 1 ELSE 0 END AS gesperrt_39,
     CASE WHEN t32.art_gesperrter_artikel = '2' THEN 1 ELSE 0 END AS gesperrt_32,
@@ -90,11 +90,8 @@ SELECT
     /* =========================================================
        REPORTING
     ========================================================= */
-    {{ match_value_unique('art_artikelname') }}
-        AS art_artikelname_reporting,
-
-    {{ match_value_unique('art_bezeichnung_gesamt') }}
-        AS art_bezeichnung_reporting,
+    {{ match_value_unique('art_artikelname') }} AS art_artikelname_reporting,
+    {{ match_value_unique('art_bezeichnung_gesamt') }} AS art_bezeichnung_reporting,
 
     /* =========================================================
        VERFÜGBAR SCORE
@@ -122,25 +119,19 @@ SELECT
     t42.art_artikelname AS art_artikelname_42,
     t36.art_artikelname AS art_artikelname_36,
 
-    {{ match_score('art_artikelname') }}
-        AS art_artikelname_matchscore,
-
-    {{ match_value('art_artikelname') }}
-        AS art_artikelname_match,
+    {{ match_score('art_artikelname') }} AS art_artikelname_matchscore,
+    {{ match_value('art_artikelname') }} AS art_artikelname_match,
 
     /* =========================================================
-       ARTIKELBEZEICHNUNG 1
+       ARTIKELBEZEICHNUNG
     ========================================================= */
     t39.art_bezeichnung AS art_bezeichnung_39,
     t32.art_bezeichnung AS art_bezeichnung_32,
     t42.art_bezeichnung AS art_bezeichnung_42,
     t36.art_bezeichnung AS art_bezeichnung_36,
 
-    {{ match_score('art_bezeichnung') }}
-        AS art_bezeichnung_matchscore,
-
-    {{ match_value('art_bezeichnung') }}
-        AS art_bezeichnung_match,
+    {{ match_score('art_bezeichnung') }} AS art_bezeichnung_matchscore,
+    {{ match_value('art_bezeichnung') }} AS art_bezeichnung_match,
 
     /* =========================================================
        BEZEICHNUNG 2
@@ -150,11 +141,8 @@ SELECT
     t42.art_bezeichnung_2 AS art_bezeichnung_2_42,
     t36.art_bezeichnung_2 AS art_bezeichnung_2_36,
 
-    {{ match_score('art_bezeichnung_2') }}
-        AS art_bezeichnung_2_matchscore,
-
-    {{ match_value('art_bezeichnung_2') }}
-        AS art_bezeichnung_2_match,
+    {{ match_score('art_bezeichnung_2') }} AS art_bezeichnung_2_matchscore,
+    {{ match_value('art_bezeichnung_2') }} AS art_bezeichnung_2_match,
 
     /* =========================================================
        BEZEICHNUNG 3
@@ -164,11 +152,8 @@ SELECT
     t42.art_bezeichnung_3 AS art_bezeichnung_3_42,
     t36.art_bezeichnung_3 AS art_bezeichnung_3_36,
 
-    {{ match_score('art_bezeichnung_3') }}
-        AS art_bezeichnung_3_matchscore,
-
-    {{ match_value('art_bezeichnung_3') }}
-        AS art_bezeichnung_3_match,
+    {{ match_score('art_bezeichnung_3') }} AS art_bezeichnung_3_matchscore,
+    {{ match_value('art_bezeichnung_3') }} AS art_bezeichnung_3_match,
 
     /* =========================================================
        BEZEICHNUNG 4
@@ -178,11 +163,8 @@ SELECT
     t42.art_bezeichnung_4 AS art_bezeichnung_4_42,
     t36.art_bezeichnung_4 AS art_bezeichnung_4_36,
 
-    {{ match_score('art_bezeichnung_4') }}
-        AS art_bezeichnung_4_matchscore,
-
-    {{ match_value('art_bezeichnung_4') }}
-        AS art_bezeichnung_4_match,
+    {{ match_score('art_bezeichnung_4') }} AS art_bezeichnung_4_matchscore,
+    {{ match_value('art_bezeichnung_4') }} AS art_bezeichnung_4_match,
 
     /* =========================================================
        BEZEICHNUNG GESAMT
@@ -192,11 +174,8 @@ SELECT
     t42.art_bezeichnung_gesamt AS art_bezeichnung_gesamt_42,
     t36.art_bezeichnung_gesamt AS art_bezeichnung_gesamt_36,
 
-    {{ match_score('art_bezeichnung_gesamt') }}
-        AS art_bezeichnung_gesamt_matchscore,
-
-    {{ match_value('art_bezeichnung_gesamt') }}
-        AS art_bezeichnung_gesamt_match,
+    {{ match_score('art_bezeichnung_gesamt') }} AS art_bezeichnung_gesamt_matchscore,
+    {{ match_value('art_bezeichnung_gesamt') }} AS art_bezeichnung_gesamt_match,
 
     /* =========================================================
        HAUPTWARENGRUPPE NUMMER
@@ -206,11 +185,8 @@ SELECT
     t42.art_hauptwarengruppe_nummer AS art_hauptwarengruppe_nummer_42,
     t36.art_hauptwarengruppe_nummer AS art_hauptwarengruppe_nummer_36,
 
-    {{ match_score('art_hauptwarengruppe_nummer') }}
-        AS art_hauptwarengruppe_nummer_matchscore,
-
-    {{ match_value('art_hauptwarengruppe_nummer') }}
-        AS art_hauptwarengruppe_nummer_match,
+    {{ match_score('art_hauptwarengruppe_nummer') }} AS art_hauptwarengruppe_nummer_matchscore,
+    {{ match_value('art_hauptwarengruppe_nummer') }} AS art_hauptwarengruppe_nummer_match,
 
     /* =========================================================
        HAUPTWARENGRUPPE
@@ -220,11 +196,8 @@ SELECT
     t42.art_hauptwarengruppe AS art_hauptwarengruppe_42,
     t36.art_hauptwarengruppe AS art_hauptwarengruppe_36,
 
-    {{ match_score('art_hauptwarengruppe') }}
-        AS art_hauptwarengruppe_matchscore,
-
-    {{ match_value('art_hauptwarengruppe') }}
-        AS art_hauptwarengruppe_match,
+    {{ match_score('art_hauptwarengruppe') }} AS art_hauptwarengruppe_matchscore,
+    {{ match_value('art_hauptwarengruppe') }} AS art_hauptwarengruppe_match,
 
     /* =========================================================
        HAUPTWARENBEZEICHNUNG
@@ -234,14 +207,9 @@ SELECT
     t42.art_hauptwarenbezeichnung AS art_hauptwarenbezeichnung_42,
     t36.art_hauptwarenbezeichnung AS art_hauptwarenbezeichnung_36,
 
-    {{ match_score('art_hauptwarenbezeichnung') }}
-        AS art_hauptwarenbezeichnung_matchscore,
-
-    {{ match_value('art_hauptwarenbezeichnung') }}
-        AS art_hauptwarenbezeichnung_match,
-
-    {{ match_value_unique('art_hauptwarenbezeichnung') }}
-        AS art_hauptwarenbezeichnung_reporting,
+    {{ match_score('art_hauptwarenbezeichnung') }} AS art_hauptwarenbezeichnung_matchscore,
+    {{ match_value('art_hauptwarenbezeichnung') }} AS art_hauptwarenbezeichnung_match,
+    {{ match_value_unique('art_hauptwarenbezeichnung') }} AS art_hauptwarenbezeichnung_reporting,
 
     /* =========================================================
        NEBENWARENGRUPPE NUMMER
@@ -251,11 +219,8 @@ SELECT
     t42.art_nebenwarengruppe_nummer AS art_nebenwarengruppe_nummer_42,
     t36.art_nebenwarengruppe_nummer AS art_nebenwarengruppe_nummer_36,
 
-    {{ match_score('art_nebenwarengruppe_nummer') }}
-        AS art_nebenwarengruppe_nummer_matchscore,
-
-    {{ match_value('art_nebenwarengruppe_nummer') }}
-        AS art_nebenwarengruppe_nummer_match,
+    {{ match_score('art_nebenwarengruppe_nummer') }} AS art_nebenwarengruppe_nummer_matchscore,
+    {{ match_value('art_nebenwarengruppe_nummer') }} AS art_nebenwarengruppe_nummer_match,
 
     /* =========================================================
        NEBENWARENGRUPPE
@@ -265,11 +230,8 @@ SELECT
     t42.art_nebenwarengruppe AS art_nebenwarengruppe_42,
     t36.art_nebenwarengruppe AS art_nebenwarengruppe_36,
 
-    {{ match_score('art_nebenwarengruppe') }}
-        AS art_nebenwarengruppe_matchscore,
-
-    {{ match_value('art_nebenwarengruppe') }}
-        AS art_nebenwarengruppe_match,
+    {{ match_score('art_nebenwarengruppe') }} AS art_nebenwarengruppe_matchscore,
+    {{ match_value('art_nebenwarengruppe') }} AS art_nebenwarengruppe_match,
 
     /* =========================================================
        NEBENWARENGRUPPE BEZEICHNUNG
@@ -279,14 +241,9 @@ SELECT
     t42.art_nebenwarengruppebezeichnung AS art_nebenwarengruppebezeichnung_42,
     t36.art_nebenwarengruppebezeichnung AS art_nebenwarengruppebezeichnung_36,
 
-    {{ match_score('art_nebenwarengruppebezeichnung') }}
-        AS art_nebenwarengruppebezeichnung_matchscore,
-
-    {{ match_value('art_nebenwarengruppebezeichnung') }}
-        AS art_nebenwarengruppebezeichnung_match,
-
-    {{ match_value_unique('art_nebenwarengruppebezeichnung') }}
-        AS art_nebenwarengruppebezeichnung_reporting,
+    {{ match_score('art_nebenwarengruppebezeichnung') }} AS art_nebenwarengruppebezeichnung_matchscore,
+    {{ match_value('art_nebenwarengruppebezeichnung') }} AS art_nebenwarengruppebezeichnung_match,
+    {{ match_value_unique('art_nebenwarengruppebezeichnung') }} AS art_nebenwarengruppebezeichnung_reporting,
 
     /* =========================================================
        HERSTELLERNUMMER
@@ -296,14 +253,9 @@ SELECT
     t42.art_herstellernummer AS art_herstellernummer_42,
     t36.art_herstellernummer AS art_herstellernummer_36,
 
-    {{ match_score('art_herstellernummer') }}
-        AS art_herstellernummer_matchscore,
-
-    {{ match_value('art_herstellernummer') }}
-        AS art_herstellernummer_match,
-
-    {{ match_value_unique('art_herstellernummer') }}
-        AS art_herstellernummer_reporting,
+    {{ match_score('art_herstellernummer') }} AS art_herstellernummer_matchscore,
+    {{ match_value('art_herstellernummer') }} AS art_herstellernummer_match,
+    {{ match_value_unique('art_herstellernummer') }} AS art_herstellernummer_reporting,
 
     /* =========================================================
        LIEFERANT
@@ -313,11 +265,8 @@ SELECT
     t42.art_lieferant AS art_lieferant_42,
     t36.art_lieferant AS art_lieferant_36,
 
-    {{ match_score('art_lieferant') }}
-        AS art_lieferant_matchscore,
-
-    {{ match_value('art_lieferant') }}
-        AS art_lieferant_match,
+    {{ match_score('art_lieferant') }} AS art_lieferant_matchscore,
+    {{ match_value('art_lieferant') }} AS art_lieferant_match,
 
     /* =========================================================
        LIEFERANTENBEZEICHNUNG
@@ -327,14 +276,9 @@ SELECT
     t42.art_lieferantbezeichnung AS art_lieferantbezeichnung_42,
     t36.art_lieferantbezeichnung AS art_lieferantbezeichnung_36,
 
-    {{ match_score('art_lieferantbezeichnung') }}
-        AS art_lieferantbezeichnung_matchscore,
-
-    {{ match_value('art_lieferantbezeichnung') }}
-        AS art_lieferantbezeichnung_match,
-
-    {{ match_value_unique('art_lieferantbezeichnung') }}
-        AS art_lieferantbezeichnung_reporting,
+    {{ match_score('art_lieferantbezeichnung') }} AS art_lieferantbezeichnung_matchscore,
+    {{ match_value('art_lieferantbezeichnung') }} AS art_lieferantbezeichnung_match,
+    {{ match_value_unique('art_lieferantbezeichnung') }} AS art_lieferantbezeichnung_reporting,
 
     /* =========================================================
        DIVERS FLAG
@@ -344,25 +288,19 @@ SELECT
     t42.art_divers_flag AS art_divers_flag_42,
     t36.art_divers_flag AS art_divers_flag_36,
 
-    {{ match_score('art_divers_flag') }}
-        AS art_divers_flag_matchscore,
-
-    {{ match_value('art_divers_flag') }}
-        AS art_divers_flag_match,
+    {{ match_score('art_divers_flag') }} AS art_divers_flag_matchscore,
+    {{ match_value('art_divers_flag') }} AS art_divers_flag_match,
 
     /* =========================================================
-       GESPERRTER ARTIKEL – VERGLEICH
+       GESPERRTER ARTIKEL
     ========================================================= */
     t39.art_gesperrter_artikel AS art_gesperrter_artikel_39,
     t32.art_gesperrter_artikel AS art_gesperrter_artikel_32,
     t42.art_gesperrter_artikel AS art_gesperrter_artikel_42,
     t36.art_gesperrter_artikel AS art_gesperrter_artikel_36,
 
-    {{ match_score('art_gesperrter_artikel') }}
-        AS art_gesperrter_artikel_matchscore,
-
-    {{ match_value('art_gesperrter_artikel') }}
-        AS art_gesperrter_artikel_match,
+    {{ match_score('art_gesperrter_artikel') }} AS art_gesperrter_artikel_matchscore,
+    {{ match_value('art_gesperrter_artikel') }} AS art_gesperrter_artikel_match,
 
     /* =========================================================
        EK NETTO
@@ -372,11 +310,8 @@ SELECT
     t42.art_ek_netto AS art_ek_netto_42,
     t36.art_ek_netto AS art_ek_netto_36,
 
-    {{ match_score('art_ek_netto') }}
-        AS art_ek_netto_matchscore,
-
-    {{ match_value('art_ek_netto') }}
-        AS art_ek_netto_match,
+    {{ match_score('art_ek_netto') }} AS art_ek_netto_matchscore,
+    {{ match_value('art_ek_netto') }} AS art_ek_netto_match,
 
     /* =========================================================
        LAGEREINHEIT
@@ -386,11 +321,8 @@ SELECT
     t42.art_lagereinheit AS art_lagereinheit_42,
     t36.art_lagereinheit AS art_lagereinheit_36,
 
-    {{ match_score('art_lagereinheit') }}
-        AS art_lagereinheit_matchscore,
-
-    {{ match_value('art_lagereinheit') }}
-        AS art_lagereinheit_match,
+    {{ match_score('art_lagereinheit') }} AS art_lagereinheit_matchscore,
+    {{ match_value('art_lagereinheit') }} AS art_lagereinheit_match,
 
     /* =========================================================
        ARTIKEL OHNE TEMPERATURGRENZE
@@ -400,11 +332,8 @@ SELECT
     t42.art_artikel_ohne_temperaturgrenze AS art_artikel_ohne_temperaturgrenze_42,
     t36.art_artikel_ohne_temperaturgrenze AS art_artikel_ohne_temperaturgrenze_36,
 
-    {{ match_score('art_artikel_ohne_temperaturgrenze') }}
-        AS art_artikel_ohne_temperaturgrenze_matchscore,
-
-    {{ match_value('art_artikel_ohne_temperaturgrenze') }}
-        AS art_artikel_ohne_temperaturgrenze_match,
+    {{ match_score('art_artikel_ohne_temperaturgrenze') }} AS art_artikel_ohne_temperaturgrenze_matchscore,
+    {{ match_value('art_artikel_ohne_temperaturgrenze') }} AS art_artikel_ohne_temperaturgrenze_match,
 
     /* =========================================================
        TEMPERATURGRENZE VORHANDEN
@@ -414,11 +343,8 @@ SELECT
     t42.art_temperaturgrenze_vorhanden AS art_temperaturgrenze_vorhanden_42,
     t36.art_temperaturgrenze_vorhanden AS art_temperaturgrenze_vorhanden_36,
 
-    {{ match_score('art_temperaturgrenze_vorhanden') }}
-        AS art_temperaturgrenze_vorhanden_matchscore,
-
-    {{ match_value('art_temperaturgrenze_vorhanden') }}
-        AS art_temperaturgrenze_vorhanden_match,
+    {{ match_score('art_temperaturgrenze_vorhanden') }} AS art_temperaturgrenze_vorhanden_matchscore,
+    {{ match_value('art_temperaturgrenze_vorhanden') }} AS art_temperaturgrenze_vorhanden_match,
 
     /* =========================================================
        LAGERTEMPERATUR VON
@@ -428,11 +354,8 @@ SELECT
     t42.art_lagertemperatur_von AS art_lagertemperatur_von_42,
     t36.art_lagertemperatur_von AS art_lagertemperatur_von_36,
 
-    {{ match_score('art_lagertemperatur_von') }}
-        AS art_lagertemperatur_von_matchscore,
-
-    {{ match_value('art_lagertemperatur_von') }}
-        AS art_lagertemperatur_von_match,
+    {{ match_score('art_lagertemperatur_von') }} AS art_lagertemperatur_von_matchscore,
+    {{ match_value('art_lagertemperatur_von') }} AS art_lagertemperatur_von_match,
 
     /* =========================================================
        LAGERTEMPERATUR BIS
@@ -442,11 +365,8 @@ SELECT
     t42.art_lagertemperatur_bis AS art_lagertemperatur_bis_42,
     t36.art_lagertemperatur_bis AS art_lagertemperatur_bis_36,
 
-    {{ match_score('art_lagertemperatur_bis') }}
-        AS art_lagertemperatur_bis_matchscore,
-
-    {{ match_value('art_lagertemperatur_bis') }}
-        AS art_lagertemperatur_bis_match,
+    {{ match_score('art_lagertemperatur_bis') }} AS art_lagertemperatur_bis_matchscore,
+    {{ match_value('art_lagertemperatur_bis') }} AS art_lagertemperatur_bis_match,
 
     /* =========================================================
        TRANSPORTTEMPERATUR VON
@@ -456,11 +376,8 @@ SELECT
     t42.art_transporttemperatur_von AS art_transporttemperatur_von_42,
     t36.art_transporttemperatur_von AS art_transporttemperatur_von_36,
 
-    {{ match_score('art_transporttemperatur_von') }}
-        AS art_transporttemperatur_von_matchscore,
-
-    {{ match_value('art_transporttemperatur_von') }}
-        AS art_transporttemperatur_von_match,
+    {{ match_score('art_transporttemperatur_von') }} AS art_transporttemperatur_von_matchscore,
+    {{ match_value('art_transporttemperatur_von') }} AS art_transporttemperatur_von_match,
 
     /* =========================================================
        TRANSPORTTEMPERATUR BIS
@@ -470,251 +387,37 @@ SELECT
     t42.art_transporttemperatur_bis AS art_transporttemperatur_bis_42,
     t36.art_transporttemperatur_bis AS art_transporttemperatur_bis_36,
 
-    {{ match_score('art_transporttemperatur_bis') }}
-        AS art_transporttemperatur_bis_matchscore,
-
-    {{ match_value('art_transporttemperatur_bis') }}
-        AS art_transporttemperatur_bis_match,
+    {{ match_score('art_transporttemperatur_bis') }} AS art_transporttemperatur_bis_matchscore,
+    {{ match_value('art_transporttemperatur_bis') }} AS art_transporttemperatur_bis_match,
 
     /* =========================================================
-       NACHHALTIGER ARTIKEL
+       NACHHALTIGKEIT - ALLE SECHS FELDER
     ========================================================= */
-    CASE
-        WHEN t39.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t39.art_nachhaltiger_artikel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t39.art_nachhaltiger_artikel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nachhaltiger_artikel_39,
+    {% for field in [
+        'art_nachhaltiger_artikel',
+        'art_nh_blauer_engel',
+        'art_nh_eu_ecolabel',
+        'art_nh_nordic_ecolabel',
+        'art_nh_fsc',
+        'art_nh_sonstiges'
+    ] %}
 
-    CASE
-        WHEN t32.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t32.art_nachhaltiger_artikel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t32.art_nachhaltiger_artikel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nachhaltiger_artikel_32,
+        {% for mandant in [39, 32, 42, 36] %}
+            CASE
+                WHEN t{{ mandant }}.art_artikelnummer IS NULL
+                    THEN NULL
+                WHEN LOWER(TRIM(t{{ mandant }}.{{ field }}::text)) = 'true'
+                    THEN 'trifft zu'
+                WHEN LOWER(TRIM(t{{ mandant }}.{{ field }}::text)) = 'false'
+                    THEN 'trifft nicht zu'
+                ELSE 'nicht klassifiziert'
+            END AS {{ field }}_{{ mandant }},
+        {% endfor %}
 
-    CASE
-        WHEN t42.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t42.art_nachhaltiger_artikel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t42.art_nachhaltiger_artikel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nachhaltiger_artikel_42,
+        nh_{{ field }}.matchscore AS {{ field }}_matchscore,
+        nh_{{ field }}.matchwert AS {{ field }}_match,
 
-    CASE
-        WHEN t36.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t36.art_nachhaltiger_artikel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t36.art_nachhaltiger_artikel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nachhaltiger_artikel_36,
-
-    {{ match_score('art_nachhaltiger_artikel') }}
-        AS art_nachhaltiger_artikel_matchscore,
-
-    CASE
-        WHEN LOWER({{ match_value('art_nachhaltiger_artikel') }}::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER({{ match_value('art_nachhaltiger_artikel') }}::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nachhaltiger_artikel_match,
-
-    /* =========================================================
-       BLAUER ENGEL
-    ========================================================= */
-    CASE
-        WHEN t39.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t39.art_nh_blauer_engel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t39.art_nh_blauer_engel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_blauer_engel_39,
-
-    CASE
-        WHEN t32.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t32.art_nh_blauer_engel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t32.art_nh_blauer_engel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_blauer_engel_32,
-
-    CASE
-        WHEN t42.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t42.art_nh_blauer_engel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t42.art_nh_blauer_engel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_blauer_engel_42,
-
-    CASE
-        WHEN t36.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t36.art_nh_blauer_engel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t36.art_nh_blauer_engel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_blauer_engel_36,
-
-    {{ match_score('art_nh_blauer_engel') }}
-        AS art_nh_blauer_engel_matchscore,
-
-    CASE
-        WHEN LOWER({{ match_value('art_nh_blauer_engel') }}::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER({{ match_value('art_nh_blauer_engel') }}::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_blauer_engel_match,
-
-    /* =========================================================
-       EU ECOLABEL
-    ========================================================= */
-    CASE
-        WHEN t39.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t39.art_nh_eu_ecolabel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t39.art_nh_eu_ecolabel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_eu_ecolabel_39,
-
-    CASE
-        WHEN t32.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t32.art_nh_eu_ecolabel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t32.art_nh_eu_ecolabel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_eu_ecolabel_32,
-
-    CASE
-        WHEN t42.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t42.art_nh_eu_ecolabel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t42.art_nh_eu_ecolabel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_eu_ecolabel_42,
-
-    CASE
-        WHEN t36.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t36.art_nh_eu_ecolabel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t36.art_nh_eu_ecolabel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_eu_ecolabel_36,
-
-    {{ match_score('art_nh_eu_ecolabel') }}
-        AS art_nh_eu_ecolabel_matchscore,
-
-    CASE
-        WHEN LOWER({{ match_value('art_nh_eu_ecolabel') }}::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER({{ match_value('art_nh_eu_ecolabel') }}::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_eu_ecolabel_match,
-
-    /* =========================================================
-       NORDIC ECOLABEL
-    ========================================================= */
-    CASE
-        WHEN t39.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t39.art_nh_nordic_ecolabel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t39.art_nh_nordic_ecolabel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_nordic_ecolabel_39,
-
-    CASE
-        WHEN t32.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t32.art_nh_nordic_ecolabel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t32.art_nh_nordic_ecolabel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_nordic_ecolabel_32,
-
-    CASE
-        WHEN t42.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t42.art_nh_nordic_ecolabel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t42.art_nh_nordic_ecolabel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_nordic_ecolabel_42,
-
-    CASE
-        WHEN t36.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t36.art_nh_nordic_ecolabel::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t36.art_nh_nordic_ecolabel::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_nordic_ecolabel_36,
-
-    {{ match_score('art_nh_nordic_ecolabel') }}
-        AS art_nh_nordic_ecolabel_matchscore,
-
-    CASE
-        WHEN LOWER({{ match_value('art_nh_nordic_ecolabel') }}::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER({{ match_value('art_nh_nordic_ecolabel') }}::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_nordic_ecolabel_match,
-
-    /* =========================================================
-       FSC
-    ========================================================= */
-    CASE
-        WHEN t39.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t39.art_nh_fsc::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t39.art_nh_fsc::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_fsc_39,
-
-    CASE
-        WHEN t32.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t32.art_nh_fsc::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t32.art_nh_fsc::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_fsc_32,
-
-    CASE
-        WHEN t42.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t42.art_nh_fsc::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t42.art_nh_fsc::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_fsc_42,
-
-    CASE
-        WHEN t36.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t36.art_nh_fsc::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t36.art_nh_fsc::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_fsc_36,
-
-    {{ match_score('art_nh_fsc') }}
-        AS art_nh_fsc_matchscore,
-
-    CASE
-        WHEN LOWER({{ match_value('art_nh_fsc') }}::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER({{ match_value('art_nh_fsc') }}::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_fsc_match,
-
-    /* =========================================================
-       SONSTIGES NACHHALTIGKEIT
-    ========================================================= */
-    CASE
-        WHEN t39.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t39.art_nh_sonstiges::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t39.art_nh_sonstiges::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_sonstiges_39,
-
-    CASE
-        WHEN t32.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t32.art_nh_sonstiges::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t32.art_nh_sonstiges::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_sonstiges_32,
-
-    CASE
-        WHEN t42.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t42.art_nh_sonstiges::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t42.art_nh_sonstiges::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_sonstiges_42,
-
-    CASE
-        WHEN t36.art_artikelnummer IS NULL THEN NULL
-        WHEN LOWER(t36.art_nh_sonstiges::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER(t36.art_nh_sonstiges::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_sonstiges_36,
-
-    {{ match_score('art_nh_sonstiges') }}
-        AS art_nh_sonstiges_matchscore,
-
-    CASE
-        WHEN LOWER({{ match_value('art_nh_sonstiges') }}::text) = 'true' THEN 'trifft zu'
-        WHEN LOWER({{ match_value('art_nh_sonstiges') }}::text) = 'false' THEN 'trifft nicht zu'
-        ELSE 'nicht klassifiziert'
-    END AS art_nh_sonstiges_match,
+    {% endfor %}
 
     /* =========================================================
        SONSTIGES NACHHALTIGKEIT NAME
@@ -724,11 +427,8 @@ SELECT
     t42.art_nh_sonstiges_name AS art_nh_sonstiges_name_42,
     t36.art_nh_sonstiges_name AS art_nh_sonstiges_name_36,
 
-    {{ match_score('art_nh_sonstiges_name') }}
-        AS art_nh_sonstiges_name_matchscore,
-
-    {{ match_value('art_nh_sonstiges_name') }}
-        AS art_nh_sonstiges_name_match
+    {{ match_score('art_nh_sonstiges_name') }} AS art_nh_sonstiges_name_matchscore,
+    {{ match_value('art_nh_sonstiges_name') }} AS art_nh_sonstiges_name_match
 
 FROM artikel_ids base
 
@@ -749,5 +449,90 @@ LEFT JOIN tos
 
 LEFT JOIN artikel_bestand ab
     ON base.art_artikelnummer::text = ab.artikelnummer
+
+/* =========================================================
+   NACHHALTIGKEIT - MATCH-WERT UND MATCHSCORE
+
+   Fehlender Artikel: NULL, zählt nicht
+   Vorhandener Artikel mit NULL-Feld: nicht klassifiziert
+   Ein einzelner Wert wird übernommen
+   Gleichstand: Werte werden mit /// verbunden
+========================================================= */
+
+{% for field in [
+    'art_nachhaltiger_artikel',
+    'art_nh_blauer_engel',
+    'art_nh_eu_ecolabel',
+    'art_nh_nordic_ecolabel',
+    'art_nh_fsc',
+    'art_nh_sonstiges'
+] %}
+
+LEFT JOIN LATERAL (
+
+    WITH werte AS (
+
+        {% for mandant in [39, 32, 42, 36] %}
+
+            {% if not loop.first %}
+                UNION ALL
+            {% endif %}
+
+            SELECT
+                CASE
+                    WHEN t{{ mandant }}.art_artikelnummer IS NULL
+                        THEN NULL
+                    WHEN LOWER(TRIM(t{{ mandant }}.{{ field }}::text)) = 'true'
+                        THEN 'trifft zu'
+                    WHEN LOWER(TRIM(t{{ mandant }}.{{ field }}::text)) = 'false'
+                        THEN 'trifft nicht zu'
+                    ELSE 'nicht klassifiziert'
+                END AS wert
+
+        {% endfor %}
+
+    ),
+
+    haeufigkeit AS (
+        SELECT
+            wert,
+            COUNT(*)::integer AS anzahl
+        FROM werte
+        WHERE wert IS NOT NULL
+        GROUP BY wert
+    ),
+
+    maximum AS (
+        SELECT
+            COALESCE(MAX(anzahl), 0) AS score
+        FROM haeufigkeit
+    ),
+
+    beste_werte AS (
+        SELECT
+            h.wert
+        FROM haeufigkeit h
+        CROSS JOIN maximum m
+        WHERE h.anzahl = m.score
+    )
+
+    SELECT
+        m.score AS matchscore,
+
+        (
+            SELECT
+                STRING_AGG(
+                    b.wert,
+                    '///' ORDER BY b.wert
+                )
+            FROM beste_werte b
+        ) AS matchwert
+
+    FROM maximum m
+
+) nh_{{ field }}
+    ON TRUE
+
+{% endfor %}
 
 ORDER BY base.art_artikelnummer
