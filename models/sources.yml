@@ -109,6 +109,7 @@ sources:
       - name: wencke_lv_belege_positionen
       - name: wencke_lv_belege_positionen_kommentare
       - name: wencke_lv_belege_nebenkosten
+      - name: wencke_lv_bw_user
       - name: wencke_lv_bw_user_stats
       - name: wencke_lv_belege_positionen_bonus
       - name: wencke_lv_belege_positionen_reklamation

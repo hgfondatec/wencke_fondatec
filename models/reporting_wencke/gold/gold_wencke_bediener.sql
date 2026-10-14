@@ -8,23 +8,19 @@ WITH bediener AS (
     SELECT
         *
     FROM {{ ref('bronze_wencke_bediener') }}
-    WHERE bed_id IS NOT NULL
-      AND bed_id <> ''
 
 ),
 
 bediener_aktuell AS (
 
-    SELECT DISTINCT ON (bed_id, mandant)
+    SELECT DISTINCT ON (bed_nr, mandant)
         *
     FROM bediener
 
     ORDER BY
-        bed_id,
+        bed_nr,
         mandant,
-        geaendert_am DESC NULLS LAST,
-        geaendert_um DESC NULLS LAST
-
+        bed_created_at DESC NULLS LAST
 )
 
 SELECT
@@ -32,21 +28,15 @@ SELECT
     *,
 
     CONCAT(
-        COALESCE(bed_id::text, ''),
+        LPAD(COALESCE(bed_nr::text, ''), 3, '0'),
         '_',
         COALESCE(mandant::text, '')
     ) AS bed_key,
 
     CONCAT(
-        COALESCE(bed_id::text, ''),
+        LPAD(COALESCE(bed_nr::text, ''), 3, '0'),
         '_',
-        COALESCE(bed_name::text, '')
-    ) AS bed_bezeichnung,
-
-    CONCAT(
-        COALESCE(mandant::text, ''),
-        '_',
-        COALESCE(v51_filialnummer::text, '')
-    ) AS bed_filiale_key
+        COALESCE(bed_username::text, '')
+    ) AS bed_bezeichnung
 
 FROM bediener_aktuell
