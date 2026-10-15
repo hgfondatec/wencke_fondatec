@@ -312,6 +312,39 @@ SELECT
 
     {{ match_score('art_ek_netto') }} AS art_ek_netto_matchscore,
     {{ match_value('art_ek_netto') }} AS art_ek_netto_match,
+    
+    /* =========================================================
+       VK PREIS 1
+    ========================================================= */
+    t39.art_vk_1 AS art_vk_1_39,
+    t32.art_vk_1 AS art_vk_1_32,
+    t42.art_vk_1 AS art_vk_1_42,
+    t36.art_vk_1 AS art_vk_1_36,
+
+    {{ match_score('art_vk_1') }} AS art_vk_1_matchscore,
+    {{ match_value('art_vk_1') }} AS art_vk_1_match,
+
+    /* =========================================================
+       VK PREIS 2
+    ========================================================= */
+    t39.art_vk_2 AS art_vk_2_39,
+    t32.art_vk_2 AS art_vk_2_32,
+    t42.art_vk_2 AS art_vk_2_42,
+    t36.art_vk_2 AS art_vk_2_36,
+
+    {{ match_score('art_vk_2') }} AS art_vk_2_matchscore,
+    {{ match_value('art_vk_2') }} AS art_vk_2_match,
+
+    /* =========================================================
+       VK PREIS 3
+    ========================================================= */
+    t39.art_vk_3 AS art_vk_3_39,
+    t32.art_vk_3 AS art_vk_3_32,
+    t42.art_vk_3 AS art_vk_3_42,
+    t36.art_vk_3 AS art_vk_3_36,
+
+    {{ match_score('art_vk_3') }} AS art_vk_3_matchscore,
+    {{ match_value('art_vk_3') }} AS art_vk_3_match,
 
     /* =========================================================
        LAGEREINHEIT

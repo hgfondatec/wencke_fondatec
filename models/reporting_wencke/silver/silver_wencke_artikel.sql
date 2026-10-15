@@ -1,3 +1,4 @@
+
 {{
     config(
         materialized = 'table',
@@ -20,6 +21,12 @@ WITH artikel AS (
         art_nebenkategorie_id,
         adr_lieferant_1,
         art_ek_netto,
+
+        -- Verkaufspreise
+        art_vk_1,
+        art_vk_2,
+        art_vk_3,
+
         art_herstellernummer,
         art_pauschalartikel,
         art_lagereinheit,
@@ -104,7 +111,6 @@ nebenwarengruppe AS (
 
 )
 
-
 SELECT
 
     a.wencke_id,
@@ -133,6 +139,12 @@ SELECT
 
     a.art_divers_flag,
     a.art_ek_netto,
+
+    -- Verkaufspreise
+    a.art_vk_1,
+    a.art_vk_2,
+    a.art_vk_3,
+
     a.art_lagereinheit,
 
     a.art_bezeichnung_2,
