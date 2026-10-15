@@ -116,6 +116,7 @@ sources:
       - name: wencke_lv_belege_positionen_stuetzung
       - name: wencke_lv_belege_adressen
       - name: wencke_lv_belege_rezept
+      - name: wencke_lv_besuchsberichte
       - name: wencke_lv_adressen
       - name: wencke_lv_adressen_healthcare
       - name: wencke_lv_adressen_identifikatoren
