@@ -50,6 +50,13 @@ tos AS (
     WHERE ar_art = 1389
 ),
 
+akademie_artikel AS (
+    SELECT DISTINCT
+        TRIM(akademie_artikelnummer::text) AS artikelnummer
+    FROM reporting.raw_akademie_artikel
+    WHERE akademie_artikelnummer IS NOT NULL
+),
+
 artikel_bestand AS (
     SELECT
         artikelnummer::text AS artikelnummer,
@@ -64,8 +71,11 @@ SELECT
 
     /* =========================================================
        BESTAND ÜBER ALLE LAGER UND MANDANTEN
+       PRIORITÄT: AKADEMIE > BESTAND > KEIN BESTAND
     ========================================================= */
     CASE
+        WHEN aka.artikelnummer IS NOT NULL
+            THEN 'Akademie'
         WHEN COALESCE(ab.bestand_gesamt, 0) > 0
             THEN 'Hat Bestand'
         ELSE 'Hat keinen Bestand'
@@ -312,7 +322,7 @@ SELECT
 
     {{ match_score('art_ek_netto') }} AS art_ek_netto_matchscore,
     {{ match_value('art_ek_netto') }} AS art_ek_netto_match,
-    
+
     /* =========================================================
        VK PREIS 1
     ========================================================= */
@@ -479,6 +489,9 @@ LEFT JOIN t36
 
 LEFT JOIN tos
     ON base.art_artikelnummer = tos.art_artikelnummer
+
+LEFT JOIN akademie_artikel aka
+    ON TRIM(base.art_artikelnummer::text) = aka.artikelnummer
 
 LEFT JOIN artikel_bestand ab
     ON base.art_artikelnummer::text = ab.artikelnummer
