@@ -87,7 +87,7 @@ fehlende_adressen AS (
     LEFT JOIN {{ ref('gold_wencke_adressgruppe') }} AS adr
         ON a.adr_adressgruppe_key = adr.adr_adressgruppe_key
 
-    WHERE a.adr_adressgruppe NOT IN ('10', '11', '12', '13')
+    WHERE (a.adr_adressgruppe NOT IN ('10', '11', '12', '13') OR a.adr_adressgruppe IS NULL)
         AND a.adr_vertreter_nr IS NOT NULL
         AND a.adr_gesperrt_neue_belege IS NOT TRUE
 

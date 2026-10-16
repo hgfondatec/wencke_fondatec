@@ -32,11 +32,17 @@ WITH basis AS (
             ELSE 0
         END AS entwicklung_score_basis,
 
-        -- Fehlende Ist-Werte nicht als 0 Besuche behandeln
+        -- Besuchsbedarf:
+        -- Soll > Ist: Anteil der fehlenden Besuche
+        -- Soll <= Ist: 0 Punkte
+        -- Ist unbekannt bei Soll > 0: neutral 0.5
+        -- Soll <= 0 oder unbekannt: 0 Punkte
         CASE
-            WHEN besuchsberichte_soll > 0
-             AND besuch_ist IS NOT NULL
-            THEN GREATEST(
+            WHEN COALESCE(besuchsberichte_soll, 0) <= 0
+                THEN 0
+            WHEN besuch_ist IS NULL
+                THEN 0.5
+            ELSE GREATEST(
                 0,
                 LEAST(
                     1,
@@ -44,7 +50,6 @@ WITH basis AS (
                         / besuchsberichte_soll
                 )
             )
-            ELSE 0.5
         END AS besuch_score_basis,
 
         -- Letzter Besuch: 0 bis 1 über 365 Tage
