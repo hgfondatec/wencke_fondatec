@@ -15,6 +15,7 @@ SELECT
     bel_herkunft,
     bel_vertreter_nr,
     bel_versand_art,
+    bel_liefer_versand_date,
     bel_nl_nachlieferung,
     bel_date,
     bel_project_nr,

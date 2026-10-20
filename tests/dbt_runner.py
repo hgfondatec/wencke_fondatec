@@ -72,6 +72,7 @@ JOBS = {
             ("run", "+gold_wencke_facts_belege_positionen_reklamation"),
             ("run", "+gold_wencke_artikel_sortimentpreise_combined"),
             ("run", "+silver_wencke_bw_user_stats_monthly"),
+            ("run", "silver_wencke_belege_bestellungen+ silver_wencke_belege_lieferscheine+"),
             
         ],
     },

@@ -1,4 +1,3 @@
-
 {{
     config(
         materialized = 'table',
@@ -11,6 +10,10 @@ WITH bestand AS (
     SELECT
         mandant_id::text AS mandant,
         artikelnummer::text AS artikelnummer,
+        MIN(
+            NULLIF(TRIM(naechster_bestelltermin::text), '')::date
+        ) AS naechster_bestelltermin,
+        SUM(COALESCE(naechste_bestellmenge, 0)) AS naechste_bestellmenge,
         SUM(COALESCE(lagerbestand, 0)) AS lagerbestand,
         SUM(COALESCE(verfuegbar, 0)) AS verfuegbar,
         SUM(COALESCE(mindestbestand, 0)) AS mindestbestand
@@ -27,7 +30,7 @@ umsatz AS (
         SUM(COALESCE(rechnung_umsatz_vor_bonus_calc, 0)) AS jahresumsatz,
         SUM(COALESCE(rechnung_menge_calc, 0)) AS jahresmenge,
         SUM(COALESCE(rohertrag_vor_bonus_calc, 0)) AS jahresrohertrag
-    FROM {{ ref('gold_wencke_facts_belege_positionen_master') }} 
+    FROM {{ ref('gold_wencke_facts_belege_positionen_master') }}
     WHERE bel_art IN ('R', 'G')
       AND bel_date >= DATE_TRUNC('year', CURRENT_DATE)
       AND bel_date < CURRENT_DATE + INTERVAL '1 day'
@@ -41,6 +44,8 @@ artikel_mandant AS (
     SELECT
         COALESCE(b.mandant, u.mandant) AS mandant,
         COALESCE(b.artikelnummer, u.artikelnummer) AS artikelnummer,
+        b.naechster_bestelltermin,
+        COALESCE(b.naechste_bestellmenge, 0) AS naechste_bestellmenge,
         COALESCE(b.lagerbestand, 0) AS lagerbestand,
         COALESCE(b.verfuegbar, 0) AS verfuegbar,
         COALESCE(b.mindestbestand, 0) AS mindestbestand,
@@ -57,6 +62,8 @@ artikel_gesamt AS (
     SELECT
         'Gesamt'::text AS mandant,
         artikelnummer,
+        MIN(naechster_bestelltermin) AS naechster_bestelltermin,
+        SUM(naechste_bestellmenge) AS naechste_bestellmenge,
         SUM(lagerbestand) AS lagerbestand,
         SUM(verfuegbar) AS verfuegbar,
         SUM(mindestbestand) AS mindestbestand,
@@ -116,6 +123,8 @@ abc AS (
 SELECT
     mandant,
     artikelnummer,
+    naechster_bestelltermin,
+    naechste_bestellmenge,
     lagerbestand,
     verfuegbar,
     mindestbestand,

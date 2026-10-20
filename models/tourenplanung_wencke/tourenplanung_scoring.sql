@@ -8,20 +8,24 @@ WITH basis AS (
     SELECT
         *,
 
-        -- Wirtschaftliche Bedeutung
+        -- Wirtschaftliche Bedeutung:
+        -- Umsatz bleibt mit 10 % im Scoring.
         GREATEST(
             COALESCE(umsatz_dieses_jahr, 0),
             0
         ) AS umsatz_score_basis,
 
+        -- Rohertrag bleibt als Kennzahl erhalten,
+        -- wird aber nicht mehr gewichtet.
         GREATEST(
             COALESCE(rohertrag_dieses_jahr, 0),
             0
         ) AS rohertrag_score_basis,
 
-        -- Nur negative Umsatzentwicklung erzeugt
-        -- einen zusätzlichen Handlungsbedarf.
-        -- Beispiel: -30 % ergibt 0.30, +20 % ergibt 0.
+        -- Negative Umsatzentwicklung:
+        -- -30 % ergibt 0.30
+        -- -100 % oder schlechter ergibt 1.00
+        -- Positive Entwicklung ergibt 0.
         CASE
             WHEN umsatz_vorjahr_ytd > 0
              AND umsatzentwicklung_prozent < 0
@@ -32,11 +36,9 @@ WITH basis AS (
             ELSE 0
         END AS entwicklung_score_basis,
 
-        -- Besuchsbedarf:
-        -- Soll > Ist: Anteil der fehlenden Besuche
-        -- Soll <= Ist: 0 Punkte
-        -- Ist unbekannt bei Soll > 0: neutral 0.5
-        -- Soll <= 0 oder unbekannt: 0 Punkte
+        -- Besuchsdefizit:
+        -- Fehlende Besuche erhöhen die Priorität.
+        -- Bei unbekanntem Ist-Wert neutral 0.5.
         CASE
             WHEN COALESCE(besuchsberichte_soll, 0) <= 0
                 THEN 0
@@ -52,7 +54,10 @@ WITH basis AS (
             )
         END AS besuch_score_basis,
 
-        -- Letzter Besuch: 0 bis 1 über 365 Tage
+        -- Letzter Besuch:
+        -- Je länger der Besuch zurückliegt,
+        -- desto höher die Priorität.
+        -- Maximale Punktzahl nach 365 Tagen.
         CASE
             WHEN letzter_besuch IS NULL THEN 0.5
             ELSE LEAST(
@@ -64,6 +69,7 @@ WITH basis AS (
             )
         END AS letzter_besuch_score_basis,
 
+        -- ABC-Klasse
         CASE UPPER(TRIM(COALESCE(adr_abc_kunde, '')))
             WHEN 'A' THEN 1.0
             WHEN 'B' THEN 0.6
@@ -115,6 +121,8 @@ teil_scores AS (
             0
         ) AS score_umsatz,
 
+        -- Bleibt zur Kompatibilität erhalten,
+        -- hat aber 0 % Gewichtung.
         COALESCE(
             (rohertrag_score_basis - min_rohertrag)
             / NULLIF(max_rohertrag - min_rohertrag, 0),
@@ -137,13 +145,21 @@ ergebnis AS (
     SELECT
         *,
 
+        -- NEUE GEWICHTUNG:
+        -- Umsatz:                  10 %
+        -- Rohertrag:                0 %
+        -- Negative Umsatzentwicklung: 40 %
+        -- Besuchsdefizit:         20 %
+        -- Letzter Besuch:         20 %
+        -- ABC-Klasse:             10 %
+        -- Gesamt:                100 %
+
         ROUND((
-            0.25 * score_umsatz
-            + 0.25 * score_rohertrag
-            + 0.25 * score_entwicklung
-            + 0.10 * score_besuch
-            + 0.10 * score_letzter_besuch
-            + 0.05 * score_abc
+            0.10 * score_umsatz
+            + 0.40 * score_entwicklung
+            + 0.20 * score_besuch
+            + 0.20 * score_letzter_besuch
+            + 0.10 * score_abc
         )::numeric, 4) AS score_gesamt
 
     FROM teil_scores

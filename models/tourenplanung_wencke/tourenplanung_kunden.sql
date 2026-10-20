@@ -20,12 +20,18 @@ WITH kundendaten AS (
         letzter_besuch
     FROM {{ ref('gold_wencke_adressen') }}
     WHERE vertreter_key IN (
+        '103_36',
         '111_36',
         '114_36',
         '115_36',
+        '301_32',
+        '307_32',
         '367_32',
         '767_32',
-        '201_42'
+        '201_42',
+        '206_42',
+        '207_42',
+        '209_42'
     )
 ),
 
