@@ -5,24 +5,18 @@
         tags = ['abc', 'bestand']
     )
 }}
-
 WITH bestand AS (
     SELECT
         mandant_id::text AS mandant,
         artikelnummer::text AS artikelnummer,
-        MIN(
-            NULLIF(TRIM(naechster_bestelltermin::text), '')::date
-        ) AS naechster_bestelltermin,
+        MIN(NULLIF(TRIM(naechster_bestelltermin::text), '')::date) AS naechster_bestelltermin,
         SUM(COALESCE(naechste_bestellmenge, 0)) AS naechste_bestellmenge,
         SUM(COALESCE(lagerbestand, 0)) AS lagerbestand,
         SUM(COALESCE(verfuegbar, 0)) AS verfuegbar,
         SUM(COALESCE(mindestbestand, 0)) AS mindestbestand
     FROM {{ ref('silver_wencke_artikel_bestand') }}
-    GROUP BY
-        mandant_id,
-        artikelnummer
+    GROUP BY mandant_id, artikelnummer
 ),
-
 umsatz AS (
     SELECT
         mandant::text AS mandant,
@@ -30,16 +24,11 @@ umsatz AS (
         SUM(COALESCE(rechnung_umsatz_vor_bonus_calc, 0)) AS jahresumsatz,
         SUM(COALESCE(rechnung_menge_calc, 0)) AS jahresmenge,
         SUM(COALESCE(rohertrag_vor_bonus_calc, 0)) AS jahresrohertrag
-    FROM {{ ref('gold_wencke_facts_belege_positionen_master') }}
-    WHERE bel_art IN ('R', 'G')
-      AND bel_date >= DATE_TRUNC('year', CURRENT_DATE)
-      AND bel_date < CURRENT_DATE + INTERVAL '1 day'
-      AND pos_artikel_nr IS NOT NULL
-    GROUP BY
-        mandant,
-        pos_artikel_nr
+    FROM {{ ref('gold_wencke_facts_belege_positionen') }}
+    WHERE bel_date >= DATE_TRUNC('year', CURRENT_DATE)
+      AND bel_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+    GROUP BY mandant, pos_artikel_nr
 ),
-
 artikel_mandant AS (
     SELECT
         COALESCE(b.mandant, u.mandant) AS mandant,
@@ -57,7 +46,6 @@ artikel_mandant AS (
         ON b.mandant = u.mandant
        AND b.artikelnummer = u.artikelnummer
 ),
-
 artikel_gesamt AS (
     SELECT
         'Gesamt'::text AS mandant,
@@ -73,13 +61,11 @@ artikel_gesamt AS (
     FROM artikel_mandant
     GROUP BY artikelnummer
 ),
-
 basis AS (
     SELECT * FROM artikel_mandant
     UNION ALL
     SELECT * FROM artikel_gesamt
 ),
-
 rangfolge AS (
     SELECT
         *,
@@ -87,39 +73,37 @@ rangfolge AS (
             PARTITION BY mandant
             ORDER BY jahresumsatz DESC, artikelnummer
         ) AS umsatz_rang,
-        SUM(jahresumsatz) OVER (
+        SUM(GREATEST(jahresumsatz, 0)) OVER (
             PARTITION BY mandant
         ) AS gesamtumsatz,
-        SUM(jahresumsatz) OVER (
+        SUM(GREATEST(jahresumsatz, 0)) OVER (
             PARTITION BY mandant
             ORDER BY jahresumsatz DESC, artikelnummer
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS umsatz_kumuliert
     FROM basis
-    WHERE jahresumsatz > 0
 ),
-
 abc AS (
     SELECT
         *,
-        ROUND(
-            (jahresumsatz / NULLIF(gesamtumsatz, 0) * 100)::numeric,
-            2
-        ) AS umsatzanteil_prozent,
-        ROUND(
-            (umsatz_kumuliert / NULLIF(gesamtumsatz, 0) * 100)::numeric,
-            2
-        ) AS kumulierter_umsatzanteil_prozent,
         CASE
-            WHEN (umsatz_kumuliert - jahresumsatz)
-                / NULLIF(gesamtumsatz, 0) < 0.80 THEN 'A'
-            WHEN (umsatz_kumuliert - jahresumsatz)
-                / NULLIF(gesamtumsatz, 0) < 0.95 THEN 'B'
+            WHEN jahresumsatz > 0 THEN
+                ROUND((jahresumsatz / NULLIF(gesamtumsatz, 0) * 100)::numeric, 2)
+            ELSE 0
+        END AS umsatzanteil_prozent,
+        CASE
+            WHEN jahresumsatz > 0 THEN
+                ROUND((umsatz_kumuliert / NULLIF(gesamtumsatz, 0) * 100)::numeric, 2)
+            ELSE NULL
+        END AS kumulierter_umsatzanteil_prozent,
+        CASE
+            WHEN jahresumsatz <= 0 THEN 'C'
+            WHEN (umsatz_kumuliert - jahresumsatz) / NULLIF(gesamtumsatz, 0) < 0.80 THEN 'A'
+            WHEN (umsatz_kumuliert - jahresumsatz) / NULLIF(gesamtumsatz, 0) < 0.95 THEN 'B'
             ELSE 'C'
         END AS abc_klasse
     FROM rangfolge
 )
-
 SELECT
     mandant,
     artikelnummer,
