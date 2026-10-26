@@ -25,5 +25,6 @@ SELECT
     bel_liefernde_filiale,
     bel_lieferschein_nr,
     bel_created_by_user,
-    bel_updated_by_user
+    bel_updated_by_user,
+    bel_ecom_id
 FROM {{ source('raw', 'wencke_lv_belege') }}

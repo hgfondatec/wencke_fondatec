@@ -1,3 +1,4 @@
+
 {{
     config(
         materialized = 'table',
@@ -13,7 +14,11 @@ WITH bestand AS (
         SUM(COALESCE(naechste_bestellmenge, 0)) AS naechste_bestellmenge,
         SUM(COALESCE(lagerbestand, 0)) AS lagerbestand,
         SUM(COALESCE(verfuegbar, 0)) AS verfuegbar,
-        SUM(COALESCE(mindestbestand, 0)) AS mindestbestand
+        SUM(COALESCE(mindestbestand, 0)) AS mindestbestand,
+        SUM(
+            COALESCE(art_ek_netto, 0) *
+            COALESCE(lagerbestand, 0)
+        ) AS lagerwert
     FROM {{ ref('silver_wencke_artikel_bestand') }}
     GROUP BY mandant_id, artikelnummer
 ),
@@ -38,6 +43,7 @@ artikel_mandant AS (
         COALESCE(b.lagerbestand, 0) AS lagerbestand,
         COALESCE(b.verfuegbar, 0) AS verfuegbar,
         COALESCE(b.mindestbestand, 0) AS mindestbestand,
+        COALESCE(b.lagerwert, 0) AS lagerwert,
         COALESCE(u.jahresumsatz, 0) AS jahresumsatz,
         COALESCE(u.jahresmenge, 0) AS jahresmenge,
         COALESCE(u.jahresrohertrag, 0) AS jahresrohertrag
@@ -55,6 +61,7 @@ artikel_gesamt AS (
         SUM(lagerbestand) AS lagerbestand,
         SUM(verfuegbar) AS verfuegbar,
         SUM(mindestbestand) AS mindestbestand,
+        SUM(lagerwert) AS lagerwert,
         SUM(jahresumsatz) AS jahresumsatz,
         SUM(jahresmenge) AS jahresmenge,
         SUM(jahresrohertrag) AS jahresrohertrag
@@ -112,6 +119,7 @@ SELECT
     lagerbestand,
     verfuegbar,
     mindestbestand,
+    lagerwert,
     jahresumsatz,
     jahresmenge,
     jahresrohertrag,

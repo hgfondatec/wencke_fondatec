@@ -17,6 +17,8 @@ SELECT
     b.bel_project_nr,
     b.bel_oe_5,
     b.bel_beleg_bonus,
+    b.bel_herkunft,
+    b.bel_ecom_id,
 
     br.rezept_variante,
 
@@ -36,7 +38,7 @@ FROM {{ ref('bronze_wencke_belege') }} b
 LEFT JOIN {{ ref('bronze_wencke_belege_rezept') }} br
     ON b.wencke_id = br.wencke_id
 
-WHERE bel_date >= DATE '2025-01-01'
-  AND bel_date < DATE '2027-01-01'
+WHERE bel_date >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '2 years'
+  AND bel_date < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'
   AND bel_art IN ('R', 'G')
   AND bel_status = 'N'

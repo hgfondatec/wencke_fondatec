@@ -68,12 +68,7 @@ JOBS = {
     "facts": {
         "stop_on_error": True,
         "commands": [
-            ("run", "+gold_wencke_facts_belege_positionen"),
-            ("run", "+gold_wencke_facts_belege_positionen_reklamation"),
-            ("run", "+gold_wencke_artikel_sortimentpreise_combined"),
-            ("run", "+silver_wencke_bw_user_stats_monthly"),
-            ("run", "silver_wencke_belege_bestellungen+ silver_wencke_belege_lieferscheine+"),
-            
+            ("run", "+gold_wencke_facts_belege_positionen +gold_wencke_facts_belege_positionen_reklamation +gold_wencke_artikel_sortimentpreise_combined +silver_wencke_bw_user_stats_monthly silver_wencke_belege_bestellungen+ silver_wencke_belege_lieferscheine+ +gold_wencke_artikel_abc_analyse +gold_wencke_facts_belege_ecom +gold_wencke_artikel_nachhaltigkeit"),
         ],
     },
 
