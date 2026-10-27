@@ -47,8 +47,7 @@ JOBS = {
     "checks": {
         "stop_on_error": False,
         "commands": [
-            ("run", "+wencke_gold_nebenwarengruppe_check"),
-            ("run", "+wencke_gold_hauptwarengruppe_check"),
+            ("run", "+wencke_gold_nebenwarengruppe_check +wencke_gold_hauptwarengruppe_check"),
             ("snapshot", "snapshot_hw_check"),
             ("snapshot", "snapshot_nw_check"),  
         ],
@@ -57,11 +56,7 @@ JOBS = {
     "artikel": {
         "stop_on_error": True,
         "commands": [
-            ("run", "+wencke_gold_artikel"),
-            ("run", "+gold_wencke_artikel"),
-            ("run", "+gold_wencke_artikel_lieferant"),
-            ("run", "+gold_wencke_artikel_check"),
-            ("snapshot", "snapshot_artikel_check"),
+            ("run", "+gold_wencke_artikel +gold_wencke_artikel_lieferant +gold_wencke_artikel_check"),
         ],
     },
 
@@ -77,10 +72,7 @@ JOBS = {
         "commands": [
             ("run", "+gold_wencke_adressen"),
             ("snapshot", "snapshot_gold_adressen"),
-            ("run", "+gold_wencke_adressen_changes"),
-            ("run", "+gold_wencke_vertreter"),
-            ("run", "+gold_wencke_bediener"),
-            ("run", "gold_wencke_adressgruppe_check"),
+            ("run", "+gold_wencke_adressen_changes +gold_wencke_vertreter +gold_wencke_bediener gold_wencke_adressgruppe_check"),
         ],
     },
 

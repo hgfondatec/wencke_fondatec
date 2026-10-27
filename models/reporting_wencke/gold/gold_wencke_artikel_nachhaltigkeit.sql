@@ -1,8 +1,8 @@
+
 {{ config(
     materialized = 'table',
     schema = 'wencke'
 ) }}
-
 
 WITH artikel_attribute AS (
     SELECT
@@ -24,11 +24,27 @@ WITH artikel_attribute AS (
         wlaa.mandant
 ),
 
+adressen AS (
+    SELECT
+        mandant,
+        adr_nr,
+        CASE
+            WHEN BOOL_OR(adr_vertreter_nr::text = '91')
+                THEN 'Intercompany'
+            ELSE 'Exkl. Intercompany'
+        END AS intercompany_flag
+    FROM {{ ref('silver_wencke_adressen') }}
+    GROUP BY
+        mandant,
+        adr_nr
+),
+
 basis AS (
     SELECT
         wlb.mandant,
         DATE_TRUNC('month', wlb.bel_date)::date AS monat,
         wlb.pos_artikel_nr,
+        COALESCE(a.intercompany_flag, 'Exkl. Intercompany') AS intercompany_flag,
         COALESCE(aa.ist_nachhaltiger_artikel, FALSE) AS ist_nachhaltiger_artikel,
         wlb.rechnung_umsatz_vor_bonus_calc AS rechnung_umsatz_calc,
         wlb.rechnung_menge_calc,
@@ -37,17 +53,16 @@ basis AS (
     LEFT JOIN artikel_attribute aa
         ON aa.mandant = wlb.mandant
         AND aa.artikel_nr = wlb.pos_artikel_nr
-    WHERE
-        wlb.bel_art IN ('R', 'G')
-        AND wlb.bel_date >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '2 years'
-        AND wlb.bel_date < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'
-        AND wlb.bel_status = 'N'
+    LEFT JOIN adressen a
+        ON a.mandant::text = wlb.mandant::text
+        AND a.adr_nr::text = wlb.bel_adr_nr::text
 ),
 
 umsatz AS (
     SELECT
         mandant,
         monat,
+        intercompany_flag,
         'Umsatz' AS kategorie,
         SUM(rechnung_umsatz_calc) FILTER (
             WHERE ist_nachhaltiger_artikel = TRUE
@@ -56,13 +71,15 @@ umsatz AS (
     FROM basis
     GROUP BY
         mandant,
-        monat
+        monat,
+        intercompany_flag
 ),
 
 tonnage AS (
     SELECT
         mandant,
         monat,
+        intercompany_flag,
         'Tonnage' AS kategorie,
         SUM(
             rechnung_menge_calc * art_gewicht_brutto / 1000.0
@@ -75,7 +92,8 @@ tonnage AS (
     FROM basis
     GROUP BY
         mandant,
-        monat
+        monat,
+        intercompany_flag
 ),
 
 ausgabe AS (
@@ -89,6 +107,7 @@ ausgabe AS (
 SELECT
     mandant,
     monat,
+    intercompany_flag,
     kategorie,
     nachhaltig,
     gesamt,
