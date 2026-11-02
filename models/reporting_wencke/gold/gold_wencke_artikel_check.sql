@@ -10,6 +10,12 @@
 WITH artikel AS (
     SELECT
         *,
+        art_hauptwarengruppe_nummer AS art_hauptkategorie_nummer,
+        art_hauptwarengruppe AS art_hauptkategorie,
+        art_hauptwarenbezeichnung AS art_hauptkategorie_bezeichnung,
+        art_nebenwarengruppe_nummer AS art_nebenkategorie_nummer,
+        art_nebenwarengruppe AS art_nebenkategorie,
+        art_nebenwarengruppebezeichnung AS art_nebenkategorie_bezeichnung,
         TRIM(
             CONCAT_WS(
                 ' ',
@@ -188,72 +194,72 @@ SELECT
     {{ match_value('art_bezeichnung_gesamt') }} AS art_bezeichnung_gesamt_match,
 
     /* =========================================================
-       HAUPTWARENGRUPPE NUMMER
+       HAUPTKATEGORIE NUMMER
     ========================================================= */
-    t39.art_hauptwarengruppe_nummer AS art_hauptwarengruppe_nummer_39,
-    t32.art_hauptwarengruppe_nummer AS art_hauptwarengruppe_nummer_32,
-    t42.art_hauptwarengruppe_nummer AS art_hauptwarengruppe_nummer_42,
-    t36.art_hauptwarengruppe_nummer AS art_hauptwarengruppe_nummer_36,
+    t39.art_hauptkategorie_nummer AS art_hauptkategorie_nummer_39,
+    t32.art_hauptkategorie_nummer AS art_hauptkategorie_nummer_32,
+    t42.art_hauptkategorie_nummer AS art_hauptkategorie_nummer_42,
+    t36.art_hauptkategorie_nummer AS art_hauptkategorie_nummer_36,
 
-    {{ match_score('art_hauptwarengruppe_nummer') }} AS art_hauptwarengruppe_nummer_matchscore,
-    {{ match_value('art_hauptwarengruppe_nummer') }} AS art_hauptwarengruppe_nummer_match,
+    {{ match_score('art_hauptkategorie_nummer') }} AS art_hauptkategorie_nummer_matchscore,
+    {{ match_value('art_hauptkategorie_nummer') }} AS art_hauptkategorie_nummer_match,
 
     /* =========================================================
-       HAUPTWARENGRUPPE
+       HAUPTKATEGORIE
     ========================================================= */
-    t39.art_hauptwarengruppe AS art_hauptwarengruppe_39,
-    t32.art_hauptwarengruppe AS art_hauptwarengruppe_32,
-    t42.art_hauptwarengruppe AS art_hauptwarengruppe_42,
-    t36.art_hauptwarengruppe AS art_hauptwarengruppe_36,
+    t39.art_hauptkategorie AS art_hauptkategorie_39,
+    t32.art_hauptkategorie AS art_hauptkategorie_32,
+    t42.art_hauptkategorie AS art_hauptkategorie_42,
+    t36.art_hauptkategorie AS art_hauptkategorie_36,
 
-    {{ match_score('art_hauptwarengruppe') }} AS art_hauptwarengruppe_matchscore,
-    {{ match_value('art_hauptwarengruppe') }} AS art_hauptwarengruppe_match,
+    {{ match_score('art_hauptkategorie') }} AS art_hauptkategorie_matchscore,
+    {{ match_value('art_hauptkategorie') }} AS art_hauptkategorie_match,
 
     /* =========================================================
-       HAUPTWARENBEZEICHNUNG
+       HAUPTKATEGORIE BEZEICHNUNG
     ========================================================= */
-    t39.art_hauptwarenbezeichnung AS art_hauptwarenbezeichnung_39,
-    t32.art_hauptwarenbezeichnung AS art_hauptwarenbezeichnung_32,
-    t42.art_hauptwarenbezeichnung AS art_hauptwarenbezeichnung_42,
-    t36.art_hauptwarenbezeichnung AS art_hauptwarenbezeichnung_36,
+    t39.art_hauptkategorie_bezeichnung AS art_hauptkategorie_bezeichnung_39,
+    t32.art_hauptkategorie_bezeichnung AS art_hauptkategorie_bezeichnung_32,
+    t42.art_hauptkategorie_bezeichnung AS art_hauptkategorie_bezeichnung_42,
+    t36.art_hauptkategorie_bezeichnung AS art_hauptkategorie_bezeichnung_36,
 
-    {{ match_score('art_hauptwarenbezeichnung') }} AS art_hauptwarenbezeichnung_matchscore,
-    {{ match_value('art_hauptwarenbezeichnung') }} AS art_hauptwarenbezeichnung_match,
-    {{ match_value_unique('art_hauptwarenbezeichnung') }} AS art_hauptwarenbezeichnung_reporting,
+    {{ match_score('art_hauptkategorie_bezeichnung') }} AS art_hauptkategorie_bezeichnung_matchscore,
+    {{ match_value('art_hauptkategorie_bezeichnung') }} AS art_hauptkategorie_bezeichnung_match,
+    {{ match_value_unique('art_hauptkategorie_bezeichnung') }} AS art_hauptkategorie_bezeichnung_reporting,
 
     /* =========================================================
-       NEBENWARENGRUPPE NUMMER
+       NEBENKATEGORIE NUMMER
     ========================================================= */
-    t39.art_nebenwarengruppe_nummer AS art_nebenwarengruppe_nummer_39,
-    t32.art_nebenwarengruppe_nummer AS art_nebenwarengruppe_nummer_32,
-    t42.art_nebenwarengruppe_nummer AS art_nebenwarengruppe_nummer_42,
-    t36.art_nebenwarengruppe_nummer AS art_nebenwarengruppe_nummer_36,
+    t39.art_nebenkategorie_nummer AS art_nebenkategorie_nummer_39,
+    t32.art_nebenkategorie_nummer AS art_nebenkategorie_nummer_32,
+    t42.art_nebenkategorie_nummer AS art_nebenkategorie_nummer_42,
+    t36.art_nebenkategorie_nummer AS art_nebenkategorie_nummer_36,
 
-    {{ match_score('art_nebenwarengruppe_nummer') }} AS art_nebenwarengruppe_nummer_matchscore,
-    {{ match_value('art_nebenwarengruppe_nummer') }} AS art_nebenwarengruppe_nummer_match,
+    {{ match_score('art_nebenkategorie_nummer') }} AS art_nebenkategorie_nummer_matchscore,
+    {{ match_value('art_nebenkategorie_nummer') }} AS art_nebenkategorie_nummer_match,
 
     /* =========================================================
-       NEBENWARENGRUPPE
+       NEBENKATEGORIE
     ========================================================= */
-    t39.art_nebenwarengruppe AS art_nebenwarengruppe_39,
-    t32.art_nebenwarengruppe AS art_nebenwarengruppe_32,
-    t42.art_nebenwarengruppe AS art_nebenwarengruppe_42,
-    t36.art_nebenwarengruppe AS art_nebenwarengruppe_36,
+    t39.art_nebenkategorie AS art_nebenkategorie_39,
+    t32.art_nebenkategorie AS art_nebenkategorie_32,
+    t42.art_nebenkategorie AS art_nebenkategorie_42,
+    t36.art_nebenkategorie AS art_nebenkategorie_36,
 
-    {{ match_score('art_nebenwarengruppe') }} AS art_nebenwarengruppe_matchscore,
-    {{ match_value('art_nebenwarengruppe') }} AS art_nebenwarengruppe_match,
+    {{ match_score('art_nebenkategorie') }} AS art_nebenkategorie_matchscore,
+    {{ match_value('art_nebenkategorie') }} AS art_nebenkategorie_match,
 
     /* =========================================================
-       NEBENWARENGRUPPE BEZEICHNUNG
+       NEBENKATEGORIE BEZEICHNUNG
     ========================================================= */
-    t39.art_nebenwarengruppebezeichnung AS art_nebenwarengruppebezeichnung_39,
-    t32.art_nebenwarengruppebezeichnung AS art_nebenwarengruppebezeichnung_32,
-    t42.art_nebenwarengruppebezeichnung AS art_nebenwarengruppebezeichnung_42,
-    t36.art_nebenwarengruppebezeichnung AS art_nebenwarengruppebezeichnung_36,
+    t39.art_nebenkategorie_bezeichnung AS art_nebenkategorie_bezeichnung_39,
+    t32.art_nebenkategorie_bezeichnung AS art_nebenkategorie_bezeichnung_32,
+    t42.art_nebenkategorie_bezeichnung AS art_nebenkategorie_bezeichnung_42,
+    t36.art_nebenkategorie_bezeichnung AS art_nebenkategorie_bezeichnung_36,
 
-    {{ match_score('art_nebenwarengruppebezeichnung') }} AS art_nebenwarengruppebezeichnung_matchscore,
-    {{ match_value('art_nebenwarengruppebezeichnung') }} AS art_nebenwarengruppebezeichnung_match,
-    {{ match_value_unique('art_nebenwarengruppebezeichnung') }} AS art_nebenwarengruppebezeichnung_reporting,
+    {{ match_score('art_nebenkategorie_bezeichnung') }} AS art_nebenkategorie_bezeichnung_matchscore,
+    {{ match_value('art_nebenkategorie_bezeichnung') }} AS art_nebenkategorie_bezeichnung_match,
+    {{ match_value_unique('art_nebenkategorie_bezeichnung') }} AS art_nebenkategorie_bezeichnung_reporting,
 
     /* =========================================================
        HERSTELLERNUMMER

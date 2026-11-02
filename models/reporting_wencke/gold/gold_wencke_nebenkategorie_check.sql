@@ -1,114 +1,181 @@
-
 {{
     config(
         materialized = 'table',
         schema = 'wencke',
-        tags = ['kategorie_check']
+        tags = ['nebenkategorie_check']
     )
 }}
 
-with kategorien as (
+WITH kategorien AS (
 
-    select distinct
+    SELECT DISTINCT
         nebenkategorie_nummer,
+        hauptkategorie_nummer,
         mandant,
-        nebenkategorie_name
-    from {{ ref('silver_wencke_kategorien') }}
-    where mandant in (32, 36, 39, 42)
-      and nebenkategorie_nummer is not null
+        nebenkategorie_name,
+
+        CONCAT(
+            nebenkategorie_nummer,
+            '-',
+            nebenkategorie_name
+        ) AS nebenkategorie_bezeichnung
+
+    FROM {{ ref('silver_wencke_kategorien') }}
+
+    WHERE mandant IN (32, 36, 39, 42)
+      AND nebenkategorie_nummer IS NOT NULL
 
 ),
 
-nebenkategorien_ids as (
+nebenkategorien_ids AS (
 
-    select distinct nebenkategorie_nummer
-    from kategorien
+    SELECT DISTINCT
+        nebenkategorie_nummer
+    FROM kategorien
 
 ),
 
-t39 as (
+t39 AS (
 
-    select
+    SELECT
         nebenkategorie_nummer,
-        max(nebenkategorie_name) as nebenkategorie_name
-    from kategorien
-    where mandant = 39
-    group by nebenkategorie_nummer
+        MAX(hauptkategorie_nummer) AS hauptkategorie_nummer,
+        MAX(nebenkategorie_name) AS nebenkategorie_name,
+        MAX(nebenkategorie_bezeichnung) AS nebenkategorie_bezeichnung
+
+    FROM kategorien
+    WHERE mandant = 39
+    GROUP BY nebenkategorie_nummer
 
 ),
 
-t32 as (
+t32 AS (
 
-    select
+    SELECT
         nebenkategorie_nummer,
-        max(nebenkategorie_name) as nebenkategorie_name
-    from kategorien
-    where mandant = 32
-    group by nebenkategorie_nummer
+        MAX(hauptkategorie_nummer) AS hauptkategorie_nummer,
+        MAX(nebenkategorie_name) AS nebenkategorie_name,
+        MAX(nebenkategorie_bezeichnung) AS nebenkategorie_bezeichnung
+
+    FROM kategorien
+    WHERE mandant = 32
+    GROUP BY nebenkategorie_nummer
 
 ),
 
-t42 as (
+t42 AS (
 
-    select
+    SELECT
         nebenkategorie_nummer,
-        max(nebenkategorie_name) as nebenkategorie_name
-    from kategorien
-    where mandant = 42
-    group by nebenkategorie_nummer
+        MAX(hauptkategorie_nummer) AS hauptkategorie_nummer,
+        MAX(nebenkategorie_name) AS nebenkategorie_name,
+        MAX(nebenkategorie_bezeichnung) AS nebenkategorie_bezeichnung
+
+    FROM kategorien
+    WHERE mandant = 42
+    GROUP BY nebenkategorie_nummer
 
 ),
 
-t36 as (
+t36 AS (
 
-    select
+    SELECT
         nebenkategorie_nummer,
-        max(nebenkategorie_name) as nebenkategorie_name
-    from kategorien
-    where mandant = 36
-    group by nebenkategorie_nummer
+        MAX(hauptkategorie_nummer) AS hauptkategorie_nummer,
+        MAX(nebenkategorie_name) AS nebenkategorie_name,
+        MAX(nebenkategorie_bezeichnung) AS nebenkategorie_bezeichnung
+
+    FROM kategorien
+    WHERE mandant = 36
+    GROUP BY nebenkategorie_nummer
 
 )
 
-select
+SELECT
 
     base.nebenkategorie_nummer,
 
-    case when t39.nebenkategorie_nummer is not null then 1 else 0 end as verfuegbar_39,
-    case when t32.nebenkategorie_nummer is not null then 1 else 0 end as verfuegbar_32,
-    case when t42.nebenkategorie_nummer is not null then 1 else 0 end as verfuegbar_42,
-    case when t36.nebenkategorie_nummer is not null then 1 else 0 end as verfuegbar_36,
+    /* VERFÜGBARKEIT */
+
+    CASE
+        WHEN t39.nebenkategorie_nummer IS NOT NULL THEN 1
+        ELSE 0
+    END AS verfuegbar_39,
+
+    CASE
+        WHEN t32.nebenkategorie_nummer IS NOT NULL THEN 1
+        ELSE 0
+    END AS verfuegbar_32,
+
+    CASE
+        WHEN t42.nebenkategorie_nummer IS NOT NULL THEN 1
+        ELSE 0
+    END AS verfuegbar_42,
+
+    CASE
+        WHEN t36.nebenkategorie_nummer IS NOT NULL THEN 1
+        ELSE 0
+    END AS verfuegbar_36,
 
     (
-        case when t39.nebenkategorie_nummer is not null then 1 else 0 end +
-        case when t32.nebenkategorie_nummer is not null then 1 else 0 end +
-        case when t42.nebenkategorie_nummer is not null then 1 else 0 end +
-        case when t36.nebenkategorie_nummer is not null then 1 else 0 end
-    ) as verfuegbar_score,
+        CASE WHEN t39.nebenkategorie_nummer IS NOT NULL THEN 1 ELSE 0 END +
+        CASE WHEN t32.nebenkategorie_nummer IS NOT NULL THEN 1 ELSE 0 END +
+        CASE WHEN t42.nebenkategorie_nummer IS NOT NULL THEN 1 ELSE 0 END +
+        CASE WHEN t36.nebenkategorie_nummer IS NOT NULL THEN 1 ELSE 0 END
+    ) AS verfuegbar_score,
 
-    t39.nebenkategorie_name as nebenkategorie_name_39,
-    t32.nebenkategorie_name as nebenkategorie_name_32,
-    t42.nebenkategorie_name as nebenkategorie_name_42,
-    t36.nebenkategorie_name as nebenkategorie_name_36,
+    /* ZUGEHÖRIGE HAUPTKATEGORIE */
+
+    t39.hauptkategorie_nummer AS hauptkategorie_nummer_39,
+    t32.hauptkategorie_nummer AS hauptkategorie_nummer_32,
+    t42.hauptkategorie_nummer AS hauptkategorie_nummer_42,
+    t36.hauptkategorie_nummer AS hauptkategorie_nummer_36,
+
+    {{ match_score('hauptkategorie_nummer') }}
+        AS hauptkategorie_nummer_matchscore,
+
+    {{ match_value('hauptkategorie_nummer') }}
+        AS hauptkategorie_nummer_match,
+
+    /* NEBENKATEGORIE NAME */
+
+    t39.nebenkategorie_name AS nebenkategorie_name_39,
+    t32.nebenkategorie_name AS nebenkategorie_name_32,
+    t42.nebenkategorie_name AS nebenkategorie_name_42,
+    t36.nebenkategorie_name AS nebenkategorie_name_36,
 
     {{ match_score('nebenkategorie_name') }}
-        as nebenkategorie_matchscore,
+        AS nebenkategorie_name_matchscore,
 
     {{ match_value('nebenkategorie_name') }}
-        as nebenkategorie_match
+        AS nebenkategorie_name_match,
 
-from nebenkategorien_ids base
+    /* NEBENKATEGORIE BEZEICHNUNG */
 
-left join t39
-    on base.nebenkategorie_nummer = t39.nebenkategorie_nummer
+    t39.nebenkategorie_bezeichnung AS nebenkategorie_bezeichnung_39,
+    t32.nebenkategorie_bezeichnung AS nebenkategorie_bezeichnung_32,
+    t42.nebenkategorie_bezeichnung AS nebenkategorie_bezeichnung_42,
+    t36.nebenkategorie_bezeichnung AS nebenkategorie_bezeichnung_36,
 
-left join t32
-    on base.nebenkategorie_nummer = t32.nebenkategorie_nummer
+    {{ match_score('nebenkategorie_bezeichnung') }}
+        AS nebenkategorie_bezeichnung_matchscore,
 
-left join t42
-    on base.nebenkategorie_nummer = t42.nebenkategorie_nummer
+    {{ match_value('nebenkategorie_bezeichnung') }}
+        AS nebenkategorie_bezeichnung_match
 
-left join t36
-    on base.nebenkategorie_nummer = t36.nebenkategorie_nummer
+FROM nebenkategorien_ids base
 
-order by base.nebenkategorie_nummer
+LEFT JOIN t39
+    ON base.nebenkategorie_nummer = t39.nebenkategorie_nummer
+
+LEFT JOIN t32
+    ON base.nebenkategorie_nummer = t32.nebenkategorie_nummer
+
+LEFT JOIN t42
+    ON base.nebenkategorie_nummer = t42.nebenkategorie_nummer
+
+LEFT JOIN t36
+    ON base.nebenkategorie_nummer = t36.nebenkategorie_nummer
+
+ORDER BY
+    base.nebenkategorie_nummer
