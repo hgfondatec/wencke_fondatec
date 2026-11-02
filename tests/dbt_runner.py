@@ -311,7 +311,7 @@ def run_dbt_command(
             text=True,
             errors="replace",
             shell=False,
-            timeout=3600,
+            timeout=None,
         )
 
         duration = (
@@ -337,7 +337,7 @@ def run_dbt_command(
 
     except subprocess.TimeoutExpired as exc:
         status = "FEHLER"
-        duration = 3600
+        duration = None
 
         message = (
             f"DBT Timeout nach 60 Minuten: {exc}"
