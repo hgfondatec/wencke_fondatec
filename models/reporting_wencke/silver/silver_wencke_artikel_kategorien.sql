@@ -13,7 +13,7 @@ WITH kategorien AS (
         is_hauptkategorie,
         kat_bezeichnung AS kategorie_name
 
-    FROM {{ ref('bronze_wencke_kategorien') }}
+    FROM {{ ref('bronze_wencke_artikel_kategorien') }}
 
 ),
 

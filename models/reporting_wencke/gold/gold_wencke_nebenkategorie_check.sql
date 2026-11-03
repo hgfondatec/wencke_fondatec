@@ -20,7 +20,7 @@ WITH kategorien AS (
             nebenkategorie_name
         ) AS nebenkategorie_bezeichnung
 
-    FROM {{ ref('silver_wencke_kategorien') }}
+    FROM {{ ref('silver_wencke_artikel_kategorien') }}
 
     WHERE mandant IN (32, 36, 39, 42)
       AND nebenkategorie_nummer IS NOT NULL

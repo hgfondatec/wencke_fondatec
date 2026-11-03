@@ -95,7 +95,7 @@ hauptwarengruppe AS (
         hauptkategorie_name_harmonisiert AS wg_name,
         hauptkategorie_bezeichnung_harmonisiert AS wg_bezeichnung
 
-    FROM {{ ref('gold_wencke_kategorien') }}
+    FROM {{ ref('gold_wencke_artikel_kategorien') }}
 
 ),
 
@@ -107,7 +107,7 @@ nebenwarengruppe AS (
         nebenkategorie_name_harmonisiert AS wg_name,
         nebenkategorie_bezeichnung_harmonisiert AS wg_bezeichnung
 
-    FROM {{ ref('gold_wencke_kategorien') }}
+    FROM {{ ref('gold_wencke_artikel_kategorien') }}
 
 )
 
