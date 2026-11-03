@@ -47,9 +47,7 @@ JOBS = {
     "checks": {
         "stop_on_error": False,
         "commands": [
-            ("run", "bronze_wencke_kategorien+"),
-            ("snapshot", "snapshot_hw_check"),
-            ("snapshot", "snapshot_nw_check"),  
+            ("run", "+gold_wencke_hauptkategorie_check +gold_wencke_nebenkategorie_check"),
         ],
     },
 
