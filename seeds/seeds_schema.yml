@@ -1,9 +1,6 @@
 version: 2
 
 seeds:
-  - name: raw_beleg_arten
-    config:
-      tags: ['belege_position']
 
   - name: raw_akademie_artikel
     config:
@@ -11,12 +8,5 @@ seeds:
         akademie_artikelnummer: varchar
         akademie_hauptlieferantnummer: varchar
 
-  - name: raw_vertreter
-    config:
-      tags: ['belege_position']
 
-  - name: raw_beleg_gruppe
-    config:
-      tags:
-        - gold_facts
     
