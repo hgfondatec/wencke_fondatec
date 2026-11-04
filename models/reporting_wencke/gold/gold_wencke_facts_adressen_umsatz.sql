@@ -69,7 +69,7 @@ WITH basis AS (
             )
         END AS lieferadresse
 
-    FROM reporting_wencke.gold_wencke_facts_belege_positionen f
+    FROM {{ ref('gold_wencke_facts_belege_positionen') }}  f
 
     LEFT JOIN reporting_wencke.gold_wencke_adressen a
         ON f.adress_key = a.beleg_adress_key
