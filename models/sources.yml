@@ -6,15 +6,31 @@ sources:
     schema: public
 
     tables:
+      # M32
+      - name: m32adrgrp
+      - name: m32bg
+      - name: m32fil
+      - name: m32idbid0234      
+      - name: m32idbid0236
+      - name: m32adr_ekv     
       # M36
       - name: m36adrgrp
       - name: m36fil
-      - name: m36id0234
-      - name: m36id0236
+      - name: m36idbid0234
+      - name: m36idbid0236 
       - name: m36adr_ekv
       - name: m36idbid0136
-      - name: m36stupre_dwh
-      - name: m36bediener    
+      - name: m36stupre_dwh 
+       # M38
+      - name: m38adrgrp
+      - name: m38adr_ekv
+      - name: m38fil
+      # M39
+      - name: m39adrgrp
+      - name: m39fil
+      - name: m39idbid0234      
+      - name: m39idbid0236
+      - name: m39adr_ekv
       # M42
       - name: m42adrgrp
       - name: m42fil
@@ -22,23 +38,6 @@ sources:
       - name: m42idbid0236     
       - name: m42adr_ekv
       - name: m42idbid0136
-      # M39
-      - name: m39adrgrp
-      - name: m39fil
-      - name: m39idbid0234      
-      - name: m39idbid0236
-      - name: m39adr_ekv
-      # M32
-      - name: m32adrgrp
-      - name: m32bg
-      - name: m32fil
-      - name: m32idbid0234      
-      - name: m32idbid0236
-      - name: m32adr_ekv
-       # M38
-      - name: m38adrgrp
-      - name: m38adr_ekv
-      - name: m38fil
       # Sonstige
       - name: m00id0202
       - name: tos_artikel_attribut
