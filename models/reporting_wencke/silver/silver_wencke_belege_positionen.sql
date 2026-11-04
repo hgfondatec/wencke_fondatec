@@ -73,3 +73,11 @@ LEFT JOIN {{ ref('bronze_wencke_belege_positionen_stuetzung') }} bps
     on bp.wencke_id = bps.wencke_id
 
 WHERE pos_artikel_nr IS NOT NULL
+
+AND EXISTS (
+    SELECT 1
+    FROM {{ ref('bronze_wencke_belege') }} b
+    WHERE b.wencke_id = bp.bel_wencke_id
+      AND b.bel_date >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '2 years'
+      AND b.bel_date < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'
+)

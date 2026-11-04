@@ -1,5 +1,6 @@
 import ctypes
 import datetime
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -47,30 +48,46 @@ JOBS = {
     "checks": {
         "stop_on_error": False,
         "commands": [
-            ("run", "+gold_wencke_hauptkategorie_check +gold_wencke_nebenkategorie_check"),
+            ("run", "+gold_wencke_hauptkategorie_check +gold_wencke_nebenkategorie_check +gold_wencke_projektnummer +gold_wencke_adressen_ekv +gold_wencke_filiale"),
         ],
     },
 
     "artikel": {
         "stop_on_error": True,
         "commands": [
-            ("run", "+gold_wencke_artikel +gold_wencke_artikel_lieferant +gold_wencke_artikel_check"),
+            ("run", "+gold_wencke_artikel +gold_wencke_artikel_lieferant +gold_wencke_artikel_check +gold_wencke_warengruppen silver_wencke_adressen_check +gold_wencke_adressen +gold_wencke_vertreter"),
         ],
     },
 
     "facts": {
-        "stop_on_error": True,
-        "commands": [
-            ("run", "+gold_wencke_facts_belege_positionen +gold_wencke_facts_belege_positionen_reklamation +gold_wencke_artikel_sortimentpreise_combined +silver_wencke_bw_user_stats_monthly silver_wencke_belege_bestellungen+ silver_wencke_belege_lieferscheine+ +gold_wencke_artikel_abc_analyse +gold_wencke_facts_belege_ecom +gold_wencke_artikel_nachhaltigkeit +gold_wencke_facts_adressen_umsatz"),
+    "stop_on_error": True,
+    "commands": [
+        ("run",
+            # Hauptmodelle
+            "+gold_wencke_facts_belege_positionen "
+            "+gold_wencke_facts_belege_positionen_reklamation "
+            "+gold_wencke_artikel_sortimentpreise_combined "
+            "+gold_wencke_facts_nl_analyse "
+            "+gold_wencke_facts_liefertreue "
+            "+gold_wencke_artikel_abc_analyse "
+            "+gold_wencke_facts_belege_ecom "
+            "+gold_wencke_artikel_nachhaltigkeit "
+            "+gold_wencke_facts_adressen_umsatz "
+            "+gold_wencke_artikel_nachhaltigkeit_check "
+            # Modelle ausschließen
+            "--exclude "
+            "+gold_wencke_artikel_check "
+            "+gold_wencke_artikel "
+            "+gold_wencke_adressen"),
         ],
     },
 
     "adressen": {
         "stop_on_error": True,
         "commands": [
-            ("run", "+gold_wencke_adressen +gold_wencke_besuchsberichte"),
             ("snapshot", "snapshot_gold_adressen"),
-            ("run", "+gold_wencke_adressen_changes +gold_wencke_vertreter +gold_wencke_bediener +gold_wencke_adressgruppe_check"),
+            ("run", " +silver_wencke_bw_user_stats_monthly +gold_wencke_besuchsberichte +gold_wencke_bediener"),
+            ("run", "+gold_wencke_adressen_changes gold_wencke_adressgruppe_check silver_wencke_adressen_heim silver_wencke_adressen_krankenkassen silver_wencke_adressen_re_empfaenger"),
         ],
     },
 
@@ -284,6 +301,15 @@ def run_dbt_command(
     duration = 0
     message = ""
 
+    selector_parts = shlex.split(selector)
+    if "--exclude" in selector_parts:
+        exclude_index = selector_parts.index("--exclude")
+        select_models = selector_parts[:exclude_index]
+        exclude_models = selector_parts[exclude_index + 1:]
+    else:
+        select_models = selector_parts
+        exclude_models = []
+
     command = [
         "uv",
         "run",
@@ -295,8 +321,11 @@ def run_dbt_command(
 
         command_type,
         "--select",
-        selector,
+        *select_models,
     ]
+
+    if exclude_models:
+        command.extend(["--exclude", *exclude_models])
 
     print()
     print("=" * 80)

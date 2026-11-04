@@ -64,6 +64,14 @@ SELECT
     NULL::varchar AS pos_massnahme,
     NULL::varchar AS pos_begruendung
 
-FROM {{ ref('bronze_wencke_belege_positionen_kommentare') }}
+FROM {{ ref('bronze_wencke_belege_positionen_kommentare') }} bp
 
 WHERE kom_typ = 'Z'
+
+AND EXISTS (
+    SELECT 1
+    FROM {{ ref('bronze_wencke_belege') }} b
+    WHERE b.wencke_id = bp.bel_wencke_id
+      AND b.bel_date >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '2 years'
+      AND b.bel_date < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'
+)

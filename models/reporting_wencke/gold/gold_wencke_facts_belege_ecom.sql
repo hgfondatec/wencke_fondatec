@@ -11,7 +11,11 @@ WITH belege AS (
         bel_date,
         bel_herkunft,
         bel_ecom_id
-    FROM {{ ref('silver_wencke_belege_rechnung_gutschrift') }}
+    FROM {{ ref('bronze_wencke_belege') }} b
+    WHERE b.bel_art IN ('R', 'G')
+        AND b.bel_beleg_bonus IS NOT TRUE
+        AND b.bel_status = 'N'
+
 ),
 basis AS (
     SELECT

@@ -76,7 +76,15 @@ SELECT
     NULL::varchar AS pos_massnahme,
     NULL::varchar AS pos_begruendung
 
-FROM {{ ref('bronze_wencke_belege_nebenkosten') }}
+FROM {{ ref('bronze_wencke_belege_nebenkosten') }} bp
 
 WHERE nk_betrag IS NOT NULL
   AND nk_nr IN (1, 2, 3, 4, 5)
+
+  AND EXISTS (
+    SELECT 1
+    FROM {{ ref('bronze_wencke_belege') }} b
+    WHERE b.wencke_id = bp.wencke_id
+      AND b.bel_date >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '2 years'
+      AND b.bel_date < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'
+)
