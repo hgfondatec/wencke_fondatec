@@ -8,7 +8,6 @@ sources:
     tables:
       # M32
       - name: m32adrgrp
-      - name: m32bg
       - name: m32fil
       - name: m32idbid0234      
       - name: m32idbid0236
