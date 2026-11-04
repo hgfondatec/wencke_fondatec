@@ -52,14 +52,14 @@ t36 AS (
 
 tos AS (
     SELECT DISTINCT ar_text AS art_artikelnummer
-    FROM {{ ref('wencke_bronze_tos_artikel_attribut') }}
+    FROM {{ ref('bronze_wencke_tos_artikel_attribut') }}
     WHERE ar_art = 1389
 ),
 
 akademie_artikel AS (
     SELECT DISTINCT
         TRIM(akademie_artikelnummer::text) AS artikelnummer
-    FROM reporting.raw_akademie_artikel
+    FROM reporting_wencke.raw_akademie_artikel
     WHERE akademie_artikelnummer IS NOT NULL
 ),
 

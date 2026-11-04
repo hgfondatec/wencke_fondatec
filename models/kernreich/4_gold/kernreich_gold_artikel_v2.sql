@@ -33,7 +33,7 @@ lieferant as (
 tos as (
 select distinct         
         ar_text as art_artikelnummer
-    from {{ ref('wencke_bronze_tos_artikel_attribut') }}
+    from {{ ref('bronze_wencke_tos_artikel_attribut') }}
     where ar_art = 1389
 )
 

@@ -3,92 +3,117 @@
     schema = 'wencke'
 ) }}
 
-with filialen as (
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('nonne_silver_filiale') }}
+WITH source_data AS (
 
-    union all
+    -- Lloyd (32)
+    SELECT DISTINCT
+        idbse0005_0_3,
+        idbse0005_3_60,
+        idbse0005_63_30,
+        idbse0005_93_30,
+        idbse0005_123_30,
+        idbse0005_153_30,
+        idbse0005_183_10,
+        idbse0005_193_30,
+        idbse0005_354_20,
+        '32'::varchar(10) AS mandant_id
+    FROM {{ source('raw', 'm32fil') }}
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('glasofix_silver_filiale') }}
+    UNION ALL
 
-    union all
+    -- Nonne (36)
+    SELECT DISTINCT
+        idbse0005_0_3,
+        idbse0005_3_60,
+        idbse0005_63_30,
+        idbse0005_93_30,
+        idbse0005_123_30,
+        idbse0005_153_30,
+        idbse0005_183_10,
+        idbse0005_193_30,
+        idbse0005_354_20,
+        '36'::varchar(10) AS mandant_id
+    FROM {{ source('raw', 'm36fil') }}
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('lloyd_silver_filiale') }}
+    UNION ALL
 
-    union all
+    -- Kernreich (38)
+    SELECT DISTINCT
+        idbse0005_0_3,
+        idbse0005_3_60,
+        idbse0005_63_30,
+        idbse0005_93_30,
+        idbse0005_123_30,
+        idbse0005_153_30,
+        idbse0005_183_10,
+        idbse0005_193_30,
+        idbse0005_354_20,
+        '38'::varchar(10) AS mandant_id
+    FROM {{ source('raw', 'm38fil') }}
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('vms_silver_filiale') }}
+    UNION ALL
 
-    union all
+    -- Glasofix (39)
+    SELECT DISTINCT
+        idbse0005_0_3,
+        idbse0005_3_60,
+        idbse0005_63_30,
+        idbse0005_93_30,
+        idbse0005_123_30,
+        idbse0005_153_30,
+        idbse0005_183_10,
+        idbse0005_193_30,
+        idbse0005_354_20,
+        '39'::varchar(10) AS mandant_id
+    FROM {{ source('raw', 'm39fil') }}
 
-    select
-        filiale_id,
-        lager_id_mapping,
-        filiale_name,
-        firmenname,
-        firmenzusatz,
-        filiale,
-        adresse,
-        plz,
-        ort,
-        lagergruppe,
-        mandant_id,
-        mandant_lager_key
-    from {{ ref('kernreich_silver_filiale') }}
+    UNION ALL
+
+    -- VMS (42)
+    SELECT DISTINCT
+        idbse0005_0_3,
+        idbse0005_3_60,
+        idbse0005_63_30,
+        idbse0005_93_30,
+        idbse0005_123_30,
+        idbse0005_153_30,
+        idbse0005_183_10,
+        idbse0005_193_30,
+        idbse0005_354_20,
+        '42'::varchar(10) AS mandant_id
+    FROM {{ source('raw', 'm42fil') }}
+
+),
+
+filiale_mapping AS (
+
+    SELECT
+        idbse0005_0_3::varchar(10)      AS filiale_id,
+        'L' || CAST(idbse0005_0_3 AS INTEGER)::varchar AS lager_id_mapping,
+        idbse0005_3_60::varchar(255)    AS filiale_name,
+        idbse0005_63_30::varchar(255)   AS firmenname,
+        idbse0005_93_30::varchar(255)   AS firmenzusatz,
+        idbse0005_123_30::varchar(255)  AS filiale,
+        idbse0005_153_30::varchar(255)  AS adresse,
+        idbse0005_183_10::varchar(20)   AS plz,
+        idbse0005_193_30::varchar(255)  AS ort,
+        idbse0005_354_20::varchar(255)  AS lagergruppe,
+        mandant_id
+
+    FROM source_data
+
+),
+
+final AS (
+
+    SELECT
+        *,
+        mandant_id || '_' || lager_id_mapping AS mandant_lager_key
+
+    FROM filiale_mapping
 
 )
 
-select *
-from filialen
+SELECT *
+FROM final

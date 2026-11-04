@@ -419,7 +419,7 @@ tos AS (
     SELECT DISTINCT
         ar_text AS art_artikelnummer
 
-    FROM {{ ref('wencke_bronze_tos_artikel_attribut') }}
+    FROM {{ ref('bronze_wencke_tos_artikel_attribut') }}
 
     WHERE ar_art = 1389
 

@@ -68,9 +68,9 @@ JOBS = {
     "adressen": {
         "stop_on_error": True,
         "commands": [
-            ("run", "+gold_wencke_adressen"),
+            ("run", "+gold_wencke_adressen +gold_wencke_besuchsberichte"),
             ("snapshot", "snapshot_gold_adressen"),
-            ("run", "+gold_wencke_adressen_changes +gold_wencke_vertreter +gold_wencke_bediener gold_wencke_adressgruppe_check"),
+            ("run", "+gold_wencke_adressen_changes +gold_wencke_vertreter +gold_wencke_bediener +gold_wencke_adressgruppe_check"),
         ],
     },
 
