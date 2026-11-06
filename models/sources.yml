@@ -10,32 +10,27 @@ sources:
       - name: m32adrgrp
       - name: m32fil
       - name: m32idbid0234      
-      - name: m32idbid0236
-      - name: m32adr_ekv     
+      - name: m32idbid0236 
       # M36
       - name: m36adrgrp
       - name: m36fil
       - name: m36idbid0234
       - name: m36idbid0236 
-      - name: m36adr_ekv
       - name: m36idbid0136
       - name: m36stupre_dwh 
        # M38
       - name: m38adrgrp
-      - name: m38adr_ekv
       - name: m38fil
       # M39
       - name: m39adrgrp
       - name: m39fil
       - name: m39idbid0234      
       - name: m39idbid0236
-      - name: m39adr_ekv
       # M42
       - name: m42adrgrp
       - name: m42fil
       - name: m42idbid0234
       - name: m42idbid0236     
-      - name: m42adr_ekv
       - name: m42idbid0136
       # Sonstige
       - name: m00id0202
@@ -56,6 +51,7 @@ sources:
       - name: wencke_lv_belege_rezept
       - name: wencke_lv_belege_referenzen
       - name: wencke_lv_besuchsberichte
+      - name: wencke_lv_ekv
       - name: wencke_lv_adressen
       - name: wencke_lv_adressen_healthcare
       - name: wencke_lv_adressen_identifikatoren
