@@ -18,6 +18,13 @@ SELECT
     b.bel_oe_5,
 
     CASE
+        WHEN b.mandant = 32 AND b.bel_adr_nr = '101127' then '101127'
+        WHEN b.mandant = 42 and b.bel_adr_nr = '510233' then '510233'
+        WHEN b.mandant = 42 and b.bel_adr_nr = '102154' then '102154'
+        WHEN b.mandant = 42 and b.bel_adr_nr = '320560' then '320560'
+        WHEN b.mandant = 42 and b.bel_adr_nr = '315614' then '315614'
+        WHEN b.mandant = 42 and b.bel_adr_nr = '230720' then '230720'
+        WHEN b.mandant = 42 and b.bel_adr_nr = '100248' then '100248'
         WHEN b.bel_project_nr is not null 
             THEN b.bel_oe_5
         ELSE b.bel_adr_nr

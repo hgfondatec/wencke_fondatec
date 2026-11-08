@@ -16,6 +16,13 @@ WITH belege_positionen AS (
         b.bel_adr_nr,
 
         CASE
+            WHEN b.mandant = 32 AND b.bel_adr_nr = '101127' then '101127'
+            WHEN b.mandant = 42 and b.bel_adr_nr = '510233' then '510233'
+            WHEN b.mandant = 42 and b.bel_adr_nr = '102154' then '102154'
+            WHEN b.mandant = 42 and b.bel_adr_nr = '320560' then '320560'
+            WHEN b.mandant = 42 and b.bel_adr_nr = '315614' then '315614'
+            WHEN b.mandant = 42 and b.bel_adr_nr = '230720' then '230720'
+            WHEN b.mandant = 42 and b.bel_adr_nr = '100248' then '100248'
             WHEN b.bel_project_nr IS NOT NULL THEN b.bel_oe_5
             ELSE b.bel_adr_nr
         END AS bel_final_adr_nr,
@@ -144,6 +151,13 @@ SELECT
     CONCAT(
             LTRIM(
                 CASE
+                    WHEN mandant = 32 AND bel_adr_nr = '101127' then '101127'
+                    WHEN mandant = 42 and bel_adr_nr = '510233' then '510233'
+                    WHEN mandant = 42 and bel_adr_nr = '102154' then '102154'
+                    WHEN mandant = 42 and bel_adr_nr = '320560' then '320560'
+                    WHEN mandant = 42 and bel_adr_nr = '315614' then '315614'
+                    WHEN mandant = 42 and bel_adr_nr = '230720' then '230720'
+                    WHEN mandant = 42 and bel_adr_nr = '100248' then '100248'
                     WHEN bel_project_nr IS NOT NULL
                         THEN bel_oe_5
                     ELSE bel_adr_nr
