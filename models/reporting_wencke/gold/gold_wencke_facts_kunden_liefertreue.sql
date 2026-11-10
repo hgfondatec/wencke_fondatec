@@ -58,6 +58,11 @@ WITH basis AS (
         ON a.wencke_id = l.auftrags_wencke_id
        AND a.mandant = l.mandant
        AND a.adr_nr = l.adr_nr
+
+    -- Dynamischer Filter: aktuelles und vorheriges Kalenderjahr
+    WHERE a.auftrags_datum >=
+          (DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '1 year')::date
+      AND a.auftrags_datum <= CURRENT_DATE
 ),
 
 liefertreue AS (
