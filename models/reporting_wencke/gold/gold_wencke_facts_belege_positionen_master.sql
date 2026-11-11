@@ -17,6 +17,8 @@ WITH belege_positionen AS (
 
         CASE
             WHEN b.mandant = 32 AND b.bel_adr_nr = '101127' then '101127'
+            WHEN b.mandant = 32 AND b.bel_adr_nr = '100332' then '100332'
+            WHEN b.mandant = 42 and b.bel_adr_nr = '620035' then '620035'
             WHEN b.mandant = 42 and b.bel_adr_nr = '510233' then '510233'
             WHEN b.mandant = 42 and b.bel_adr_nr = '102154' then '102154'
             WHEN b.mandant = 42 and b.bel_adr_nr = '320560' then '320560'
@@ -152,7 +154,9 @@ SELECT
             LTRIM(
                 CASE
                     WHEN mandant = 32 AND bel_adr_nr = '101127' then '101127'
+                    WHEN mandant = 32 AND bel_adr_nr = '100332' then '100332'
                     WHEN mandant = 42 and bel_adr_nr = '510233' then '510233'
+                    WHEN mandant = 42 and bel_adr_nr = '620035' then '620035'
                     WHEN mandant = 42 and bel_adr_nr = '102154' then '102154'
                     WHEN mandant = 42 and bel_adr_nr = '320560' then '320560'
                     WHEN mandant = 42 and bel_adr_nr = '315614' then '315614'
