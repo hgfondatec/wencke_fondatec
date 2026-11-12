@@ -55,7 +55,7 @@ JOBS = {
     "artikel": {
         "stop_on_error": True,
         "commands": [
-            ("run", "+gold_wencke_artikel +gold_wencke_artikel_lieferant +gold_wencke_artikel_check +gold_wencke_warengruppen silver_wencke_adressen_check +gold_wencke_adressen +gold_wencke_vertreter"),
+            ("run", "+gold_wencke_artikel +gold_wencke_artikel_attribute +gold_wencke_artikel_lieferant +gold_wencke_artikel_check +gold_wencke_warengruppen silver_wencke_adressen_check +gold_wencke_adressen +gold_wencke_vertreter"),
         ],
     },
 
@@ -77,7 +77,8 @@ JOBS = {
             # Modelle ausschließen
             "--exclude "
             "+gold_wencke_artikel_check "
-            "+gold_wencke_artikel "
+            "+gold_wencke_artikel"
+            "+gold_wencke_artikel_attribute"
             "+gold_wencke_adressen"),
         ],
     },

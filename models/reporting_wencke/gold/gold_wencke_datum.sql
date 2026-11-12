@@ -1,3 +1,4 @@
+
 {{
     config(
         materialized = 'table',
@@ -5,19 +6,33 @@
     )
 }}
 
+WITH current_date_berlin AS (
 
-WITH date_range AS (
+    -- Aktuelles Datum nach deutscher Zeit
+    -- Berücksichtigt automatisch Sommer- und Winterzeit
+
+    SELECT
+        (CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Berlin')::date
+            AS berlin_today
+
+),
+
+date_range AS (
 
     SELECT
         generate_series(
             DATE '2025-01-01',
             MAKE_DATE(
-                EXTRACT(YEAR FROM CURRENT_DATE)::int + 2,
+                EXTRACT(YEAR FROM berlin_today)::int + 2,
                 12,
                 31
             ),
             INTERVAL '1 day'
-        )::date AS date_value
+        )::date AS date_value,
+
+        berlin_today
+
+    FROM current_date_berlin
 
 ),
 
@@ -25,6 +40,7 @@ date_base AS (
 
     SELECT
         date_value,
+        berlin_today,
 
         EXTRACT(YEAR FROM date_value)::int AS year_number,
         EXTRACT(MONTH FROM date_value)::int AS month_number,
@@ -36,16 +52,32 @@ date_base AS (
         EXTRACT(ISOYEAR FROM date_value)::int AS iso_year,
 
         DATE_TRUNC('week', date_value)::date AS week_start_date,
-        (DATE_TRUNC('week', date_value) + INTERVAL '6 days')::date AS week_end_date,
+
+        (
+            DATE_TRUNC('week', date_value)
+            + INTERVAL '6 days'
+        )::date AS week_end_date,
 
         DATE_TRUNC('month', date_value)::date AS month_start_date,
-        (DATE_TRUNC('month', date_value) + INTERVAL '1 month - 1 day')::date AS month_end_date,
+
+        (
+            DATE_TRUNC('month', date_value)
+            + INTERVAL '1 month - 1 day'
+        )::date AS month_end_date,
 
         DATE_TRUNC('quarter', date_value)::date AS quarter_start_date,
-        (DATE_TRUNC('quarter', date_value) + INTERVAL '3 months - 1 day')::date AS quarter_end_date,
+
+        (
+            DATE_TRUNC('quarter', date_value)
+            + INTERVAL '3 months - 1 day'
+        )::date AS quarter_end_date,
 
         DATE_TRUNC('year', date_value)::date AS year_start_date,
-        (DATE_TRUNC('year', date_value) + INTERVAL '1 year - 1 day')::date AS year_end_date
+
+        (
+            DATE_TRUNC('year', date_value)
+            + INTERVAL '1 year - 1 day'
+        )::date AS year_end_date
 
     FROM date_range
 
@@ -56,24 +88,62 @@ date_relative AS (
     SELECT
         *,
 
-        (date_value - CURRENT_DATE) AS relative_day,
+        -- ==================================================
+        -- RELATIVER TAG (BERLIN)
+        -- ==================================================
 
         (
-            (week_start_date - DATE_TRUNC('week', CURRENT_DATE)::date) / 7
+            date_value - berlin_today
+        ) AS relative_day,
+
+        -- ==================================================
+        -- RELATIVE WOCHE (BERLIN)
+        -- ==================================================
+
+        (
+            (
+                week_start_date
+                - DATE_TRUNC('week', berlin_today::timestamp)::date
+            ) / 7
         )::int AS relative_week,
 
+        -- ==================================================
+        -- RELATIVER MONAT (BERLIN)
+        -- ==================================================
+
         (
-            (year_number - EXTRACT(YEAR FROM CURRENT_DATE)::int) * 12
-            + month_number - EXTRACT(MONTH FROM CURRENT_DATE)::int
+            (
+                year_number
+                - EXTRACT(YEAR FROM berlin_today)::int
+            ) * 12
+
+            + month_number
+
+            - EXTRACT(MONTH FROM berlin_today)::int
         ) AS relative_month,
 
-        (
-            (year_number - EXTRACT(YEAR FROM CURRENT_DATE)::int) * 4
-            + quarter_number - EXTRACT(QUARTER FROM CURRENT_DATE)::int
-        ) AS relative_quarter,
+        -- ==================================================
+        -- RELATIVES QUARTAL (BERLIN)
+        -- ==================================================
 
         (
-            year_number - EXTRACT(YEAR FROM CURRENT_DATE)::int
+            (
+                year_number
+                - EXTRACT(YEAR FROM berlin_today)::int
+            ) * 4
+
+            + quarter_number
+
+            - EXTRACT(QUARTER FROM berlin_today)::int
+        ) AS relative_quarter,
+
+        -- ==================================================
+        -- RELATIVES JAHR (BERLIN)
+        -- ==================================================
+
+        (
+            year_number
+            - EXTRACT(YEAR FROM berlin_today)::int
         ) AS relative_year
 
     FROM date_base
@@ -120,12 +190,13 @@ date_calendar AS (
             'Jan', 'Feb', 'Mär', 'Apr',
             'Mai', 'Jun', 'Jul', 'Aug',
             'Sep', 'Okt', 'Nov', 'Dez'
-        ])[month_number] || '-' || year_number AS "MonatJahr",
+        ])[month_number]
+            || '-' || year_number AS "MonatJahr",
 
-        year_number * 100 + month_number AS "MonatJahrSort",
+        year_number * 100
+            + month_number AS "MonatJahrSort",
 
         relative_month AS "RelativeMonth",
-
 
         -- ==================================================
         -- ZUSÄTZLICHE DATUMSINFORMATIONEN
@@ -139,7 +210,9 @@ date_calendar AS (
 
         quarter_number,
 
-        TO_CHAR(date_value, 'YYYY') || '-Q' || quarter_number AS year_quarter,
+        TO_CHAR(date_value, 'YYYY')
+            || '-Q'
+            || quarter_number AS year_quarter,
 
         -- ==================================================
         -- KALENDERWOCHEN
@@ -148,7 +221,10 @@ date_calendar AS (
         iso_year,
         week_number,
 
-        iso_year || '-KW' || LPAD(week_number::text, 2, '0') AS year_week,
+        iso_year
+            || '-KW'
+            || LPAD(week_number::text, 2, '0')
+            AS year_week,
 
         week_start_date,
         week_end_date,
@@ -166,10 +242,11 @@ date_calendar AS (
         year_start_date,
         year_end_date,
 
-        EXTRACT(DAY FROM month_end_date)::int AS days_in_month,
+        EXTRACT(DAY FROM month_end_date)::int
+            AS days_in_month,
 
         -- ==================================================
-        -- RELATIVE ZEITRÄUME
+        -- RELATIVE ZEITRÄUME (BERLIN)
         -- ==================================================
 
         relative_day,
@@ -179,7 +256,7 @@ date_calendar AS (
         relative_year,
 
         -- ==================================================
-        -- DEUTSCHE RELATIVE BEZEICHNUNGEN
+        -- DEUTSCHE RELATIVE BEZEICHNUNGEN (BERLIN)
         -- ==================================================
 
         CASE
@@ -197,7 +274,11 @@ date_calendar AS (
             WHEN relative_week = 0 THEN 'Aktuelle Woche'
             WHEN relative_week = 1 THEN 'Nächste Woche'
             WHEN relative_week = 2 THEN 'Übernächste Woche'
-            ELSE 'KW ' || LPAD(week_number::text, 2, '0') || ' / ' || iso_year
+            ELSE
+                'KW '
+                || LPAD(week_number::text, 2, '0')
+                || ' / '
+                || iso_year
         END AS relative_week_label,
 
         CASE
@@ -215,7 +296,8 @@ date_calendar AS (
             WHEN relative_quarter = 0 THEN 'Aktuelles Quartal'
             WHEN relative_quarter = 1 THEN 'Nächstes Quartal'
             WHEN relative_quarter = 2 THEN 'Übernächstes Quartal'
-            ELSE year_number || '-Q' || quarter_number
+            ELSE
+                year_number || '-Q' || quarter_number
         END AS relative_quarter_label,
 
         CASE
@@ -228,78 +310,104 @@ date_calendar AS (
         END AS relative_year_label,
 
         -- ==================================================
-        -- AKTUELLE ZEITRÄUME
+        -- AKTUELLE ZEITRÄUME (BERLIN)
         -- ==================================================
 
         (relative_day = 0) AS is_today,
+
         (relative_day = -1) AS is_yesterday,
 
         (relative_week = 0) AS is_current_week,
+
         (relative_week = -1) AS is_last_week,
 
         (relative_month = 0) AS is_current_month,
+
         (relative_month = -1) AS is_last_month,
 
         (relative_quarter = 0) AS is_current_quarter,
+
         (relative_quarter = -1) AS is_last_quarter,
 
         (relative_year = 0) AS is_current_year,
+
         (relative_year = -1) AS is_last_year,
+
         (relative_year = -2) AS is_previous_two_years,
 
         -- ==================================================
-        -- ROLLIERENDE ZEITRÄUME
+        -- ROLLIERENDE ZEITRÄUME (BERLIN)
         -- ==================================================
 
-        (relative_day BETWEEN -6 AND 0) AS is_last_7_days,
+        (
+            relative_day BETWEEN -6 AND 0
+        ) AS is_last_7_days,
 
-        (relative_day BETWEEN -29 AND 0) AS is_last_30_days,
+        (
+            relative_day BETWEEN -29 AND 0
+        ) AS is_last_30_days,
 
-        (relative_month BETWEEN -11 AND 0) AS is_last_12_months,
-
-        -- ==================================================
-        -- ABGESCHLOSSENE ZEITRÄUME
-        -- ==================================================
-
-        (relative_week = -1) AS is_last_completed_week,
-
-        (relative_month = -1) AS is_last_completed_month,
-
-        (relative_month < 0) AS is_completed_month,
-
-        (date_value = month_end_date) AS is_month_end,
+        (
+            relative_month BETWEEN -11 AND 0
+        ) AS is_last_12_months,
 
         -- ==================================================
-        -- MTD / QTD / YTD
+        -- ABGESCHLOSSENE ZEITRÄUME (BERLIN)
+        -- ==================================================
+
+        (
+            relative_week = -1
+        ) AS is_last_completed_week,
+
+        (
+            relative_month = -1
+        ) AS is_last_completed_month,
+
+        (
+            relative_month < 0
+        ) AS is_completed_month,
+
+        (
+            date_value = month_end_date
+        ) AS is_month_end,
+
+        -- ==================================================
+        -- MTD / QTD / YTD (BERLIN)
         -- ==================================================
 
         (
             relative_month = 0
-            AND date_value <= CURRENT_DATE
+            AND date_value <= berlin_today
         ) AS is_mtd,
 
         (
             relative_quarter = 0
-            AND date_value <= CURRENT_DATE
+            AND date_value <= berlin_today
         ) AS is_qtd,
 
         (
             relative_year = 0
-            AND date_value <= CURRENT_DATE
+            AND date_value <= berlin_today
         ) AS is_ytd,
 
         (
             relative_year = -1
-            AND date_value <= (CURRENT_DATE - INTERVAL '1 year')::date
+            AND date_value <= (
+                berlin_today - INTERVAL '1 year'
+            )::date
         ) AS is_previous_ytd,
 
         -- ==================================================
         -- WOCHENENDE / WERKTAGE
         -- ==================================================
 
-        (day_of_week_number IN (6, 7)) AS is_weekend,
+        (
+            day_of_week_number IN (6, 7)
+        ) AS is_weekend,
 
-        (day_of_week_number BETWEEN 1 AND 5) AS is_weekday,
+        (
+            day_of_week_number BETWEEN 1 AND 5
+        ) AS is_weekday,
 
         (
             SELECT COUNT(*)::int
@@ -308,14 +416,20 @@ date_calendar AS (
                 date_value,
                 INTERVAL '1 day'
             ) AS d(work_date)
-            WHERE EXTRACT(ISODOW FROM d.work_date) BETWEEN 1 AND 5
+
+            WHERE
+                EXTRACT(ISODOW FROM d.work_date)
+                BETWEEN 1 AND 5
+
         ) AS working_day_of_month,
 
         -- ==================================================
         -- VORJAHRESVERGLEICH
         -- ==================================================
 
-        (date_value - INTERVAL '1 year')::date AS same_day_last_year
+        (
+            date_value - INTERVAL '1 year'
+        )::date AS same_day_last_year
 
     FROM date_relative
 
