@@ -367,6 +367,11 @@ date_calendar AS (
             relative_month < 0
         ) AS is_completed_month,
 
+        -- Neue Spalte aus Power Query
+        (
+            relative_month < 0
+        ) AS "MonatAbgeschlossen",
+
         (
             date_value = month_end_date
         ) AS is_month_end,
