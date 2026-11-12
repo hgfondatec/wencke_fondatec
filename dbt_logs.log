@@ -35522,3 +35522,48 @@ ENDE JOB: ARTIKEL_BESTAND
 Status: ERFOLGREICH
 Dauer: 27.98 Sekunden
 ################################################################################
+
+################################################################################
+START JOB: ARTIKEL_BESTAND
+Startzeit: 2026-11-12 09:55:09
+################################################################################
+
+--- DBT RUN +gold_wencke_artikel_bestand 2026-11-12 09:55:09.860122 ---
+08:55:18  Running with dbt=1.11.9 | 08:55:18  Registered adapter: postgres=1.10.0 | 08:55:21  Found 94 models, 1 seed, 1 snapshot, 52 sources, 470 macros | 08:55:21   | 08:55:21  Concurrency: 4 threads (target='dev') | 08:55:21   | 08:55:24  1 of 12 START sql table model reporting_wencke.bronze_wencke_adressen .......... [RUN] | 08:55:24  2 of 12 START sql table model reporting_wencke.bronze_wencke_adressen_crm ...... [RUN] | 08:55:24  3 of 12 START sql table model reporting_wencke.bronze_wencke_adressen_healthcare  [RUN] | 08:55:24  4 of 12 START sql table model reporting_wencke.bronze_wencke_adressen_identifikatoren  [RUN] | 08:55:25  4 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen_identifikatoren  [SELECT 8979 in 0.40s] | 08:55:25  5 of 12 START sql table model reporting_wencke.bronze_wencke_adressen_service .. [RUN] | 08:55:25  3 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen_healthcare  [SELECT 79187 in 0.42s] | 08:55:25  6 of 12 START sql table model reporting_wencke.bronze_wencke_artikel_attribute . [RUN] | 08:55:25  2 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen_crm . [SELECT 355610 in 0.66s] | 08:55:25  7 of 12 START sql table model reporting_wencke.bronze_wencke_artikel_attribute_gefahr  [RUN] | 08:55:25  5 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen_service  [SELECT 29912 in 0.26s] | 08:55:25  8 of 12 START sql table model reporting_wencke.bronze_wencke_artikel_bestand ... [RUN] | 08:55:25  8 of 12 OK created sql table model reporting_wencke.bronze_wencke_artikel_bestand  [SELECT 81523 in 0.29s] | 08:55:25  7 of 12 OK created sql table model reporting_wencke.bronze_wencke_artikel_attribute_gefahr  [SELECT 177606 in 0.32s] | 08:55:25  6 of 12 OK created sql table model reporting_wencke.bronze_wencke_artikel_attribute  [SELECT 178519 in 0.58s] | 08:55:26  1 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen ..... [SELECT 357295 in 1.11s] | 08:55:26  9 of 12 START sql table model reporting_wencke.silver_wencke_adressen .......... [RUN] | 08:55:39  9 of 12 OK created sql table model reporting_wencke.silver_wencke_adressen ..... [SELECT 357295 in 13.04s] | 08:55:39  10 of 12 START sql table model reporting_wencke.silver_wencke_artikel_lieferant  [RUN] | 08:55:39  10 of 12 OK created sql table model reporting_wencke.silver_wencke_artikel_lieferant  [SELECT 178519 in 0.74s] | 08:55:39  11 of 12 START sql table model reporting_wencke.silver_wencke_artikel_bestand .. [RUN] | 08:55:41  11 of 12 OK created sql table model reporting_wencke.silver_wencke_artikel_bestand  [SELECT 81523 in 1.60s] | 08:55:41  12 of 12 START sql table model reporting_wencke.gold_wencke_artikel_bestand .... [RUN] | 08:55:41  12 of 12 OK created sql table model reporting_wencke.gold_wencke_artikel_bestand  [SELECT 81523 in 0.18s] | 08:55:41   | 08:55:41  Finished running 12 table models in 0 hours 0 minutes and 19.80 seconds (19.80s). | 08:55:41   | 08:55:41  Completed successfully | 08:55:41   | 08:55:41  Done. PASS=12 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=12 | 
+Status: ERFOLGREICH, Dauer: 33.29 Sekunden
+
+################################################################################
+ENDE JOB: ARTIKEL_BESTAND
+Status: ERFOLGREICH
+Dauer: 33.72 Sekunden
+################################################################################
+
+################################################################################
+START JOB: ARTIKEL_BESTAND
+Startzeit: 2026-11-12 10:55:06
+################################################################################
+
+--- DBT RUN +gold_wencke_artikel_bestand 2026-11-12 10:55:06.410476 ---
+09:55:13  Running with dbt=1.11.9 | 09:55:13  Registered adapter: postgres=1.10.0 | 09:55:16  Found 94 models, 1 seed, 1 snapshot, 52 sources, 470 macros | 09:55:16   | 09:55:16  Concurrency: 4 threads (target='dev') | 09:55:16   | 09:55:17  1 of 12 START sql table model reporting_wencke.bronze_wencke_adressen .......... [RUN] | 09:55:17  2 of 12 START sql table model reporting_wencke.bronze_wencke_adressen_crm ...... [RUN] | 09:55:17  3 of 12 START sql table model reporting_wencke.bronze_wencke_adressen_healthcare  [RUN] | 09:55:17  4 of 12 START sql table model reporting_wencke.bronze_wencke_adressen_identifikatoren  [RUN] | 09:55:17  4 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen_identifikatoren  [SELECT 8979 in 0.36s] | 09:55:17  5 of 12 START sql table model reporting_wencke.bronze_wencke_adressen_service .. [RUN] | 09:55:17  3 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen_healthcare  [SELECT 79191 in 0.38s] | 09:55:17  6 of 12 START sql table model reporting_wencke.bronze_wencke_artikel_attribute . [RUN] | 09:55:17  2 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen_crm . [SELECT 355617 in 0.67s] | 09:55:17  7 of 12 START sql table model reporting_wencke.bronze_wencke_artikel_attribute_gefahr  [RUN] | 09:55:17  5 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen_service  [SELECT 29912 in 0.29s] | 09:55:17  8 of 12 START sql table model reporting_wencke.bronze_wencke_artikel_bestand ... [RUN] | 09:55:18  8 of 12 OK created sql table model reporting_wencke.bronze_wencke_artikel_bestand  [SELECT 81517 in 0.32s] | 09:55:18  7 of 12 OK created sql table model reporting_wencke.bronze_wencke_artikel_attribute_gefahr  [SELECT 177607 in 0.34s] | 09:55:18  6 of 12 OK created sql table model reporting_wencke.bronze_wencke_artikel_attribute  [SELECT 178520 in 0.65s] | 09:55:18  1 of 12 OK created sql table model reporting_wencke.bronze_wencke_adressen ..... [SELECT 357302 in 1.13s] | 09:55:18  9 of 12 START sql table model reporting_wencke.silver_wencke_adressen .......... [RUN] | 09:55:31  9 of 12 OK created sql table model reporting_wencke.silver_wencke_adressen ..... [SELECT 357302 in 13.05s] | 09:55:31  10 of 12 START sql table model reporting_wencke.silver_wencke_artikel_lieferant  [RUN] | 09:55:32  10 of 12 OK created sql table model reporting_wencke.silver_wencke_artikel_lieferant  [SELECT 178520 in 0.78s] | 09:55:32  11 of 12 START sql table model reporting_wencke.silver_wencke_artikel_bestand .. [RUN] | 09:55:33  11 of 12 OK created sql table model reporting_wencke.silver_wencke_artikel_bestand  [SELECT 81517 in 1.59s] | 09:55:33  12 of 12 START sql table model reporting_wencke.gold_wencke_artikel_bestand .... [RUN] | 09:55:33  12 of 12 OK created sql table model reporting_wencke.gold_wencke_artikel_bestand  [SELECT 81517 in 0.16s] | 09:55:33   | 09:55:33  Finished running 12 table models in 0 hours 0 minutes and 17.37 seconds (17.37s). | 09:55:33   | 09:55:33  Completed successfully | 09:55:33   | 09:55:33  Done. PASS=12 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=12 | 
+Status: ERFOLGREICH, Dauer: 28.98 Sekunden
+
+################################################################################
+ENDE JOB: ARTIKEL_BESTAND
+Status: ERFOLGREICH
+Dauer: 29.21 Sekunden
+################################################################################
+
+################################################################################
+START JOB: DATUM
+Startzeit: 2026-11-12 10:58:33
+################################################################################
+
+--- DBT RUN gold_wencke_datum 2026-11-12 10:58:33.747089 ---
+09:58:40  Running with dbt=1.11.9 | 09:58:40  Registered adapter: postgres=1.10.0 | 09:58:42  Found 94 models, 1 seed, 1 snapshot, 52 sources, 470 macros | 09:58:42   | 09:58:42  Concurrency: 4 threads (target='dev') | 09:58:42   | 09:58:43  1 of 1 START sql table model reporting_wencke.gold_wencke_datum ................ [RUN] | 09:58:43  1 of 1 OK created sql table model reporting_wencke.gold_wencke_datum ........... [SELECT 1461 in 0.29s] | 09:58:43   | 09:58:43  Finished running 1 table model in 0 hours 0 minutes and 0.87 seconds (0.87s). | 09:58:43   | 09:58:43  Completed successfully | 09:58:43   | 09:58:43  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1 | 
+Status: ERFOLGREICH, Dauer: 11.27 Sekunden
+
+################################################################################
+ENDE JOB: DATUM
+Status: ERFOLGREICH
+Dauer: 11.53 Sekunden
+################################################################################
