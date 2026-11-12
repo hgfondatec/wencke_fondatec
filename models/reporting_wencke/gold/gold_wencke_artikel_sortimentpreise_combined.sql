@@ -109,7 +109,7 @@ artikelstamm AS (
     SELECT DISTINCT
         TRIM(a.art_artikelnummer::text) AS artikel_nummer,
         TRIM(a.art_warengruppe::text) AS warengruppe
-    FROM {{ ref('gold_wencke_artikel') }} a
+    FROM {{ ref('gold_wencke_artikel_attribute') }} a
     INNER JOIN relevante_artikel r
         ON r.artikel_nummer = TRIM(a.art_artikelnummer::text)
     WHERE a.art_artikelnummer IS NOT NULL
