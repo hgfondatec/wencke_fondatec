@@ -21,7 +21,7 @@ date_range AS (
 
     SELECT
         generate_series(
-            DATE '2025-01-01',
+            DATE '2024-01-01',
             MAKE_DATE(
                 EXTRACT(YEAR FROM berlin_today)::int + 2,
                 12,

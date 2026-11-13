@@ -11,7 +11,7 @@ WITH basis AS (
     SELECT
         a.mandant,
         a.wencke_id AS auftrags_wencke_id,
-        a.auftrags_nr,
+        a.bel_nr,
         a.auftrags_created_at,
         a.auftrags_datum,
         a.auftrags_zeitfenster,
@@ -23,7 +23,7 @@ WITH basis AS (
         l.ref_bel_nr,
         l.lieferschein_wencke_id,
         l.lieferschein_nr,
-        l.lieferschein_datum,
+        l.lieferschein_date,
         l.versand_datum,
 
         -- Frist: zwei Werktage ab finalem Auftragsdatum
@@ -53,11 +53,9 @@ WITH basis AS (
         END AS frist_datum
 
     FROM {{ ref('silver_wencke_belege_kundenauftraege') }} AS a
-
-    LEFT JOIN {{ ref('silver_wencke_belege_kundenlieferscheine') }} AS l
-        ON a.wencke_id = l.auftrags_wencke_id
-       AND a.mandant = l.mandant
-       AND a.adr_nr = l.adr_nr
+    INNER JOIN {{ ref('silver_wencke_belege_kundenlieferscheine') }} AS l
+        ON l.ref_bel_nr = a.bel_nr
+       AND l.mandant = a.mandant
 
     -- Dynamischer Filter: aktuelles und vorheriges Kalenderjahr
     WHERE a.auftrags_datum >=
