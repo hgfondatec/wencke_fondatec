@@ -30,7 +30,7 @@ auftraege_berechnet AS (
         CASE
             WHEN a.auftrags_created_at::time < TIME '12:00:00'
                 THEN 'Vor 12 Uhr'
-            ELSE 'Ab 12 Uhr'
+            ELSE 'Nach 12 Uhr'
         END AS auftrags_zeitfenster,
 
         CASE

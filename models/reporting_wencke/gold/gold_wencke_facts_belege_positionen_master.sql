@@ -126,7 +126,6 @@ WITH belege_positionen AS (
 
     WHERE b.bel_date >= DATE '2024-01-01'
         AND b.bel_date < DATE '2027-01-01'
-
 )
 
 SELECT
@@ -135,7 +134,7 @@ SELECT
     CASE
         WHEN bg_beleggruppe IN ('G00', 'G01', 'G02', 'G50')
             THEN COALESCE(pos_menge, 0) * -1
-        WHEN bg_beleggruppe IN ('R00', 'R83', 'R70','R49')
+        WHEN bg_beleggruppe IN ('R00', 'R83','R49')
             THEN COALESCE(pos_menge, 0)
         ELSE 0
     END AS rechnung_menge_calc,
@@ -192,14 +191,14 @@ SELECT
     CASE
         WHEN bg_beleggruppe IN ('G00', 'G01', 'G02', 'G50')
             THEN -1
-        WHEN bg_beleggruppe IN ('R00', 'R83', 'R70','R49')
+        WHEN bg_beleggruppe IN ('R00', 'R83', 'R49')
             THEN 1
         ELSE 0
     END AS beleg_vorzeichen,
 
     CASE
         WHEN pos_steuerberechnung IN ('3', '5')
-             AND bg_beleggruppe IN ('R00', 'R83', 'R70','R49')
+             AND bg_beleggruppe IN ('R00', 'R83', 'R49')
             THEN COALESCE(pos_gesamtbetrag, 0)
 
         WHEN pos_steuerberechnung IN ('3', '5')
@@ -207,7 +206,7 @@ SELECT
             THEN COALESCE(pos_gesamtbetrag, 0) * -1
 
         WHEN COALESCE(pos_steuerberechnung, '') NOT IN ('3', '5')
-             AND bg_beleggruppe IN ('R00', 'R83', 'R70','R49')
+             AND bg_beleggruppe IN ('R00', 'R83','R49')
             THEN
                 COALESCE(pos_rohertrag_vor_bonus, 0)
                 + COALESCE(pos_ek_betrag, 0)
@@ -226,12 +225,12 @@ SELECT
 
     CASE
         WHEN pos_steuerberechnung IN ('3', '5')
-             AND bg_beleggruppe IN ('R00', 'R83', 'R70','R49')
+             AND bg_beleggruppe IN ('R00', 'R83','R49')
              AND COALESCE(pos_bonus_erledigt, FALSE)
             THEN COALESCE(pos_gesamtbetrag, 0)-COALESCE(pos_bonus_betrag_endgueltig, 0)
         
         WHEN pos_steuerberechnung IN ('3', '5')
-             AND bg_beleggruppe IN ('R00', 'R83', 'R70','R49')
+             AND bg_beleggruppe IN ('R00', 'R83','R49')
              AND NOT COALESCE(pos_bonus_erledigt, FALSE)
             THEN COALESCE(pos_gesamtbetrag, 0)-COALESCE(pos_bonus_betrag_vorlaeufig, 0)
 
@@ -246,7 +245,7 @@ SELECT
             THEN (COALESCE(pos_gesamtbetrag, 0)-COALESCE(pos_bonus_betrag_vorlaeufig, 0)) * -1
 
         WHEN COALESCE(pos_steuerberechnung, '') NOT IN ('3', '5')
-             AND bg_beleggruppe IN ('R00', 'R83', 'R70','R49')
+             AND bg_beleggruppe IN ('R00', 'R83','R49')
             THEN
                 COALESCE(pos_rohertrag, 0)
                 + COALESCE(pos_ek_betrag, 0)
