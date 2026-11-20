@@ -12,6 +12,7 @@ WITH auftraege AS (
         b.wencke_id,
         b.mandant,
         b.bel_nr,
+        b.bel_date,
         b.bel_created_at::timestamp AS auftrags_created_at,
         CASE
             WHEN b.bel_project_nr IS NOT NULL THEN b.bel_oe_5

@@ -14,6 +14,7 @@ WITH belege_positionen AS (
         b.bel_art,
         b.bel_beleg_gruppe,
         b.bel_adr_nr,
+        b.bel_ecom_id,
 
         CASE
             WHEN b.mandant = 32 AND b.bel_adr_nr = '101127' then '101127'

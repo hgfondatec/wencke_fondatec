@@ -1,8 +1,10 @@
-{{ config(
-    materialized = 'table',
-    schema = 'wencke'
-) }}
 
+{{
+    config(
+        materialized = 'table',
+        schema = 'wencke'
+    )
+}}
 
 WITH belege AS (
     SELECT
@@ -10,19 +12,24 @@ WITH belege AS (
         mandant,
         bel_date,
         bel_herkunft,
+        bel_ecom_id,
+        SUM(rechnung_umsatz_vor_bonus_calc) AS umsatz
+    FROM {{ ref('gold_wencke_facts_belege_positionen') }} b
+    GROUP BY
+        wencke_id,
+        mandant,
+        bel_date,
+        bel_herkunft,
         bel_ecom_id
-    FROM {{ ref('bronze_wencke_belege') }} b
-    WHERE b.bel_art IN ('R', 'G')
-        AND b.bel_beleg_bonus IS NOT TRUE
-        AND b.bel_status = 'N'
-
 ),
+
 basis AS (
     SELECT
         mandant,
         DATE_TRUNC('month', bel_date)::date AS monat,
         bel_ecom_id,
         bel_herkunft,
+        umsatz,
         CASE bel_herkunft::text
             WHEN '1' THEN 'Telefon'
             WHEN '2' THEN 'Fax'
@@ -118,16 +125,34 @@ basis AS (
         END AS herkunft
     FROM belege
 )
+
 SELECT
     mandant,
     monat,
     bel_herkunft AS herkunft_nr,
     herkunft,
+
+    -- Gesamtumsatz
+    SUM(umsatz) AS umsatz,
+
+    -- E-Commerce-Umsatz
+    COALESCE(
+        SUM(umsatz) FILTER (
+            WHERE bel_ecom_id IS NOT NULL
+              AND TRIM(bel_ecom_id::text) <> ''
+        ),
+        0
+    ) AS ecom_umsatz,
+
+    -- Anzahl E-Commerce-Belege
     COUNT(*) FILTER (
         WHERE bel_ecom_id IS NOT NULL
-            AND TRIM(bel_ecom_id::text) <> ''
+          AND TRIM(bel_ecom_id::text) <> ''
     ) AS ecom_belege,
+
+    -- Anzahl Gesamtbelege
     COUNT(*) AS gesamt_belege
+
 FROM basis
 GROUP BY
     mandant,
