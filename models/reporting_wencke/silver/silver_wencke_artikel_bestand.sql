@@ -33,7 +33,8 @@ artikel AS (
         art_ek_netto,
         art_lagereinheit,
         art_gesperrter_artikel,
-        art_auswahl_gesperrt
+        art_auswahl_gesperrt,
+        art_created_at
     FROM {{ ref('bronze_wencke_artikel_attribute') }}
 
 ),
@@ -75,6 +76,7 @@ SELECT
     b.art_mindestbestand::float8 AS mindestbestand,
     b.art_reichweite::float8 AS reichweite,
     a.mandant::varchar(10) AS mandant_id,
+    a.art_created_at::date as erfassungs_datum,
 
     CONCAT(
         a.mandant,

@@ -1,4 +1,3 @@
-
 {{
     config(
         materialized = 'table',
@@ -8,42 +7,73 @@
 }}
 
 WITH lieferscheine AS (
+
     SELECT
         mandant,
         adr_nr,
         ref_bel_nr,
-        COUNT(DISTINCT lieferschein_wencke_id) AS anzahl_lieferscheine
+        lieferschein_wencke_id,
+        lieferschein_nr,
+        lieferschein_date,
+        versand_art,
+
+        ROW_NUMBER() OVER (
+            PARTITION BY
+                mandant,
+                adr_nr,
+                ref_bel_nr
+            ORDER BY
+                lieferschein_date,
+                lieferschein_nr,
+                lieferschein_wencke_id
+        ) AS lieferung_reihenfolge
+
     FROM {{ ref('silver_wencke_belege_lieferscheine') }}
-    GROUP BY
-        mandant,
-        adr_nr,
-        ref_bel_nr
+
 ),
+
 basis AS (
-    SELECT
+
+    SELECT DISTINCT
         b.mandant,
         DATE_TRUNC('month', b.bel_date)::date AS monat,
+
         l.adr_nr,
-        COALESCE(l.anzahl_lieferscheine, 0) AS gesamt_lieferungen,
-        GREATEST(COALESCE(l.anzahl_lieferscheine, 0) - 1, 0) AS nl_lieferung
+        l.ref_bel_nr,
+        l.lieferschein_wencke_id,
+        l.lieferschein_nr,
+        l.lieferschein_date,
+        l.versand_art,
+        l.lieferung_reihenfolge,
+
+        p.pos_artikel_nr,
+
+        CONCAT(
+            p.pos_artikel_nr,
+            '_',
+            b.mandant
+        ) AS artikel_key,
+
+        1 AS gesamt_lieferungen,
+
+        CASE
+            WHEN l.lieferung_reihenfolge > 1 THEN 1
+            ELSE 0
+        END AS nl_lieferung
+
     FROM {{ ref('silver_wencke_belege_bestellungen') }} AS b
-    LEFT JOIN lieferscheine AS l
+
+    INNER JOIN lieferscheine AS l
         ON l.ref_bel_nr = b.bel_nr
-       AND l.mandant = b.mandant
+        AND l.mandant = b.mandant
+
+    INNER JOIN {{ ref('silver_wencke_belege_positionen_gesamt') }} AS p
+        ON l.lieferschein_wencke_id = p.bel_wencke_id
+
+    WHERE p.pos_artikel_nr IS NOT NULL
+        AND TRIM(p.pos_artikel_nr::text) <> ''
+
 )
-SELECT
-    mandant,
-    monat,
-    adr_nr,
-    SUM(nl_lieferung) AS nl_lieferung,
-    SUM(gesamt_lieferungen) AS gesamt_lieferungen,
-    ROUND(
-        100.0 * SUM(nl_lieferung)
-        / NULLIF(SUM(gesamt_lieferungen), 0),
-        2
-    ) AS nl_quote_prozent
+
+SELECT *
 FROM basis
-GROUP BY
-    mandant,
-    monat,
-    adr_nr

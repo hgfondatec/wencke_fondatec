@@ -21,6 +21,7 @@ lieferscheine AS (
         b.mandant,
         b.bel_nr AS lieferschein_nr,
         b.bel_date AS lieferschein_date,
+        b.bel_versand_art as versand_art,
         CASE
             WHEN b.bel_project_nr IS NOT NULL THEN b.bel_oe_5
             ELSE b.bel_adr_nr
@@ -33,6 +34,7 @@ SELECT DISTINCT
     l.wencke_id AS lieferschein_wencke_id,
     l.lieferschein_nr,
     l.lieferschein_date,
+    l.versand_art,
     l.adr_nr,
     r.ref_bel_nr
 FROM referenzen AS r
