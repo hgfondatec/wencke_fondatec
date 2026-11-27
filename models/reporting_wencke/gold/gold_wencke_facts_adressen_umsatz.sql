@@ -1,8 +1,9 @@
-
-{{ config(
-    materialized = 'table',
-    schema = 'wencke'
-) }}
+{{
+    config(
+        materialized = 'table',
+        schema = 'wencke'
+    )
+}}
 
 WITH basis AS (
     SELECT
@@ -69,7 +70,7 @@ WITH basis AS (
             )
         END AS lieferadresse
 
-    FROM {{ ref('gold_wencke_facts_belege_positionen') }}  f
+    FROM {{ ref('gold_wencke_facts_belege_positionen') }} f
 
     LEFT JOIN reporting_wencke.gold_wencke_adressen a
         ON f.adress_key = a.beleg_adress_key
@@ -85,66 +86,6 @@ WITH basis AS (
         AND f.pos_artikel_nr NOT IN ('ZZ', '09990016')
 ),
 
--- Rechnungsadresse für Kunden mit Belegen
-rechnungsadressen AS (
-    SELECT
-        adress_key,
-        artikel_key,
-        artikelnummer,
-        monat,
-        adr_text,
-        adr_abc_kunde,
-
-        'Rechnungsadresse' AS adresstyp,
-        rechnungsadresse AS adresse,
-
-        SUM(rechnung_umsatz_calc) AS rechnung_umsatz_calc,
-        SUM(rechnung_umsatz_vor_bonus_calc) AS rechnung_umsatz_vor_bonus_calc,
-        SUM(rohertrag_calc) AS rohertrag_calc,
-        SUM(rohertrag_vor_bonus_calc) AS rohertrag_vor_bonus_calc
-
-    FROM basis
-
-    GROUP BY
-        adress_key,
-        artikel_key,
-        artikelnummer,
-        monat,
-        adr_text,
-        adr_abc_kunde,
-        rechnungsadresse
-),
-
--- Lieferadressen für Kunden mit Belegen
-lieferadressen AS (
-    SELECT
-        adress_key,
-        artikel_key,
-        artikelnummer,
-        monat,
-        adr_text,
-        adr_abc_kunde,
-
-        'Lieferadresse' AS adresstyp,
-        lieferadresse AS adresse,
-
-        SUM(rechnung_umsatz_calc) AS rechnung_umsatz_calc,
-        SUM(rechnung_umsatz_vor_bonus_calc) AS rechnung_umsatz_vor_bonus_calc,
-        SUM(rohertrag_calc) AS rohertrag_calc,
-        SUM(rohertrag_vor_bonus_calc) AS rohertrag_vor_bonus_calc
-
-    FROM basis
-
-    GROUP BY
-        adress_key,
-        artikel_key,
-        artikelnummer,
-        monat,
-        adr_text,
-        adr_abc_kunde,
-        lieferadresse
-),
-
 -- Monatstabelle ab 2024 bis aktueller Monat
 monate AS (
     SELECT
@@ -155,7 +96,7 @@ monate AS (
         )::date AS monat
 ),
 
--- Alle Adressen, die überhaupt keine passenden Belege besitzen
+-- Alle Adressen, die keine passenden Belege besitzen
 adressen_ohne_belege AS (
     SELECT
         a.beleg_adress_key AS adress_key,
@@ -209,8 +150,100 @@ adressen_ohne_belege AS (
               )
               AND f.pos_artikel_nr NOT IN ('ZZ', '09990016')
         )
+),
+
+-- Rechnungs- und Lieferadressen zusammenführen
+alle_adressen AS (
+
+    SELECT
+        adress_key,
+        artikel_key,
+        artikelnummer,
+        monat,
+        adr_text,
+        adr_abc_kunde,
+
+        'Rechnungsadresse' AS adresstyp,
+        rechnungsadresse AS adresse,
+
+        rechnung_umsatz_calc,
+        rechnung_umsatz_vor_bonus_calc,
+        rohertrag_calc,
+        rohertrag_vor_bonus_calc
+
+    FROM basis
+
+    UNION ALL
+
+    SELECT
+        adress_key,
+        artikel_key,
+        artikelnummer,
+        monat,
+        adr_text,
+        adr_abc_kunde,
+
+        'Lieferadresse' AS adresstyp,
+        lieferadresse AS adresse,
+
+        rechnung_umsatz_calc,
+        rechnung_umsatz_vor_bonus_calc,
+        rohertrag_calc,
+        rohertrag_vor_bonus_calc
+
+    FROM basis
+
+    UNION ALL
+
+    SELECT *
+    FROM adressen_ohne_belege
+),
+
+-- Einheitliche Schreibweise aller Adressen
+normalisierte_adressen AS (
+    SELECT
+        adress_key,
+        artikel_key,
+        artikelnummer,
+        monat,
+        adr_text,
+        adr_abc_kunde,
+        adresstyp,
+
+        CASE
+            WHEN adresse = 'Keine Lieferadresse hinterlegt'
+                THEN adresse
+
+            ELSE INITCAP(
+                TRIM(
+                    REGEXP_REPLACE(
+                        REGEXP_REPLACE(
+                            REGEXP_REPLACE(
+                                LOWER(TRIM(adresse)),
+                                '(straße|strasse|str\.?)(?=\s|,|$)',
+                                'str.',
+                                'g'
+                            ),
+                            '\s+',
+                            ' ',
+                            'g'
+                        ),
+                        '\s+[0-9]{6,}$',
+                        ''
+                    )
+                )
+            )
+        END AS adresse,
+
+        rechnung_umsatz_calc,
+        rechnung_umsatz_vor_bonus_calc,
+        rohertrag_calc,
+        rohertrag_vor_bonus_calc
+
+    FROM alle_adressen
 )
 
+-- Aggregation auf normalisierter Adresse
 SELECT
     adress_key,
     artikel_key,
@@ -220,16 +253,22 @@ SELECT
     adr_abc_kunde,
     adresstyp,
     adresse,
-    rechnung_umsatz_calc,
-    rechnung_umsatz_vor_bonus_calc,
-    rohertrag_calc,
-    rohertrag_vor_bonus_calc
 
-FROM rechnungsadressen
+    SUM(rechnung_umsatz_calc)
+        AS rechnung_umsatz_calc,
 
-UNION ALL
+    SUM(rechnung_umsatz_vor_bonus_calc)
+        AS rechnung_umsatz_vor_bonus_calc,
 
-SELECT
+    SUM(rohertrag_calc)
+        AS rohertrag_calc,
+
+    SUM(rohertrag_vor_bonus_calc)
+        AS rohertrag_vor_bonus_calc
+
+FROM normalisierte_adressen
+
+GROUP BY
     adress_key,
     artikel_key,
     artikelnummer,
@@ -237,31 +276,7 @@ SELECT
     adr_text,
     adr_abc_kunde,
     adresstyp,
-    adresse,
-    rechnung_umsatz_calc,
-    rechnung_umsatz_vor_bonus_calc,
-    rohertrag_calc,
-    rohertrag_vor_bonus_calc
-
-FROM lieferadressen
-
-UNION ALL
-
-SELECT
-    adress_key,
-    artikel_key,
-    artikelnummer,
-    monat,
-    adr_text,
-    adr_abc_kunde,
-    adresstyp,
-    adresse,
-    rechnung_umsatz_calc,
-    rechnung_umsatz_vor_bonus_calc,
-    rohertrag_calc,
-    rohertrag_vor_bonus_calc
-
-FROM adressen_ohne_belege
+    adresse
 
 ORDER BY
     adress_key,
